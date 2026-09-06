@@ -16,6 +16,8 @@ import { renderHome } from './ui/screens/home.js';
 import { renderMenu } from './ui/screens/menu.js';
 import { renderItem } from './ui/screens/item.js';
 import { renderNotFound } from './ui/screens/notFound.js';
+import { renderCart } from './ui/screens/cart.js';
+import { countItems } from './domain/cart.js';
 
 /** Screen name to the function that renders it. */
 const SCREENS = {
@@ -23,6 +25,7 @@ const SCREENS = {
   menu: renderMenu,
   'menu-category': renderMenu,
   item: renderItem,
+  cart: renderCart,
   'not-found': renderNotFound,
 };
 
@@ -36,6 +39,7 @@ addRoute('/home', 'home');
 addRoute('/menu', 'menu');
 addRoute('/menu/:categoryId', 'menu-category');
 addRoute('/item/:itemId', 'item');
+addRoute('/cart', 'cart');
 
 const main = document.querySelector('#main');
 const nav = document.querySelector('#app-nav');
@@ -48,6 +52,7 @@ const nav = document.querySelector('#app-nav');
 function renderNav() {
   const path = currentPath();
   const location = findLocation(getState().locationId);
+  const cartCount = countItems(getState().cart);
   render(nav, [
     ...NAV_LINKS.map((link) =>
       el('a', {
@@ -56,6 +61,18 @@ function renderNav() {
         text: link.label,
         'aria-current': path.startsWith(link.path) ? 'page' : null,
       })
+    ),
+    el(
+      'a',
+      {
+        class: 'app-nav__link app-nav__cart',
+        href: '#/cart',
+        'aria-current': path.startsWith('/cart') ? 'page' : null,
+      },
+      [
+        'Order',
+        cartCount > 0 ? el('span', { class: 'app-nav__badge', text: String(cartCount) }) : null,
+      ]
     ),
     location
       ? el('span', { class: 'app-nav__location', text: `Ordering from ${location.name}` })
@@ -99,14 +116,16 @@ function warnAboutTemporaryStorage() {
   if (!isUsingTemporaryStorage()) {
     return;
   }
-  document.querySelector('.app-header').after(
-    el('div', { class: 'app-notice', role: 'status' }, [
-      el('div', { class: 'app-notice__inner' }, [
-        'This browser will not let the page save data, so your order history will be ',
-        'cleared when you close the tab. Everything else works normally.',
-      ]),
-    ])
-  );
+  document
+    .querySelector('.app-header')
+    .after(
+      el('div', { class: 'app-notice', role: 'status' }, [
+        el('div', { class: 'app-notice__inner' }, [
+          'This browser will not let the page save data, so your order history will be ',
+          'cleared when you close the tab. Everything else works normally.',
+        ]),
+      ])
+    );
 }
 
 subscribe(() => {

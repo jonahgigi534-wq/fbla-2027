@@ -181,3 +181,47 @@
 /* Price display, kept consistent everywhere money appears */
 .price { font-weight: 700; font-variant-numeric: tabular-nums; }
 .price--muted { color: var(--color-text-muted); font-weight: 600; }
+
+/* Toasts: the short confirmation or refusal shown after an action */
+.toast-host {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: min(28rem, calc(100vw - 2rem));
+}
+
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  animation: toast-in 160ms ease-out;
+}
+
+.toast--success { background: var(--color-brown); color: var(--color-text-inverse); }
+.toast--error { background: var(--color-danger); color: var(--color-text-inverse); }
+
+.toast__text { flex: 1; }
+
+.toast__close {
+  background: none;
+  border: 0;
+  color: inherit;
+  font-size: var(--text-lg);
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 var(--space-1);
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

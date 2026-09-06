@@ -12,6 +12,8 @@
 import { el, banner, emptyState, render } from '../dom.js';
 import { itemCard } from '../components/itemCard.js';
 import { foodPlaceholder } from '../components/foodPlaceholder.js';
+import { addToCartPanel } from '../components/addToCartPanel.js';
+import { getState } from '../../app/store.js';
 import { ALL_ITEMS, findCategory, findItem } from '../../data/menu.js';
 import { ALLERGEN_LABELS } from '../../data/dietaryRules.js';
 import { formatUSD } from '../../domain/money.js';
@@ -118,6 +120,7 @@ export function renderItem(container, params) {
         el('p', { class: 'item-detail__price price', text: formatUSD(item.priceCents) }),
         el('p', { text: item.description }),
         availabilityBanner(item),
+        addToCartPanel(item, getState(), ALL_ITEMS, (itemId) => navigate(`/item/${itemId}`)),
         el('div', { class: 'item-detail__facts' }, [
           el('div', {}, [
             el('h4', { text: 'Dietary' }),
