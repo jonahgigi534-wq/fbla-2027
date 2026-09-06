@@ -21,6 +21,9 @@ import { renderCart } from './ui/screens/cart.js';
 import { renderCheckout } from './ui/screens/checkout.js';
 import { renderOrderDetail } from './ui/screens/orderDetail.js';
 import { renderMyOrders } from './ui/screens/myOrders.js';
+import { renderManagerQueue } from './ui/screens/manager/queue.js';
+import { renderManagerInventory } from './ui/screens/manager/inventory.js';
+import { renderManagerReports } from './ui/screens/manager/reports.js';
 import { countItems } from './domain/cart.js';
 
 /** Screen name to the function that renders it. */
@@ -33,6 +36,9 @@ const SCREENS = {
   checkout: renderCheckout,
   'order-detail': renderOrderDetail,
   orders: renderMyOrders,
+  'manager-queue': renderManagerQueue,
+  'manager-inventory': renderManagerInventory,
+  'manager-reports': renderManagerReports,
   'not-found': renderNotFound,
 };
 
@@ -41,6 +47,7 @@ const NAV_LINKS = [
   { path: '/home', label: 'Home' },
   { path: '/menu', label: 'Menu' },
   { path: '/orders', label: 'Orders' },
+  { path: '/manager', label: 'Staff' },
 ];
 
 addRoute('/home', 'home');
@@ -51,6 +58,10 @@ addRoute('/cart', 'cart');
 addRoute('/checkout', 'checkout');
 addRoute('/orders', 'orders');
 addRoute('/order/:orderNumber', 'order-detail');
+addRoute('/manager', 'manager-queue');
+addRoute('/manager/queue', 'manager-queue');
+addRoute('/manager/inventory', 'manager-inventory');
+addRoute('/manager/reports', 'manager-reports');
 
 const main = document.querySelector('#main');
 const nav = document.querySelector('#app-nav');

@@ -18,6 +18,7 @@
 
 import { load, save } from './storage.js';
 import { DEFAULT_LOCATION_ID } from '../data/locations.js';
+import { generateSeedOrders, nextOrderNumberAfter } from '../data/seedOrders.js';
 
 /** Order types the customer can choose between. */
 export const ORDER_TYPES = [
@@ -26,18 +27,28 @@ export const ORDER_TYPES = [
   { id: 'dine-in', label: 'Dine in' },
 ];
 
-/** The state a first time visitor starts from. */
+/**
+ * The state a first time visitor starts from.
+ *
+ * The order list is not empty. Ninety days of past orders are generated so the
+ * reports screen has something real to report on, which it cannot do from a blank
+ * table. See data/seedOrders.js for how they are built and why they are seeded.
+ *
+ * @returns {object} A fresh state object.
+ */
 function createInitialState() {
+  const seeded = generateSeedOrders();
   return {
     locationId: DEFAULT_LOCATION_ID,
     orderTypeId: 'pickup',
     cart: [],
-    orders: [],
+    orders: seeded,
     stockOverrides: {},
     budgetCapCents: null,
     promoCode: null,
     hasSeenWelcome: false,
-    nextOrderNumber: 1001,
+    isManagerUnlocked: false,
+    nextOrderNumber: nextOrderNumberAfter(seeded),
   };
 }
 
