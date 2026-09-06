@@ -1,0 +1,39 @@
+/*
+ * Print layout, used for receipts and manager reports.
+ *
+ * There is no printer at the competition, so this is judged through the browser's
+ * print preview. Everything that is navigation on screen is removed here, leaving
+ * the document a customer or a manager would actually keep.
+ */
+
+.app-header,
+.app-footer,
+.app-nav,
+.skip-link,
+.app-notice,
+.button,
+.chip,
+.menu-controls {
+  display: none !important;
+}
+
+body {
+  background: #ffffff;
+  color: #000000;
+  font-size: 11pt;
+}
+
+.app-main {
+  max-width: none;
+  padding: 0;
+}
+
+.card {
+  border: 1px solid #999999;
+  box-shadow: none;
+  break-inside: avoid;
+}
+
+a::after {
+  content: '';
+}

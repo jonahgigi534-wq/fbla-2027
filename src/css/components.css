@@ -1,0 +1,183 @@
+/*
+ * Reusable pieces: buttons, cards, chips, badges, banners, and empty states.
+ */
+
+/* Buttons */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  min-height: 40px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--color-orange);
+  color: var(--color-text-inverse);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 120ms ease, border-color 120ms ease;
+}
+
+.button:hover:not(:disabled) { background: var(--color-orange-dark); }
+.button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.button--secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.button--secondary:hover:not(:disabled) { background: var(--color-surface-sunk); }
+
+.button--quiet {
+  background: transparent;
+  color: var(--color-orange-dark);
+  border-color: transparent;
+  padding-inline: var(--space-2);
+}
+.button--quiet:hover:not(:disabled) { background: var(--color-orange-soft); }
+
+.button--small { min-height: 32px; padding: var(--space-1) var(--space-3); font-size: var(--text-xs); }
+.button--block { width: 100%; }
+
+/* Cards */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.card--interactive {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  width: 100%;
+  padding: 0;
+  cursor: pointer;
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+
+.card--interactive:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card__body { padding: var(--space-4); }
+.card__media { aspect-ratio: 3 / 2; overflow: hidden; background: var(--color-surface-sunk); }
+.card__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Chips, used for filters and dietary tags */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  min-height: 32px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-text-inverse);
+}
+
+/* Badges are read only labels, unlike chips */
+.badge {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  background: var(--color-surface-sunk);
+  color: var(--color-text-muted);
+}
+
+.badge--success { background: var(--color-success-soft); color: var(--color-success); }
+.badge--warning { background: var(--color-warning-soft); color: var(--color-warning); }
+.badge--danger  { background: var(--color-danger-soft);  color: var(--color-danger); }
+.badge--info    { background: var(--color-info-soft);    color: var(--color-info); }
+
+/* Banners carry a message the customer needs before they act */
+.banner {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+}
+
+.banner--info    { background: var(--color-info-soft);    border-color: #bcd6e4; }
+.banner--warning { background: var(--color-warning-soft); border-color: #e4cd9c; }
+.banner--danger  { background: var(--color-danger-soft);  border-color: #e8bdb7; }
+.banner--success { background: var(--color-success-soft); border-color: #b9d8c6; }
+
+.banner__title { font-weight: 700; margin-bottom: 2px; }
+
+/*
+ * Empty states.
+ *
+ * Every list in this program has one. A blank panel tells a customer nothing about
+ * what went wrong or what to do next, and "the interface is intuitive" is a scored
+ * expectation, so each of these names the situation and offers the way out.
+ */
+.empty-state {
+  text-align: center;
+  padding: var(--space-7) var(--space-4);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.empty-state__icon { font-size: 2rem; margin-bottom: var(--space-2); }
+.empty-state__title { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-1); }
+.empty-state__body { color: var(--color-text-muted); max-width: 44ch; margin: 0 auto var(--space-4); }
+
+/* Form controls */
+.field { display: block; margin-bottom: var(--space-4); }
+.field__label { display: block; font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-1); }
+.field__hint { display: block; font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-1); }
+
+.field__control {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  min-height: 40px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.field__control:focus { border-color: var(--color-orange); }
+.field--invalid .field__control { border-color: var(--color-danger); }
+
+.field__error {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-danger);
+}
+
+/* Grids used by the menu and location lists */
+.grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.grid--wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+
+/* Price display, kept consistent everywhere money appears */
+.price { font-weight: 700; font-variant-numeric: tabular-nums; }
+.price--muted { color: var(--color-text-muted); font-weight: 600; }

@@ -1,0 +1,78 @@
+/*
+ * Design tokens.
+ *
+ * Every colour, space, and type size in the program is named here and used by name
+ * everywhere else. Changing the look means editing this file, not hunting through
+ * eight stylesheets.
+ *
+ * The palette is taken from the House of Pies storefront and menu boards: burnt
+ * orange signage, cream walls, dark roast brown lettering.
+ */
+
+:root {
+  /* Brand */
+  --color-orange: #c2521c;
+  --color-orange-dark: #9c3f13;
+  --color-orange-soft: #f4e2d6;
+  --color-brown: #2e2019;
+  --color-cream: #fbf6ee;
+  --color-cream-dark: #f2e9dc;
+
+  /* Surfaces */
+  --color-page: var(--color-cream);
+  --color-surface: #ffffff;
+  --color-surface-sunk: var(--color-cream-dark);
+  --color-border: #e2d5c3;
+  --color-border-strong: #cbb79c;
+
+  /* Text */
+  --color-text: var(--color-brown);
+  --color-text-muted: #6f5d51;
+  --color-text-inverse: #ffffff;
+
+  /* Status */
+  --color-success: #2f6b46;
+  --color-success-soft: #e2f0e7;
+  --color-warning: #8a5a0b;
+  --color-warning-soft: #fbf0d9;
+  --color-danger: #9c2f24;
+  --color-danger-soft: #fbe6e3;
+  --color-info: #1f5673;
+  --color-info-soft: #e2eef5;
+
+  /* Type */
+  --font-body: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-display: 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  /* Space, on a 4px step */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Depth */
+  --shadow-sm: 0 1px 2px rgba(46, 32, 25, 0.08);
+  --shadow-md: 0 4px 12px rgba(46, 32, 25, 0.1);
+  --shadow-lg: 0 12px 32px rgba(46, 32, 25, 0.16);
+
+  /* Layout */
+  --page-max: 1180px;
+  --header-height: 68px;
+}
