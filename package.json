@@ -1,0 +1,25 @@
+{
+  "name": "house-of-pies-ordering",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Digital ordering system for House of Pies. FBLA 2026-2027 Introduction to Programming.",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "test": "node --test test/",
+    "coverage": "node --test --experimental-test-coverage test/",
+    "build": "node scripts/build-standalone.mjs",
+    "check:structure": "node scripts/check-structure.mjs",
+    "check:jsdoc": "node scripts/check-jsdoc.mjs",
+    "check:spelling": "node scripts/spellcheck.mjs",
+    "check": "npm run test && npm run check:structure && npm run check:jsdoc && npm run check:spelling",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.4.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
