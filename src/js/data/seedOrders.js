@@ -30,6 +30,16 @@ const BASE_ORDERS_PER_DAY = 3;
 /** Weekends are busier, so Saturday and Sunday get this multiplier. */
 const WEEKEND_MULTIPLIER = 1.8;
 
+/**
+ * Chance that a generated order belongs to the person using the demo.
+ *
+ * The customer spending report has nothing to show on a fresh install, because a
+ * first time visitor has no history. Marking a slice of the generated orders as
+ * theirs gives that screen something real to summarise. The screen says plainly
+ * that the history is demonstration data.
+ */
+const DEMO_CUSTOMER_SHARE = 0.03;
+
 /** Chance that a restaurant takes a catering booking on any given day. */
 const CATERING_CHANCE_PER_DAY = 0.13;
 
@@ -178,6 +188,7 @@ function buildOrder({ random, pool, location, placedAt, orderNumber }) {
     promoCode: null,
     totals,
     isSeeded: true,
+    isDemoCustomer: random() < DEMO_CUSTOMER_SHARE,
   };
 }
 

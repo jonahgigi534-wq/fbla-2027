@@ -12,6 +12,9 @@ import { findLocation } from '../../data/locations.js';
 import { CANCELLED } from '../../domain/orders.js';
 import { formatUSD } from '../../domain/money.js';
 
+/** Most orders to list before the page becomes a scroll marathon. */
+const MAX_SHOWN = 50;
+
 /** Badge colour for each status. */
 const STATUS_TONE = {
   Received: 'info',
@@ -63,7 +66,11 @@ function orderRow(order) {
  * @returns {void}
  */
 export function renderMyOrders(container) {
-  const { orders } = getState();
+  // The saved order list also holds ninety days of generated history for the
+  // reports. Only the orders placed here, plus the slice marked as this
+  // customer's, belong on a screen headed "Your orders".
+  const mine = getState().orders.filter((order) => !order.isSeeded || order.isDemoCustomer);
+  const orders = mine.slice(0, MAX_SHOWN);
 
   if (orders.length === 0) {
     render(
@@ -83,7 +90,10 @@ export function renderMyOrders(container) {
       el('h1', { text: 'Your orders' }),
       el('p', {
         class: 'page-head__lede',
-        text: `${orders.length} order${orders.length === 1 ? '' : 's'} placed on this device.`,
+        text:
+          mine.length > orders.length
+            ? `Showing the ${orders.length} most recent of ${mine.length} orders on this device.`
+            : `${mine.length} order${mine.length === 1 ? '' : 's'} on this device.`,
       }),
     ]),
     el('div', { class: 'stack' }, orders.map(orderRow)),

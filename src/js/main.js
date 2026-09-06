@@ -21,6 +21,7 @@ import { renderCart } from './ui/screens/cart.js';
 import { renderCheckout } from './ui/screens/checkout.js';
 import { renderOrderDetail } from './ui/screens/orderDetail.js';
 import { renderMyOrders } from './ui/screens/myOrders.js';
+import { renderSpending } from './ui/screens/spending.js';
 import { renderManagerQueue } from './ui/screens/manager/queue.js';
 import { renderManagerInventory } from './ui/screens/manager/inventory.js';
 import { renderManagerReports } from './ui/screens/manager/reports.js';
@@ -36,6 +37,7 @@ const SCREENS = {
   checkout: renderCheckout,
   'order-detail': renderOrderDetail,
   orders: renderMyOrders,
+  spending: renderSpending,
   'manager-queue': renderManagerQueue,
   'manager-inventory': renderManagerInventory,
   'manager-reports': renderManagerReports,
@@ -57,6 +59,7 @@ addRoute('/item/:itemId', 'item');
 addRoute('/cart', 'cart');
 addRoute('/checkout', 'checkout');
 addRoute('/orders', 'orders');
+addRoute('/spending', 'spending');
 addRoute('/order/:orderNumber', 'order-detail');
 addRoute('/manager', 'manager-queue');
 addRoute('/manager/queue', 'manager-queue');

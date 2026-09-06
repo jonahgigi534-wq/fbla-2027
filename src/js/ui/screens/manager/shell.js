@@ -13,7 +13,7 @@
  */
 
 import { el, banner, render } from '../../dom.js';
-import { getState, update } from '../../../app/store.js';
+import { getState, resetToDefaults, update } from '../../../app/store.js';
 import { navigate } from '../../../app/router.js';
 
 /** The demo PIN, shown on the gate so nobody is locked out of the demonstration. */
@@ -136,6 +136,26 @@ export function managerTabs(activePath) {
         },
       },
       'Lock and exit'
+    ),
+    // Between judging rounds the program has to look the way it did at the start of
+    // the previous one. Clicking through a cart to empty it by hand is not something
+    // to do on the clock.
+    el(
+      'button',
+      {
+        class: 'button button--quiet button--small',
+        type: 'button',
+        onClick: () => {
+          const confirmed = window.confirm(
+            'Reset everything to a fresh install? This clears the cart, every order you placed, and any stock you changed. The ninety days of sample history are rebuilt.'
+          );
+          if (confirmed) {
+            resetToDefaults();
+            navigate('/home');
+          }
+        },
+      },
+      'Reset demo data'
     ),
   ]);
 }

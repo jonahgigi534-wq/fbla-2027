@@ -9,9 +9,11 @@
  */
 
 import { getState, update } from './store.js';
-import { ORDER_STATUSES, CANCELLED, canCancel, nextStatus } from '../domain/orders.js';
+import { ORDER_STATUSES, CANCELLED, canCancel, canModify, nextStatus } from '../domain/orders.js';
 import { stockFor } from '../domain/inventory.js';
 import { findItem } from '../data/menu.js';
+import { calculateOrderTotals } from '../domain/pricing.js';
+import { findPromo } from '../data/promos.js';
 
 /**
  * Places the order currently in the cart.
@@ -158,5 +160,89 @@ export function reorder(orderNumber) {
       dropped === 0
         ? `Order ${orderNumber} is back in your cart.`
         : `Added what we still sell. ${dropped} item${dropped === 1 ? '' : 's'} from that order are no longer on the menu.`,
+  };
+}
+
+/**
+ * Changes the quantity of one line on an order that has not started cooking.
+ *
+ * The topic asks the program to let customers manage their orders, and cancelling
+ * is not managing. Someone who ordered three pies and wants two should not have to
+ * cancel the whole thing and start again.
+ *
+ * Stock moves by the difference rather than being recalculated from scratch, and the
+ * order total is rebuilt from the new lines so the receipt never disagrees with what
+ * is on it.
+ *
+ * @param {number} orderNumber The order to change.
+ * @param {string} lineId The line to change.
+ * @param {number} newQuantity The new quantity. Zero removes the line.
+ * @returns {{ok: boolean, message: string}} What happened.
+ */
+export function changeOrderLine(orderNumber, lineId, newQuantity) {
+  const state = getState();
+  const order = state.orders.find((candidate) => candidate.orderNumber === orderNumber);
+
+  if (!order) {
+    return { ok: false, message: 'We could not find that order.' };
+  }
+  if (!canModify(order)) {
+    return {
+      ok: false,
+      message: `The kitchen has started order ${orderNumber}, so it can no longer be changed.`,
+    };
+  }
+
+  const line = order.lines.find((candidate) => candidate.lineId === lineId);
+  if (!line) {
+    return { ok: false, message: 'We could not find that item on the order.' };
+  }
+
+  const quantity = Math.max(0, Math.floor(newQuantity));
+  const difference = quantity - line.quantity;
+
+  // Adding back means taking more off the shelf; removing puts stock back.
+  const stockOverrides = { ...state.stockOverrides };
+  const item = findItem(line.itemId);
+  if (item) {
+    const available = stockFor(item, stockOverrides);
+    if (difference > available) {
+      return {
+        ok: false,
+        message: `Only ${available} more available, so the most this line can be is ${line.quantity + available}.`,
+      };
+    }
+    stockOverrides[line.itemId] = Math.max(available - difference, 0);
+  }
+
+  const newLines =
+    quantity === 0
+      ? order.lines.filter((candidate) => candidate.lineId !== lineId)
+      : order.lines.map((candidate) =>
+          candidate.lineId === lineId ? { ...candidate, quantity } : candidate
+        );
+
+  if (newLines.length === 0) {
+    return { ok: false, message: 'An order needs at least one item. Cancel it instead.' };
+  }
+
+  const totals = calculateOrderTotals(newLines, {
+    orderTypeId: order.orderTypeId,
+    promo: order.promoCode ? findPromo(order.promoCode) : null,
+  });
+
+  update((current) => ({
+    orders: current.orders.map((candidate) =>
+      candidate.orderNumber === orderNumber ? { ...candidate, lines: newLines, totals } : candidate
+    ),
+    stockOverrides,
+  }));
+
+  return {
+    ok: true,
+    message:
+      quantity === 0
+        ? `${line.name} removed from order ${orderNumber}.`
+        : `Order ${orderNumber} updated.`,
   };
 }

@@ -12,10 +12,16 @@
 import { el, banner, emptyState, render } from '../dom.js';
 import { showResult } from '../components/toast.js';
 import { getState } from '../../app/store.js';
-import { cancelOrder, reorder } from '../../app/orderActions.js';
+import { cancelOrder, changeOrderLine, reorder } from '../../app/orderActions.js';
 import { navigate } from '../../app/router.js';
 import { findLocation } from '../../data/locations.js';
-import { ORDER_STATUSES, CANCELLED, canCancel, describeStatus } from '../../domain/orders.js';
+import {
+  ORDER_STATUSES,
+  CANCELLED,
+  canCancel,
+  canModify,
+  describeStatus,
+} from '../../domain/orders.js';
 import { formatUSD } from '../../domain/money.js';
 
 /**
@@ -158,7 +164,49 @@ export function renderOrderDetail(container, params) {
                   el('span', { text: `${line.quantity} x ${line.name}` }),
                   line.note ? el('em', { class: 'receipt__note', text: ` (${line.note})` }) : null,
                 ]),
-                el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
+                el('span', { class: 'receipt__line-right' }, [
+                  el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
+                  // Editing is offered only while the ticket is still in the queue.
+                  // Once the kitchen starts, the food exists and the order is fixed.
+                  canModify(order)
+                    ? el(
+                        'span',
+                        {
+                          class: 'stepper stepper--small',
+                          role: 'group',
+                          'aria-label': `Change quantity of ${line.name}`,
+                        },
+                        [
+                          el(
+                            'button',
+                            {
+                              class: 'stepper__button',
+                              type: 'button',
+                              'aria-label': `One fewer ${line.name}`,
+                              onClick: () =>
+                                showResult(
+                                  changeOrderLine(order.orderNumber, line.lineId, line.quantity - 1)
+                                ),
+                            },
+                            '−'
+                          ),
+                          el(
+                            'button',
+                            {
+                              class: 'stepper__button',
+                              type: 'button',
+                              'aria-label': `One more ${line.name}`,
+                              onClick: () =>
+                                showResult(
+                                  changeOrderLine(order.orderNumber, line.lineId, line.quantity + 1)
+                                ),
+                            },
+                            '+'
+                          ),
+                        ]
+                      )
+                    : null,
+                ]),
               ])
             )
           ),
