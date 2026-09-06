@@ -17,6 +17,7 @@ import { DRINK_CATEGORIES } from './menu-drinks.js';
 import { SIDE_CATEGORIES } from './menu-sides.js';
 import { CATERING_CATEGORIES } from './menu-catering.js';
 import { ALLERGEN_KEYWORDS, MEAT_KEYWORDS } from './dietaryRules.js';
+import { CATEGORY_PHOTOS } from './categoryPhotos.js';
 import { buildDietaryTags, detectAllergens, toWords } from '../domain/dietary.js';
 
 /**
@@ -27,6 +28,28 @@ const SERVICE_TYPE = 'service';
 
 /** Anything available on the spot is a product. */
 const PRODUCT_TYPE = 'product';
+
+/**
+ * Works out which picture an item should show.
+ *
+ * An item with its own photograph uses it. Otherwise it borrows the one for its
+ * category, flagged so the detail screen can say that is what happened. Sides and
+ * catering have no honest stand-in, so they get null and the screens draw a tile.
+ *
+ * @param {object} rawItem An item straight out of a catalog file.
+ * @param {string} categoryId The category this item was listed under.
+ * @returns {{src: string, isCategoryPhoto: boolean}|null} The picture, or null.
+ */
+function resolvePhoto(rawItem, categoryId) {
+  if (rawItem.imageId) {
+    return { src: `assets/img/${rawItem.imageId}.webp`, isCategoryPhoto: false };
+  }
+  const categoryFile = CATEGORY_PHOTOS[categoryId];
+  if (categoryFile) {
+    return { src: `assets/img/${categoryFile}`, isCategoryPhoto: true };
+  }
+  return null;
+}
 
 /**
  * Fills in the fields an item cannot know about itself and derives its dietary data.
@@ -45,6 +68,7 @@ function finishItem(rawItem, categoryId, sectionId) {
     type: rawItem.leadTimeHours > 0 ? SERVICE_TYPE : PRODUCT_TYPE,
     allergens: detectAllergens(words, ALLERGEN_KEYWORDS),
     dietaryTags: buildDietaryTags(words, rawItem.extraTags, MEAT_KEYWORDS),
+    photo: resolvePhoto(rawItem, categoryId),
   };
 }
 
@@ -72,9 +96,12 @@ export const SECTIONS = [
     BREAKFAST_CATEGORIES,
     SAVORY_CATEGORIES,
   ]),
-  buildSection('bakery', 'Bakery', 'Over forty pies, cakes, and cheesecakes, by the slice or whole.', [
-    BAKERY_CATEGORIES,
-  ]),
+  buildSection(
+    'bakery',
+    'Bakery',
+    'Over forty pies, cakes, and cheesecakes, by the slice or whole.',
+    [BAKERY_CATEGORIES]
+  ),
   buildSection('drinks', 'Drinks', 'Coffee, tea, the fountain, and shakes.', [DRINK_CATEGORIES]),
   buildSection('sides', 'A la Carte', 'Sides on their own, from hash browns to a ribeye.', [
     SIDE_CATEGORIES,

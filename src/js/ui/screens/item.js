@@ -11,6 +11,7 @@
 
 import { el, banner, emptyState, render } from '../dom.js';
 import { itemCard } from '../components/itemCard.js';
+import { foodPlaceholder } from '../components/foodPlaceholder.js';
 import { ALL_ITEMS, findCategory, findItem } from '../../data/menu.js';
 import { ALLERGEN_LABELS } from '../../data/dietaryRules.js';
 import { formatUSD } from '../../domain/money.js';
@@ -77,20 +78,40 @@ export function renderItem(container, params) {
 
   render(container, [
     el('nav', { class: 'breadcrumb', 'aria-label': 'Breadcrumb' }, [
-      el('button', { class: 'button button--quiet button--small', type: 'button', onClick: () => navigate('/menu') }, 'Menu'),
+      el(
+        'button',
+        {
+          class: 'button button--quiet button--small',
+          type: 'button',
+          onClick: () => navigate('/menu'),
+        },
+        'Menu'
+      ),
       el('span', { class: 'breadcrumb__separator', 'aria-hidden': 'true', text: '/' }),
       el(
         'button',
-        { class: 'button button--quiet button--small', type: 'button', onClick: () => navigate(`/menu/${item.categoryId}`) },
+        {
+          class: 'button button--quiet button--small',
+          type: 'button',
+          onClick: () => navigate(`/menu/${item.categoryId}`),
+        },
         category ? category.name : 'Category'
       ),
     ]),
 
     el('div', { class: 'item-detail' }, [
       el('div', { class: 'item-detail__media' }, [
-        item.imageId
-          ? el('img', { src: `assets/img/${item.imageId}.webp`, alt: item.name })
-          : el('div', { class: 'item-detail__placeholder', 'aria-hidden': 'true', text: '\u{1F370}' }),
+        item.photo
+          ? el('img', { src: item.photo.src, alt: item.name })
+          : foodPlaceholder(item.name),
+        // Saying so is the honest thing. A picture of a different pie in the same
+        // family is useful, but only if the customer knows that is what it is.
+        item.photo && item.photo.isCategoryPhoto
+          ? el('p', {
+              class: 'item-detail__photo-note',
+              text: 'Category photo. Your item is made fresh and may look different.',
+            })
+          : null,
       ]),
       el('div', { class: 'item-detail__info stack' }, [
         el('h1', { text: item.name }),
@@ -101,15 +122,33 @@ export function renderItem(container, params) {
           el('div', {}, [
             el('h4', { text: 'Dietary' }),
             item.dietaryTags.length > 0
-              ? el('div', { class: 'filter-row' }, item.dietaryTags.map((tag) => el('span', { class: 'badge badge--success', text: tag.replace('-', ' ') })))
+              ? el(
+                  'div',
+                  { class: 'filter-row' },
+                  item.dietaryTags.map((tag) =>
+                    el('span', { class: 'badge badge--success', text: tag.replace('-', ' ') })
+                  )
+                )
               : el('p', { class: 'muted', text: 'No dietary tags on this item.' }),
           ]),
           el('div', {}, [
             el('h4', { text: 'May contain' }),
             item.allergens.length > 0
-              ? el('div', { class: 'filter-row' }, item.allergens.map((code) => el('span', { class: 'badge badge--warning', text: ALLERGEN_LABELS[code] ?? code })))
+              ? el(
+                  'div',
+                  { class: 'filter-row' },
+                  item.allergens.map((code) =>
+                    el('span', {
+                      class: 'badge badge--warning',
+                      text: ALLERGEN_LABELS[code] ?? code,
+                    })
+                  )
+                )
               : el('p', { class: 'muted', text: 'No common allergens found in the ingredients.' }),
-            el('p', { class: 'field__hint', text: 'Read from the ingredient list, not from a lab test. Please tell the restaurant about any allergy when you order.' }),
+            el('p', {
+              class: 'field__hint',
+              text: 'Read from the ingredient list, not from a lab test. Please tell the restaurant about any allergy when you order.',
+            }),
           ]),
         ]),
       ]),
@@ -117,8 +156,14 @@ export function renderItem(container, params) {
 
     suggestions.length > 0
       ? el('section', { class: 'section' }, [
-          el('div', { class: 'section__head' }, [el('h2', { text: `More from ${category ? category.name : 'this section'}` })]),
-          el('div', { class: 'grid' }, suggestions.map((other) => itemCard(other, (chosen) => navigate(`/item/${chosen.id}`)))),
+          el('div', { class: 'section__head' }, [
+            el('h2', { text: `More from ${category ? category.name : 'this section'}` }),
+          ]),
+          el(
+            'div',
+            { class: 'grid' },
+            suggestions.map((other) => itemCard(other, (chosen) => navigate(`/item/${chosen.id}`)))
+          ),
         ])
       : null,
   ]);

@@ -11,6 +11,7 @@
 
 import { el } from '../dom.js';
 import { formatUSD } from '../../domain/money.js';
+import { foodPlaceholder } from './foodPlaceholder.js';
 
 /** At or below this many left, the tile warns the customer to order soon. */
 const LOW_STOCK_THRESHOLD = 5;
@@ -40,11 +41,13 @@ function stockBadge(stock) {
  */
 export function itemCard(item, onOpen) {
   const isSoldOut = item.stock === 0;
-  const image = item.imageId
-    ? el('div', { class: 'card__media' }, [
-        el('img', { src: `assets/img/${item.imageId}.webp`, alt: item.name, loading: 'lazy' }),
-      ])
-    : null;
+  // Every tile gets a picture area so the grid keeps one rhythm. An item with no
+  // photograph gets a drawn tile rather than an empty box.
+  const media = el('div', { class: 'card__media' }, [
+    item.photo
+      ? el('img', { src: item.photo.src, alt: '', loading: 'lazy' })
+      : foodPlaceholder(item.name),
+  ]);
 
   return el(
     'button',
@@ -55,7 +58,7 @@ export function itemCard(item, onOpen) {
       'aria-label': `${item.name}, ${formatUSD(item.priceCents)}${isSoldOut ? ', sold out' : ''}`,
     },
     [
-      image,
+      media,
       el('div', { class: 'card__body' }, [
         el('div', { class: 'item-card__head' }, [
           el('h3', { class: 'item-card__name', text: item.name }),
