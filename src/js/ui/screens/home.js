@@ -47,7 +47,10 @@ function locationCard(location, now, isSelected) {
         ]),
         el('p', { class: 'location-card__area', text: location.area }),
         el('p', { class: 'location-card__status', text: status.text }),
-        el('p', { class: 'location-card__address', text: `${location.street}, ${location.cityStateZip}` }),
+        el('p', {
+          class: 'location-card__address',
+          text: `${location.street}, ${location.cityStateZip}`,
+        }),
         isSelected ? el('span', { class: 'badge badge--info', text: 'Ordering from here' }) : null,
       ]),
     ]
@@ -63,7 +66,9 @@ function locationCard(location, now, isSelected) {
 export function renderHome(container) {
   const now = new Date();
   const state = getState();
-  const openCount = LOCATIONS.filter((location) => describeStatus(location, now, DAY_NAMES).isOpen).length;
+  const openCount = LOCATIONS.filter(
+    (location) => describeStatus(location, now, DAY_NAMES).isOpen
+  ).length;
 
   render(container, [
     el('section', { class: 'hero' }, [
@@ -75,14 +80,21 @@ export function renderHome(container) {
           'Pick a restaurant, build your order, and choose a pickup time that works.',
         ]),
         el('div', { class: 'row' }, [
-          el('button', { class: 'button', type: 'button', onClick: () => navigate('/menu') }, 'Browse the menu'),
+          el(
+            'button',
+            { class: 'button', type: 'button', onClick: () => navigate('/menu') },
+            'Browse the menu'
+          ),
           el(
             'button',
             { class: 'button button--secondary', type: 'button', onClick: () => navigate('/help') },
             'How this works'
           ),
         ]),
-        el('p', { class: 'hero__status', text: `${openCount} of ${LOCATIONS.length} restaurants open right now.` }),
+        el('p', {
+          class: 'hero__status',
+          text: `${openCount} of ${LOCATIONS.length} restaurants open right now.`,
+        }),
       ]),
       el('div', { class: 'hero__media' }, [
         el('img', { src: 'assets/img/bakery-case.webp', alt: 'The House of Pies bakery case' }),
@@ -92,9 +104,16 @@ export function renderHome(container) {
     el('section', { class: 'section' }, [
       el('div', { class: 'section__head' }, [
         el('h2', { text: 'Choose your restaurant' }),
-        el('p', { class: 'section__lede', text: 'Hours differ by location. Fuqua never closes, and Katy runs around the clock on weekends.' }),
+        el('p', {
+          class: 'section__lede',
+          text: 'Hours differ by location. Fuqua never closes, and Katy runs around the clock on weekends.',
+        }),
       ]),
-      el('div', { class: 'grid grid--wide' }, LOCATIONS.map((location) => locationCard(location, now, location.id === state.locationId))),
+      el(
+        'div',
+        { class: 'grid grid--wide' },
+        LOCATIONS.map((location) => locationCard(location, now, location.id === state.locationId))
+      ),
     ]),
 
     el('section', { class: 'section' }, [
@@ -102,7 +121,11 @@ export function renderHome(container) {
         el('h2', { text: 'Fan favourites' }),
         el('p', { class: 'section__lede', text: 'The dishes House of Pies is known for.' }),
       ]),
-      el('div', { class: 'grid' }, POPULAR_ITEMS.map((item) => itemCard(item, (chosen) => navigate(`/item/${chosen.id}`)))),
+      el(
+        'div',
+        { class: 'grid' },
+        POPULAR_ITEMS.map((item) => itemCard(item, (chosen) => navigate(`/item/${chosen.id}`)))
+      ),
     ]),
   ]);
 }

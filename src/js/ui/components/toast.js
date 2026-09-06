@@ -11,8 +11,11 @@
 
 import { el } from '../dom.js';
 
-/** How long a message stays before fading, in milliseconds. */
+/** How long a confirmation stays before fading, in milliseconds. */
 const VISIBLE_MS = 3600;
+
+/** Errors stay longer, because the customer has to read and act on them. */
+const ERROR_VISIBLE_MS = 9000;
 
 /** The live region, created once and reused. */
 let host = null;
@@ -57,11 +60,9 @@ export function showToast(message, tone = 'success') {
 
   container.append(node);
 
-  // An error is something the customer has to act on, so it waits for them.
-  // A confirmation has done its job once it has been seen.
-  if (!isError) {
-    setTimeout(() => node.remove(), VISIBLE_MS);
-  }
+  // An error stays long enough to read and act on. It still goes on its own,
+  // because a message that never leaves is one the customer stops seeing.
+  setTimeout(() => node.remove(), isError ? ERROR_VISIBLE_MS : VISIBLE_MS);
 }
 
 /**
@@ -73,5 +74,20 @@ export function showToast(message, tone = 'success') {
 export function showResult(result) {
   if (result.message) {
     showToast(result.message, result.ok ? 'success' : 'error');
+  }
+}
+
+/**
+ * Clears every message on screen.
+ *
+ * Called on navigation. An error about a checkout field is meaningless once the
+ * customer has moved to another screen, and leaving it there makes the program look
+ * like it is still complaining about something that is no longer in front of them.
+ *
+ * @returns {void}
+ */
+export function clearToasts() {
+  if (host !== null) {
+    host.replaceChildren();
   }
 }

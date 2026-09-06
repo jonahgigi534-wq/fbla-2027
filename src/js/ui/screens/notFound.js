@@ -29,8 +29,16 @@ export function renderNotFound(container, params = {}) {
       action: { label: 'Go to the menu', onClick: () => navigate('/menu') },
     }),
     el('div', { class: 'row row--centred' }, [
-      el('button', { class: 'button button--secondary', type: 'button', onClick: () => navigate('/home') }, 'Back to home'),
-      el('button', { class: 'button button--secondary', type: 'button', onClick: () => navigate('/help') }, 'Open the help centre'),
+      el(
+        'button',
+        { class: 'button button--secondary', type: 'button', onClick: () => navigate('/home') },
+        'Back to home'
+      ),
+      el(
+        'button',
+        { class: 'button button--secondary', type: 'button', onClick: () => navigate('/help') },
+        'Open the help centre'
+      ),
     ]),
   ]);
 }

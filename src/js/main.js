@@ -12,11 +12,15 @@ import { getState, subscribe } from './app/store.js';
 import { isUsingTemporaryStorage } from './app/storage.js';
 import { findLocation } from './data/locations.js';
 import { el, render } from './ui/dom.js';
+import { clearToasts } from './ui/components/toast.js';
 import { renderHome } from './ui/screens/home.js';
 import { renderMenu } from './ui/screens/menu.js';
 import { renderItem } from './ui/screens/item.js';
 import { renderNotFound } from './ui/screens/notFound.js';
 import { renderCart } from './ui/screens/cart.js';
+import { renderCheckout } from './ui/screens/checkout.js';
+import { renderOrderDetail } from './ui/screens/orderDetail.js';
+import { renderMyOrders } from './ui/screens/myOrders.js';
 import { countItems } from './domain/cart.js';
 
 /** Screen name to the function that renders it. */
@@ -26,6 +30,9 @@ const SCREENS = {
   'menu-category': renderMenu,
   item: renderItem,
   cart: renderCart,
+  checkout: renderCheckout,
+  'order-detail': renderOrderDetail,
+  orders: renderMyOrders,
   'not-found': renderNotFound,
 };
 
@@ -33,6 +40,7 @@ const SCREENS = {
 const NAV_LINKS = [
   { path: '/home', label: 'Home' },
   { path: '/menu', label: 'Menu' },
+  { path: '/orders', label: 'Orders' },
 ];
 
 addRoute('/home', 'home');
@@ -40,6 +48,9 @@ addRoute('/menu', 'menu');
 addRoute('/menu/:categoryId', 'menu-category');
 addRoute('/item/:itemId', 'item');
 addRoute('/cart', 'cart');
+addRoute('/checkout', 'checkout');
+addRoute('/orders', 'orders');
+addRoute('/order/:orderNumber', 'order-detail');
 
 const main = document.querySelector('#main');
 const nav = document.querySelector('#app-nav');
@@ -96,6 +107,7 @@ let activeScreen = { name: 'home', params: {} };
  */
 function showScreen(name, params) {
   activeScreen = { name, params };
+  clearToasts();
   const renderScreen = SCREENS[name] ?? renderNotFound;
   renderScreen(main, params);
   renderNav();

@@ -84,7 +84,9 @@ export function emptyState({ icon, title, body, action }) {
     el('div', { class: 'empty-state__icon', 'aria-hidden': 'true', text: icon }),
     el('p', { class: 'empty-state__title', text: title }),
     el('p', { class: 'empty-state__body', text: body }),
-    action ? el('button', { class: 'button', type: 'button', onClick: action.onClick }, action.label) : null,
+    action
+      ? el('button', { class: 'button', type: 'button', onClick: action.onClick }, action.label)
+      : null,
   ]);
 }
 
@@ -97,7 +99,9 @@ export function emptyState({ icon, title, body, action }) {
  * @returns {HTMLElement} The banner element.
  */
 export function banner(tone, title, body) {
-  return el('div', { class: `banner banner--${tone}`, role: tone === 'danger' ? 'alert' : 'status' }, [
-    el('div', {}, [el('div', { class: 'banner__title', text: title }), el('div', { text: body })]),
-  ]);
+  return el(
+    'div',
+    { class: `banner banner--${tone}`, role: tone === 'danger' ? 'alert' : 'status' },
+    [el('div', {}, [el('div', { class: 'banner__title', text: title }), el('div', { text: body })])]
+  );
 }
