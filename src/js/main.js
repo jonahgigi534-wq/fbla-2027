@@ -16,6 +16,7 @@ import { clearToasts } from './ui/components/toast.js';
 import { openAssistant } from './ui/components/assistant.js';
 import { renderHome } from './ui/screens/home.js';
 import { renderMenu } from './ui/screens/menu.js';
+import { renderLocations } from './ui/screens/locations.js';
 import { renderItem } from './ui/screens/item.js';
 import { renderNotFound } from './ui/screens/notFound.js';
 import { renderCart } from './ui/screens/cart.js';
@@ -39,6 +40,7 @@ import { countItems } from './domain/cart.js';
 const SCREENS = {
   home: renderHome,
   menu: renderMenu,
+  locations: renderLocations,
   'menu-category': renderMenu,
   item: renderItem,
   cart: renderCart,
@@ -61,6 +63,7 @@ const SCREENS = {
 const NAV_LINKS = [
   { path: '/home', label: 'Home' },
   { path: '/menu', label: 'Menu' },
+  { path: '/locations', label: 'Locations' },
   { path: '/orders', label: 'Orders' },
   { path: '/manager', label: 'Staff' },
   { path: '/help', label: 'Help' },
@@ -68,6 +71,7 @@ const NAV_LINKS = [
 
 addRoute('/home', 'home');
 addRoute('/menu', 'menu');
+addRoute('/locations', 'locations');
 addRoute('/menu/:categoryId', 'menu-category');
 addRoute('/item/:itemId', 'item');
 addRoute('/cart', 'cart');

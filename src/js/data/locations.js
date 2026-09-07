@@ -59,6 +59,11 @@ function twentyFourHoursOnWeekends(weekdayOpenMinute) {
 /**
  * Every restaurant that can take an order.
  *
+ * `tileLabel` is the caption the restaurant lays over each storefront photograph on
+ * its own locations page, kept as its own field because it does not follow from the
+ * name and the city: the Woodlands store is captioned "Woodlands, TX" while the Kirby
+ * store is captioned "Kirby, Houston".
+ *
  * `deliveryZips` is a fixed list per store rather than a distance calculation.
  * Real delivery areas are drawn by hand around road access, not by radius, and a
  * hardcoded list keeps the program free of any network lookup.
@@ -67,6 +72,7 @@ export const LOCATIONS = [
   {
     id: 'kirby',
     name: 'Kirby',
+    tileLabel: 'Kirby, Houston',
     area: 'River Oaks, Houston',
     isCorporateOffice: true,
     street: '3112 Kirby Drive',
@@ -81,6 +87,7 @@ export const LOCATIONS = [
   {
     id: 'westheimer',
     name: 'Westheimer',
+    tileLabel: 'Westheimer, Houston',
     area: 'Galleria, Houston',
     isCorporateOffice: false,
     street: '6142 Westheimer Road',
@@ -95,6 +102,7 @@ export const LOCATIONS = [
   {
     id: 'fuqua',
     name: 'Fuqua',
+    tileLabel: 'Fuqua, Houston',
     area: 'South Houston',
     isCorporateOffice: false,
     street: '11311 Fuqua Street',
@@ -109,6 +117,7 @@ export const LOCATIONS = [
   {
     id: 'woodlands',
     name: 'The Woodlands',
+    tileLabel: 'Woodlands, TX',
     area: 'Lake Woodlands',
     isCorporateOffice: false,
     street: '1330 Lake Woodlands Drive',
@@ -123,6 +132,7 @@ export const LOCATIONS = [
   {
     id: 'cypress',
     name: 'Cypress',
+    tileLabel: 'Cypress, TX',
     area: 'Northwest Freeway',
     isCorporateOffice: false,
     street: '25686 Northwest Freeway',
@@ -137,6 +147,7 @@ export const LOCATIONS = [
   {
     id: 'katy',
     name: 'Katy',
+    tileLabel: 'Katy, TX',
     area: 'Katy Freeway',
     isCorporateOffice: false,
     street: '20802 Katy Freeway',

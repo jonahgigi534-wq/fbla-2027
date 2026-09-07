@@ -6,7 +6,8 @@ during a demonstration.
 ## Ordering
 
 **Pick a restaurant first.** The home screen lists all six with a live open or closed
-badge. Hours differ: Fuqua never closes, Katy runs around the clock at weekends, and
+badge, and Locations in the header shows the same six with full hours and phone
+numbers. Hours differ: Fuqua never closes, Katy runs around the clock on weekends, and
 the other four run 7:00 AM to midnight. Delivery areas differ too, so the choice
 changes what you can order and when you can collect it.
 

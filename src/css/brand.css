@@ -1,0 +1,283 @@
+/*
+ * The two pieces lifted straight from the restaurant's own site: the location tiles
+ * and the guest review carousel.
+ *
+ * They live apart from components.css because both are presentation copied to match
+ * houseofpies.com rather than patterns this program invented, and keeping them in one
+ * file makes it obvious which is which when someone asks what was borrowed.
+ */
+
+/*
+ * Location tiles.
+ *
+ * The restaurant publishes each storefront photograph with the place name already
+ * part of the picture, so there is no text to lay over it here. What these rules do
+ * is frame it: the same rounding as the menu photographs, and the facts underneath
+ * stretched so the order button sits on one line across a whole row of tiles.
+ */
+.location-tile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-radius: var(--radius-photo);
+}
+
+.location-tile--selected {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 6px;
+}
+
+.location-tile__media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  background: var(--color-surface-sunk);
+}
+
+.location-tile__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 240ms ease;
+}
+
+.location-tile:hover .location-tile__media img {
+  transform: scale(1.04);
+}
+
+.location-tile__facts {
+  display: flex;
+  /* The section heading above is centred; addresses and hours read better left. */
+  text-align: left;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+/* Pushed down so a two line address does not drop one tile's button below its row. */
+.location-tile__facts .button {
+  margin-top: auto;
+}
+
+.location-tile__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.location-tile__status {
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+.location-tile__address,
+.location-tile__hours {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+}
+
+/*
+ * The guest review carousel.
+ *
+ * The band carries the restaurant's own bakery doodle pattern. It is scaled to the
+ * width of the band and never tiled, which is how their site uses it, so no seam can
+ * appear down the middle of a repeat.
+ *
+ * The track slides in whole pages rather than single cards, and one page is exactly
+ * 100% of the viewport width. That only stays true if the gutter between cards lives
+ * inside the cards as padding rather than as a flex gap, which is why the list items
+ * carry the padding and the white box sits inside them.
+ */
+.testimonials {
+  margin-top: var(--space-8);
+  padding: var(--space-7) var(--space-5);
+  border-radius: var(--radius-photo);
+  background-color: var(--color-cream);
+  background-image: url('../../assets/img/pattern-bakery.webp');
+  background-position: top center;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+}
+
+.testimonials__heading {
+  text-align: center;
+  font-size: var(--text-3xl);
+  margin-bottom: var(--space-6);
+}
+
+.testimonials__viewport {
+  overflow: hidden;
+}
+
+.testimonials__track {
+  --per-view: 3;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: transform 320ms ease;
+}
+
+.testimonial {
+  flex: 0 0 calc(100% / var(--per-view));
+  padding-inline: var(--space-3);
+}
+
+.testimonial__card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.testimonial__stars {
+  font-size: var(--text-xl);
+  letter-spacing: 0.1em;
+  color: var(--color-brown);
+}
+
+.testimonial__quote-mark {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-5);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 3.5rem;
+  line-height: 1;
+  color: var(--color-border-strong);
+}
+
+.testimonial__text {
+  margin: 0;
+  flex: 1;
+  color: var(--color-text-muted);
+}
+
+.testimonial__source {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.testimonial__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.testimonial__avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunk);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.testimonial__name {
+  font-weight: 600;
+}
+
+.testimonials__controls {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+.testimonials__page {
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.carousel-button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--color-orange-dark);
+  color: var(--color-text-inverse);
+  font-size: var(--text-lg);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.carousel-button:hover:not(:disabled) {
+  background: var(--color-orange-darker);
+}
+
+/*
+ * A spent arrow stays visible rather than disappearing, so the row does not reflow
+ * and shift the other control out from under the pointer on the last page.
+ */
+.carousel-button:disabled {
+  background: var(--color-orange-soft);
+  color: var(--color-orange-dark);
+  cursor: not-allowed;
+}
+
+@media (max-width: 960px) {
+  .testimonials__track {
+    --per-view: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .testimonials__track {
+    --per-view: 1;
+  }
+  .testimonials {
+    padding: var(--space-6) var(--space-3);
+  }
+  .testimonials__controls {
+    justify-content: center;
+  }
+}
+
+/*
+ * The location grid runs four across and centres whatever is left over, which is how
+ * the restaurant lays out its six storefronts: a row of four, then a row of two under
+ * the middle of it. Flex rather than grid, because grid would leave the last two
+ * hanging off the left edge.
+ */
+.location-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-5);
+}
+
+.location-grid > * {
+  flex: 0 1 calc((100% - 3 * var(--space-5)) / 4);
+  min-width: 240px;
+}
+
+@media (max-width: 900px) {
+  .location-grid > * {
+    flex-basis: calc((100% - var(--space-5)) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .location-grid > * {
+    flex-basis: 100%;
+  }
+}

@@ -138,7 +138,7 @@ export const INTENTS = [
             ? `All ${LOCATIONS.length} restaurants are closed right now.`
             : `${open.length} of the ${LOCATIONS.length} restaurants are open right now.`;
       return reply(`${headline} ${lines}.`, {
-        links: [{ label: 'Pick a restaurant', path: '/home' }],
+        links: [{ label: 'See all six restaurants', path: '/locations' }],
       });
     },
   },
@@ -297,8 +297,8 @@ export const INTENTS = [
     ],
     answer: () =>
       reply(
-        `Six restaurants: ${LOCATIONS.map((location) => `${location.name} at ${location.street}`).join(', ')}. Fuqua never closes, and Katy runs around the clock at weekends.`,
-        { links: [{ label: 'Pick a restaurant', path: '/home' }] }
+        `Six restaurants: ${LOCATIONS.map((location) => `${location.name} at ${location.street}`).join(', ')}. Fuqua never closes, and Katy runs around the clock on weekends.`,
+        { links: [{ label: 'See all six restaurants', path: '/locations' }] }
       ),
   },
   {
