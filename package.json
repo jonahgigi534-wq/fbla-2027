@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node scripts/serve.mjs",
-    "test": "node --test test/",
-    "coverage": "node --test --experimental-test-coverage test/",
+    "test": "node --test \"test/**/*.test.js\"",
+    "coverage": "node --test --experimental-test-coverage \"test/**/*.test.js\"",
     "build": "node scripts/build-standalone.mjs",
     "check:structure": "node scripts/check-structure.mjs",
     "check:jsdoc": "node scripts/check-jsdoc.mjs",

@@ -44,6 +44,21 @@ export function normalize(text) {
 }
 
 /**
+ * Reports whether a phrase appears in text starting at a word boundary.
+ *
+ * A plain includes would let the query "key" match "turkey sandwich", which is how
+ * a search for key lime pie ends up offering deli meat. Anchoring to a word start
+ * keeps "key lime" matching "fresh key lime pie" while rejecting the turkey.
+ *
+ * @param {string} text Normalized text to search.
+ * @param {string} phrase Normalized phrase to look for.
+ * @returns {boolean} True when the phrase begins a word in the text.
+ */
+function containsAtWordStart(text, phrase) {
+  return text === phrase || text.startsWith(`${phrase} `) || text.includes(` ${phrase}`);
+}
+
+/**
  * Scores how well one item answers a search query.
  *
  * A name match beats a description match, and a name that starts with the query
@@ -61,7 +76,7 @@ export function scoreItem(item, query) {
 
   if (name.startsWith(query)) {
     score += NAME_PREFIX_SCORE;
-  } else if (name.includes(query)) {
+  } else if (containsAtWordStart(name, query)) {
     score += NAME_MATCH_SCORE;
   }
 
