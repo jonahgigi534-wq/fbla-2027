@@ -1,0 +1,33 @@
+/*
+ * The two typefaces House of Pies uses on its own site, shipped with the program.
+ *
+ * Bebas Neue sets headings and buttons. Parkinsans sets everything a customer reads
+ * at length. Both are served from assets/fonts rather than from Google, because the
+ * presentation laptop has no internet and a webfont that fails to arrive would drop
+ * the whole interface back to a system sans.
+ *
+ * Only the Latin subset ships, which is the entire 42 KB for both faces. Paths are
+ * written relative to this file; scripts/build-standalone.mjs rebases them when it
+ * inlines this stylesheet into dist/standalone.html. Licenses and sources are
+ * recorded in docs/CREDITS.md.
+ */
+
+@font-face {
+  font-family: 'Bebas Neue';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../../assets/fonts/bebas-neue-latin.woff2') format('woff2');
+}
+
+/*
+ * Parkinsans is a variable font, so one file covers every weight from 300 to 800
+ * instead of loading a separate file per weight.
+ */
+@font-face {
+  font-family: 'Parkinsans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url('../../assets/fonts/parkinsans-latin.woff2') format('woff2');
+}

@@ -161,6 +161,21 @@ __require(${JSON.stringify(entryId)});
 }
 
 /**
+ * Rewrites stylesheet asset paths so they still resolve once the CSS is inlined.
+ *
+ * A url() in src/css is written relative to src/css, so it climbs two folders to
+ * reach assets. Inlined into dist/standalone.html those two steps land outside dist
+ * entirely, and the font silently never loads. The built file sits beside its own
+ * copy of assets, so the climb is dropped here.
+ *
+ * @param {string} css One stylesheet, as read off disk.
+ * @returns {string} The same stylesheet with asset paths relative to the built file.
+ */
+function rebaseAssetUrls(css) {
+  return css.split('../../assets/').join('assets/');
+}
+
+/**
  * Refuses to write a build that cannot work offline.
  *
  * These three are not style preferences. An import or a fetch fails outright on a
@@ -205,7 +220,7 @@ async function build() {
   const styles = [];
   for (const path of stylesheetPaths) {
     const css = await readFile(join(ROOT, path), 'utf8');
-    styles.push(`/* ${path} */\n${css}`);
+    styles.push(`/* ${path} */\n${rebaseAssetUrls(css)}`);
   }
 
   const modules = await collectModules(ENTRY);
