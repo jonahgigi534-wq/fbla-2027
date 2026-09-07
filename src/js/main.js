@@ -24,13 +24,13 @@ import { renderCheckout } from './ui/screens/checkout.js';
 import { renderOrderDetail } from './ui/screens/orderDetail.js';
 import { renderMyOrders } from './ui/screens/myOrders.js';
 import { renderSpending } from './ui/screens/spending.js';
+import { renderHelp } from './ui/screens/help.js';
 import {
-  renderHelp,
+  renderHelpAbout,
   renderHelpConcepts,
   renderHelpTopic,
   renderHelpValidation,
-  renderHelpAbout,
-} from './ui/screens/help.js';
+} from './ui/screens/helpPages.js';
 import { renderManagerQueue } from './ui/screens/manager/queue.js';
 import { renderManagerInventory } from './ui/screens/manager/inventory.js';
 import { renderManagerReports } from './ui/screens/manager/reports.js';

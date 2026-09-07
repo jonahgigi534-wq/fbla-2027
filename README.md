@@ -44,7 +44,7 @@ npm run check
 ```
 
 Runs 237 tests, then three checks of its own: that the layers have not been crossed,
-that every exported function is documented, and that nothing on screen is misspelled.
+that every function is documented, and that nothing on screen is misspelled.
 Like everything else here, it needs nothing installed.
 
 ---

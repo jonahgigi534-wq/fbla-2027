@@ -7,7 +7,8 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every exported function has a documentation block. 157 of 157, checked by
+- Every function has a documentation block, private helpers included. 234 of 234,
+  checked by
   `npm run check`, not by inspection.
 - Every file opens with a block saying what it is for and who calls it.
 - Inline comments explain why rather than what. The standard, and the reasoning
@@ -22,7 +23,9 @@ are earned in the room rather than in the code.
   nothing in `domain/` may import from `ui/` or `app/`. Checked by
   `scripts/check-structure.mjs`.
 - That rule is why 237 tests can run with no browser.
-- No file over 400 lines, also checked. The reports screen reached 496 during
+- No file over 400 lines and no function over its ceiling, also checked. A function
+  in domain or app may run to 80 lines, one in ui to 130, because a view builder is a
+  declarative tree rather than branching logic. The reports screen reached 496 during
   development and was split into `reports.js`, `reportControls.js`, `reportTable.js`,
   and `reportView.js`.
 

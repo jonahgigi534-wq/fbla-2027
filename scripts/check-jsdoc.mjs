@@ -1,5 +1,5 @@
 /**
- * Checks that every exported function carries a documentation block.
+ * Checks that every function carries a documentation block.
  *
  * The rating sheet scores comments that are logical, useful, and complete. Complete
  * is the word that is hard to argue about, so this turns it into a number rather
@@ -41,7 +41,7 @@ async function listJsFiles(folder) {
 }
 
 /**
- * Finds exported functions in a file that have no documentation block above them.
+ * Finds functions in a file that have no documentation block above them.
  *
  * @param {string} source The file's source.
  * @returns {Array<{name: string, line: number, reason: string}>} What is missing.
@@ -52,7 +52,7 @@ export function findUndocumented(source) {
 
   for (let index = 0; index < lines.length; index += 1) {
     const match = lines[index].match(
-      /^export\s+(?:async\s+)?function\s+([A-Za-z0-9_$]+)\s*\(([^)]*)/
+      /^\s*(?:export\s+)?(?:async\s+)?function\s+([A-Za-z0-9_$]+)\s*\(([^)]*)/
     );
     if (!match) {
       continue;
@@ -104,7 +104,8 @@ async function check() {
     for (const file of files) {
       const source = await readFile(file, 'utf8');
       const id = relative(ROOT, file).split(sep).join('/');
-      functionsChecked += (source.match(/^export\s+(?:async\s+)?function\s/gm) ?? []).length;
+      functionsChecked += (source.match(/^\s*(?:export\s+)?(?:async\s+)?function\s/gm) ?? [])
+        .length;
       for (const problem of findUndocumented(source)) {
         problems.push(`${id}:${problem.line}  ${problem.name} ${problem.reason}`);
       }
@@ -121,9 +122,7 @@ async function check() {
     process.exit(1);
   }
 
-  console.log(
-    `Documentation check passed: ${functionsChecked} exported functions, all documented.`
-  );
+  console.log(`Documentation check passed: ${functionsChecked} functions, all documented.`);
 }
 
 check();

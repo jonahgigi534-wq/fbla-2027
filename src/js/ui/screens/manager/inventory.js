@@ -117,6 +117,14 @@ function stockRow(item, stockOverrides, onChanged) {
  */
 export function renderManagerInventory(container) {
   withManagerAccess(container, '/manager/inventory', () => {
+    /**
+     * Redraws the stock table for the current search text and stock levels.
+     *
+     * Called again after every stock edit so a corrected number and the low stock
+     * warnings that depend on it appear together.
+     *
+     * @returns {void}
+     */
     function draw() {
       const { stockOverrides } = getState();
       const query = view.query.trim().toLowerCase();

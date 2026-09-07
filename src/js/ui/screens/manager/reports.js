@@ -45,6 +45,14 @@ import { formatMetric, labelForKey, view } from './reportView.js';
  */
 export function renderManagerReports(container) {
   withManagerAccess(container, '/manager/reports', () => {
+    /**
+     * Rebuilds the report for whatever the controls currently say.
+     *
+     * Every control calls this, so the filters, the grouping, the metric, the chart,
+     * the insights, and the table can never disagree about which report is on screen.
+     *
+     * @returns {void}
+     */
     function draw() {
       const state = getState();
       const rangeCheck = isDateRangeUsable(view.startDate, view.endDate);

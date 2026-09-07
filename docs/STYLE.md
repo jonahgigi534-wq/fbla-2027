@@ -6,7 +6,7 @@ two mean here, and `npm run check` enforces what it can.
 
 ## Comments
 
-**Every exported function carries a documentation block** with `@param` for each
+**Every function carries a documentation block**, private helpers included, with `@param` for each
 argument and `@returns`. Checked by `scripts/check-jsdoc.mjs`, which fails the build
 if one is missing. 157 of 157 currently pass.
 
@@ -57,6 +57,12 @@ function needed splitting.
 **Four layers, one rule: nothing in `domain/` may import from `ui/` or `app/`.**
 Checked by `scripts/check-structure.mjs`. That is what keeps the logic testable
 without a browser.
+
+**No function over its ceiling.** Checked too, and it is two numbers rather than one.
+A function in `domain/` or `app/` may run to 80 lines; one in `ui/` may run to 130.
+Branching logic is where bugs hide, so it is held short. A view builder is one
+declarative tree of elements that reads like a list and does not get clearer for being
+cut in half, and the layer rule is what stops real logic hiding inside one.
 
 **No source file over 400 lines.** Also checked. Data files are exempt, because a
 catalog of 426 menu items is long for a reason that splitting will not fix. The

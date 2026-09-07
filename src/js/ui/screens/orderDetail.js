@@ -77,6 +77,181 @@ function receiptRow(label, cents, isTotal = false) {
 }
 
 /**
+ * Builds the printed receipt for one order.
+ *
+ * This is the half of the screen that goes on paper. print.css strips the navigation
+ * and the buttons away and leaves this section standing on its own, which is why every
+ * fact someone would need to query the order later sits inside it rather than in the
+ * page heading above it.
+ *
+ * @param {object} order The order being shown.
+ * @param {object} location The restaurant it was placed with.
+ * @param {Date} placed When it was placed.
+ * @param {boolean} isPickup Whether it is being collected rather than delivered.
+ * @returns {HTMLElement} The receipt section.
+ */
+function receiptCard(order, location, placed, isPickup) {
+  return el('section', { class: 'card receipt' }, [
+    el('div', { class: 'card__body stack' }, [
+      el('div', { class: 'receipt__head' }, [
+        el('h2', { text: 'House of Pies' }),
+        el('p', {
+          class: 'muted',
+          text: `${location.name}, ${location.street}, ${location.cityStateZip}`,
+        }),
+        el('p', { class: 'muted', text: location.phone }),
+      ]),
+
+      el('div', { class: 'receipt__meta' }, [
+        el('div', {}, [
+          el('strong', { text: 'Placed' }),
+          el('div', { text: placed.toLocaleString() }),
+        ]),
+        el('div', {}, [
+          el('strong', { text: isPickup ? 'Collection' : 'Delivery' }),
+          el('div', { text: order.slotLabel }),
+        ]),
+        el('div', {}, [el('strong', { text: 'Name' }), el('div', { text: order.customer.name })]),
+        el('div', {}, [el('strong', { text: 'Phone' }), el('div', { text: order.customer.phone })]),
+        order.customer.street
+          ? el('div', {}, [
+              el('strong', { text: 'Address' }),
+              el('div', { text: `${order.customer.street}, ${order.customer.zip}` }),
+            ])
+          : null,
+        el('div', {}, [
+          el('strong', { text: 'Paid with' }),
+          el('div', { text: `Card ending ${order.cardLastFour} (demo, not charged)` }),
+        ]),
+      ]),
+
+      el(
+        'div',
+        { class: 'receipt__lines' },
+        order.lines.map((line) =>
+          el('div', { class: 'receipt__line' }, [
+            el('span', {}, [
+              el('span', { text: `${line.quantity} x ${line.name}` }),
+              line.note ? el('em', { class: 'receipt__note', text: ` (${line.note})` }) : null,
+            ]),
+            el('span', { class: 'receipt__line-right' }, [
+              el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
+              // Editing is offered only while the ticket is still in the queue.
+              // Once the kitchen starts, the food exists and the order is fixed.
+              canModify(order)
+                ? el(
+                    'span',
+                    {
+                      class: 'stepper stepper--small',
+                      role: 'group',
+                      'aria-label': `Change quantity of ${line.name}`,
+                    },
+                    [
+                      el(
+                        'button',
+                        {
+                          class: 'stepper__button',
+                          type: 'button',
+                          'aria-label': `One fewer ${line.name}`,
+                          onClick: () =>
+                            showResult(
+                              changeOrderLine(order.orderNumber, line.lineId, line.quantity - 1)
+                            ),
+                        },
+                        '−'
+                      ),
+                      el(
+                        'button',
+                        {
+                          class: 'stepper__button',
+                          type: 'button',
+                          'aria-label': `One more ${line.name}`,
+                          onClick: () =>
+                            showResult(
+                              changeOrderLine(order.orderNumber, line.lineId, line.quantity + 1)
+                            ),
+                        },
+                        '+'
+                      ),
+                    ]
+                  )
+                : null,
+            ]),
+          ])
+        )
+      ),
+
+      el('div', { class: 'totals' }, [
+        receiptRow('Subtotal', order.totals.subtotal),
+        order.totals.discount > 0
+          ? receiptRow(`Discount (${order.promoCode})`, -order.totals.discount)
+          : null,
+        order.totals.deliveryFee > 0 ? receiptRow('Delivery', order.totals.deliveryFee) : null,
+        receiptRow('Sales tax, 8.25%', order.totals.tax),
+        receiptRow('Total', order.totals.total, true),
+      ]),
+    ]),
+  ]);
+}
+
+/**
+ * Builds the panel of things that can still be done to an order.
+ *
+ * What is offered depends on how far the order has got. Canceling and editing show
+ * only while the ticket is still in the queue, because once the kitchen starts the
+ * food exists. Reordering and printing are always available.
+ *
+ * @param {object} order The order being shown.
+ * @returns {HTMLElement} The panel.
+ */
+function manageCard(order) {
+  return el('aside', { class: 'stack' }, [
+    el('section', { class: 'card' }, [
+      el('div', { class: 'card__body stack' }, [
+        el('h3', { text: 'Manage this order' }),
+        canCancel(order)
+          ? el(
+              'button',
+              {
+                class: 'button button--secondary button--block',
+                type: 'button',
+                onClick: () => showResult(cancelOrder(order.orderNumber)),
+              },
+              'Cancel this order'
+            )
+          : el('p', {
+              class: 'field__hint',
+              text: 'The kitchen has started, so this order can no longer be canceled.',
+            }),
+        el(
+          'button',
+          {
+            class: 'button button--secondary button--block',
+            type: 'button',
+            onClick: () => showResult(reorder(order.orderNumber)),
+          },
+          'Order this again'
+        ),
+        el(
+          'button',
+          {
+            class: 'button button--secondary button--block',
+            type: 'button',
+            onClick: () => window.print(),
+          },
+          'Print receipt'
+        ),
+        el(
+          'button',
+          { class: 'button button--block', type: 'button', onClick: () => navigate('/menu') },
+          'Back to the menu'
+        ),
+      ]),
+    ]),
+  ]);
+}
+
+/**
  * Renders one order.
  *
  * @param {HTMLElement} container The main element to render into.
@@ -115,158 +290,9 @@ export function renderOrderDetail(container, params) {
     statusTracker(order),
 
     el('div', { class: 'order-layout' }, [
-      el('section', { class: 'card receipt' }, [
-        el('div', { class: 'card__body stack' }, [
-          el('div', { class: 'receipt__head' }, [
-            el('h2', { text: 'House of Pies' }),
-            el('p', {
-              class: 'muted',
-              text: `${location.name}, ${location.street}, ${location.cityStateZip}`,
-            }),
-            el('p', { class: 'muted', text: location.phone }),
-          ]),
+      receiptCard(order, location, placed, isPickup),
 
-          el('div', { class: 'receipt__meta' }, [
-            el('div', {}, [
-              el('strong', { text: 'Placed' }),
-              el('div', { text: placed.toLocaleString() }),
-            ]),
-            el('div', {}, [
-              el('strong', { text: isPickup ? 'Collection' : 'Delivery' }),
-              el('div', { text: order.slotLabel }),
-            ]),
-            el('div', {}, [
-              el('strong', { text: 'Name' }),
-              el('div', { text: order.customer.name }),
-            ]),
-            el('div', {}, [
-              el('strong', { text: 'Phone' }),
-              el('div', { text: order.customer.phone }),
-            ]),
-            order.customer.street
-              ? el('div', {}, [
-                  el('strong', { text: 'Address' }),
-                  el('div', { text: `${order.customer.street}, ${order.customer.zip}` }),
-                ])
-              : null,
-            el('div', {}, [
-              el('strong', { text: 'Paid with' }),
-              el('div', { text: `Card ending ${order.cardLastFour} (demo, not charged)` }),
-            ]),
-          ]),
-
-          el(
-            'div',
-            { class: 'receipt__lines' },
-            order.lines.map((line) =>
-              el('div', { class: 'receipt__line' }, [
-                el('span', {}, [
-                  el('span', { text: `${line.quantity} x ${line.name}` }),
-                  line.note ? el('em', { class: 'receipt__note', text: ` (${line.note})` }) : null,
-                ]),
-                el('span', { class: 'receipt__line-right' }, [
-                  el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
-                  // Editing is offered only while the ticket is still in the queue.
-                  // Once the kitchen starts, the food exists and the order is fixed.
-                  canModify(order)
-                    ? el(
-                        'span',
-                        {
-                          class: 'stepper stepper--small',
-                          role: 'group',
-                          'aria-label': `Change quantity of ${line.name}`,
-                        },
-                        [
-                          el(
-                            'button',
-                            {
-                              class: 'stepper__button',
-                              type: 'button',
-                              'aria-label': `One fewer ${line.name}`,
-                              onClick: () =>
-                                showResult(
-                                  changeOrderLine(order.orderNumber, line.lineId, line.quantity - 1)
-                                ),
-                            },
-                            '−'
-                          ),
-                          el(
-                            'button',
-                            {
-                              class: 'stepper__button',
-                              type: 'button',
-                              'aria-label': `One more ${line.name}`,
-                              onClick: () =>
-                                showResult(
-                                  changeOrderLine(order.orderNumber, line.lineId, line.quantity + 1)
-                                ),
-                            },
-                            '+'
-                          ),
-                        ]
-                      )
-                    : null,
-                ]),
-              ])
-            )
-          ),
-
-          el('div', { class: 'totals' }, [
-            receiptRow('Subtotal', order.totals.subtotal),
-            order.totals.discount > 0
-              ? receiptRow(`Discount (${order.promoCode})`, -order.totals.discount)
-              : null,
-            order.totals.deliveryFee > 0 ? receiptRow('Delivery', order.totals.deliveryFee) : null,
-            receiptRow('Sales tax, 8.25%', order.totals.tax),
-            receiptRow('Total', order.totals.total, true),
-          ]),
-        ]),
-      ]),
-
-      el('aside', { class: 'stack' }, [
-        el('section', { class: 'card' }, [
-          el('div', { class: 'card__body stack' }, [
-            el('h3', { text: 'Manage this order' }),
-            canCancel(order)
-              ? el(
-                  'button',
-                  {
-                    class: 'button button--secondary button--block',
-                    type: 'button',
-                    onClick: () => showResult(cancelOrder(order.orderNumber)),
-                  },
-                  'Cancel this order'
-                )
-              : el('p', {
-                  class: 'field__hint',
-                  text: 'The kitchen has started, so this order can no longer be canceled.',
-                }),
-            el(
-              'button',
-              {
-                class: 'button button--secondary button--block',
-                type: 'button',
-                onClick: () => showResult(reorder(order.orderNumber)),
-              },
-              'Order this again'
-            ),
-            el(
-              'button',
-              {
-                class: 'button button--secondary button--block',
-                type: 'button',
-                onClick: () => window.print(),
-              },
-              'Print receipt'
-            ),
-            el(
-              'button',
-              { class: 'button button--block', type: 'button', onClick: () => navigate('/menu') },
-              'Back to the menu'
-            ),
-          ]),
-        ]),
-      ]),
+      manageCard(order),
     ]),
   ]);
 }

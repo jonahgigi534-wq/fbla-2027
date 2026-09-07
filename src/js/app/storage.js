@@ -14,8 +14,15 @@
  * Used by app/store.js, which owns the shape of what gets saved.
  */
 
-/** One key holds the whole saved state, so a save is a single write. */
-const STORAGE_KEY = 'houseofpies.ordering.v1';
+/**
+ * One key holds the whole saved state, so a save is a single write.
+ *
+ * No version in the name. It used to end in .v1, which stopped being true the moment
+ * SCHEMA_VERSION went to 2 and left two things that both looked like the version
+ * disagreeing with each other. The version lives in the saved object, where migrate()
+ * can actually read it.
+ */
+const STORAGE_KEY = 'houseofpies.ordering';
 
 /**
  * Bumped whenever the saved shape changes in a way older data cannot satisfy.

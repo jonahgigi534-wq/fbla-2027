@@ -114,6 +114,14 @@ function favouritesTable(favorites) {
  * @returns {void}
  */
 export function renderSpending(container) {
+  /**
+   * Redraws the summary for the chosen time range.
+   *
+   * The range buttons call this rather than the whole screen, so the button that was
+   * just pressed keeps focus.
+   *
+   * @returns {void}
+   */
   function draw() {
     const state = getState();
     // This customer's orders: the ones placed here, plus the slice of generated
