@@ -69,9 +69,14 @@ webfont that fails to arrive would drop the whole interface back to a system san
 copy of each license belongs beside the files if this is ever distributed further.
 
 **Guest reviews.** The five reviews in the carousel are real reviews House of Pies
-publishes on its own home page. Each is a short pull quote rather than the whole
-review, kept word for word, and credited to the name the restaurant displays it under.
-The only change is to Taman's, where a dash between two clauses is written as a comma.
+publishes on its own home page, reproduced in full, word for word, and credited to the
+name the restaurant displays each one under.
+
+Two changes, both punctuation: Taman's review separates two clauses with a hanging
+dash and Ymelis's with three hyphens, and each is written as a comma so it does not
+read as a rendering fault. Nothing else is altered, including where a guest's spelling
+differs from the menu. "calm chowder" and "Bayoo goo" are as they wrote them.
+
 Copyright in the words remains with the people who wrote them. The screen says
 underneath where they came from, so nobody reads them as reviews of this program.
 

@@ -55,7 +55,9 @@ alongside
 already
 also
 alt
+altered
 alternatives
+although
 always
 american
 amount
@@ -154,6 +156,7 @@ batter
 battered
 battery
 bavarian
+bayoo
 bayou
 beans
 bebas
@@ -171,6 +174,7 @@ bell
 belongs
 below
 benedict
+berries
 beside
 best
 better
@@ -267,6 +271,7 @@ call
 callable
 called
 calls
+calm
 came
 can
 cancel
@@ -346,6 +351,7 @@ chip
 chips
 chives
 chocolate
+chocolatey
 choice
 choices
 choose
@@ -353,6 +359,7 @@ choosing
 chopped
 chops
 chosen
+chowder
 chunks
 cinnamon
 circles
@@ -471,6 +478,7 @@ counts
 coverage
 covered
 covers
+cozy
 cracker
 crafted
 cranberry
@@ -480,6 +488,7 @@ credit
 credited
 credits
 crinkle
+crisp
 crispy
 cristo
 crossed
@@ -504,6 +513,7 @@ customers
 customize
 customizing
 cut
+cute
 cypress
 dairy
 dark
@@ -533,6 +543,7 @@ defined
 deli
 deliberate
 deliberately
+delicious
 delight
 delivary
 deliver
@@ -575,11 +586,13 @@ differ
 difference
 different
 differently
+differs
 digit
 digital
 digits
 dims
 dine
+dined
 diner
 dinner
 dip
@@ -684,12 +697,14 @@ event
 events
 ever
 every
+everyone
 everything
 everywhere
 exact
 exactly
 example
 exceed
+execution
 exempt
 exercised
 exist
@@ -726,6 +741,7 @@ false
 family
 far
 fastest
+fault
 favorite
 favorites
 favourites
@@ -854,6 +870,7 @@ getstate
 getting
 given
 giving
+glad
 glass
 glaze
 glazed
@@ -903,6 +920,7 @@ hand
 handle
 handles
 handling
+hanging
 hangover
 happened
 happens
@@ -958,6 +976,7 @@ how
 href
 html
 huevos
+huge
 hunting
 hyphens
 ice
@@ -1160,6 +1179,7 @@ looks
 loop
 loops
 love
+lovely
 lover
 low
 luhn
@@ -1295,6 +1315,7 @@ new
 newer
 newest
 next
+nice
 nida
 nine
 ninety
@@ -1370,6 +1391,7 @@ outside
 oven
 over
 overcharges
+overdone
 overnight
 own
 owned
@@ -1417,6 +1439,7 @@ peppers
 per
 percent
 percentage
+perfect
 perfection
 perfectly
 period
@@ -1498,6 +1521,7 @@ press
 pressing
 pretend
 prettier
+pretty
 preview
 previous
 price
@@ -1542,6 +1566,7 @@ puff
 puffs
 pull
 pumpkin
+punctuation
 purchase
 pure
 purpose
@@ -1641,6 +1666,7 @@ reports
 reporttable
 repository
 representative
+reproduced
 require
 required
 rescan
@@ -1696,6 +1722,7 @@ salads
 sales
 same
 sample
+sampled
 sampler
 sandwich
 sandwiches
@@ -1727,6 +1754,7 @@ scores
 scoring
 scrambled
 scrambler
+scratch
 screen
 screens
 screensaver
@@ -1761,6 +1789,7 @@ serve
 served
 server
 serves
+service
 services
 serving
 sesame
@@ -1877,6 +1906,7 @@ stale
 stand
 standard
 stands
+star
 stars
 start
 started
@@ -1899,6 +1929,7 @@ sticks
 still
 stock
 stockfor
+stop
 stops
 storage
 store
@@ -1948,6 +1979,7 @@ sundaes
 sunday
 sunny
 sunshine
+super
 supreme
 survive
 survives
@@ -2159,6 +2191,7 @@ waffle
 waffles
 waiting
 waived
+walk
 walks
 wall
 walnuts
@@ -2179,6 +2212,7 @@ website
 wednesday
 week
 weekends
+welcoming
 well
 were
 westheimer

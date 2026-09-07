@@ -53,7 +53,7 @@ export const ATTRIBUTION = [
     what: 'Guest reviews on the home page',
     source: 'Published by House of Pies',
     detail:
-      'Real reviews from their own site, quoted in part and credited to the names they appear under. They are reviews of the restaurant, not of this program.',
+      'Real reviews from their own site, reproduced in full and credited to the names they appear under. They are reviews of the restaurant, not of this program.',
   },
   {
     what: 'Bebas Neue and Parkinsans',
