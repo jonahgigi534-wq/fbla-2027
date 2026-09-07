@@ -3,3 +3,7 @@ node_modules/
 Thumbs.db
 *.log
 coverage/
+
+# Build output. Run npm run build to produce dist/standalone.html and its assets.
+# Not committed because it would duplicate the whole assets folder.
+dist/
