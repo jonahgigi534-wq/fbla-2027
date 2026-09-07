@@ -47,7 +47,7 @@ export const PROGRAMMING_CONCEPTS = [
       'Every input carries the function that checks it, so the form cannot drift out of step with its own rules. Fields check themselves when the customer leaves them, not while they are still typing.',
   },
   {
-    concept: 'Program organisation',
+    concept: 'Program organization',
     where: 'the src/js directory',
     detail:
       'Four layers with one rule between them: data holds the catalog, domain holds pure logic, app holds state and routing, ui holds screens. Nothing in domain may import from ui or app, which is what keeps the logic testable on its own.',

@@ -16,7 +16,7 @@ import { findLocation } from '../../../data/locations.js';
 import { CANCELLED, canCancel, nextStatus } from '../../../domain/orders.js';
 import { formatUSD } from '../../../domain/money.js';
 
-/** Badge colour for each status. */
+/** Badge color for each status. */
 const STATUS_TONE = {
   Received: 'info',
   Baking: 'warning',

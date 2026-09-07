@@ -88,7 +88,7 @@ export function removeCartLine(lineId) {
 export function applyPromoCode(code) {
   const promo = findPromo(code);
   if (!promo) {
-    return { ok: false, message: `${code.trim().toUpperCase()} is not a code we recognise.` };
+    return { ok: false, message: `${code.trim().toUpperCase()} is not a code we recognize.` };
   }
   update(() => ({ promoCode: promo.code }));
   return { ok: true, message: `${promo.code} applied: ${promo.description}.` };

@@ -81,7 +81,7 @@ export const INTENTS = [
     keywords: [
       'recommend',
       'popular',
-      'favourite',
+      'favorite',
       'favorite',
       'best',
       'famous',
@@ -275,7 +275,7 @@ export const INTENTS = [
         {
           links: [
             { label: 'Browse the menu', path: '/menu' },
-            { label: 'Open the help centre', path: '/help' },
+            { label: 'Open the help center', path: '/help' },
           ],
         }
       ),

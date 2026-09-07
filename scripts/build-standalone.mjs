@@ -80,9 +80,7 @@ function transformModule(source, absolutePath) {
 
   const withoutExportKeyword = withImports.replace(/^export\s+/gm, '');
   const exportBlock =
-    exported.length > 0
-      ? `\n\nObject.assign(__exports, { ${exported.join(', ')} });\n`
-      : '\n';
+    exported.length > 0 ? `\n\nObject.assign(__exports, { ${exported.join(', ')} });\n` : '\n';
 
   return { code: withoutExportKeyword + exportBlock, dependencies };
 }
@@ -215,14 +213,8 @@ async function build() {
 
   const built = html
     .replace(/\s*<link rel="stylesheet"[^>]*>/g, '')
-    .replace(
-      '</head>',
-      `  <style>\n${styles.join('\n')}\n  </style>\n  </head>`
-    )
-    .replace(
-      /<script type="module" src="[^"]+"><\/script>/,
-      `<script>\n${script}\n</script>`
-    )
+    .replace('</head>', `  <style>\n${styles.join('\n')}\n  </style>\n  </head>`)
+    .replace(/<script type="module" src="[^"]+"><\/script>/, `<script>\n${script}\n</script>`)
     .replace(
       '<title>House of Pies Ordering</title>',
       '<title>House of Pies Ordering (offline build)</title>'

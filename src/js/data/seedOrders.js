@@ -35,7 +35,7 @@ const WEEKEND_MULTIPLIER = 1.8;
  *
  * The customer spending report has nothing to show on a fresh install, because a
  * first time visitor has no history. Marking a slice of the generated orders as
- * theirs gives that screen something real to summarise. The screen says plainly
+ * theirs gives that screen something real to summarize. The screen says plainly
  * that the history is demonstration data.
  */
 const DEMO_CUSTOMER_SHARE = 0.03;

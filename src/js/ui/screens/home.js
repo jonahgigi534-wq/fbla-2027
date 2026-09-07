@@ -118,7 +118,7 @@ export function renderHome(container) {
 
     el('section', { class: 'section' }, [
       el('div', { class: 'section__head' }, [
-        el('h2', { text: 'Fan favourites' }),
+        el('h2', { text: 'Fan favorites' }),
         el('p', { class: 'section__lede', text: 'The dishes House of Pies is known for.' }),
       ]),
       el(

@@ -94,7 +94,7 @@ export function slotKeyFor(day, minute) {
  * catering tray in it cannot be collected in twenty minutes.
  *
  * Slots outside the restaurant's hours are dropped rather than shown as unavailable,
- * because a list of thirty greyed out times is worse than a short list of real ones.
+ * because a list of thirty grayed out times is worse than a short list of real ones.
  *
  * @param {object} options What is being scheduled.
  * @param {object} options.location The chosen restaurant.

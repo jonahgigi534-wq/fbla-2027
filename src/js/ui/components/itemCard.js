@@ -6,7 +6,7 @@
  *
  * A sold out item is still shown rather than hidden. Hiding it would leave a
  * customer searching for something they were told the restaurant sells; showing it
- * greyed out with a label answers the question.
+ * grayed out with a label answers the question.
  */
 
 import { el } from '../dom.js';

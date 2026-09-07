@@ -4,7 +4,7 @@
  * The FBLA rating sheet gives full marks for Functionality when the program fully
  * addresses the topic AND the correlation is explained in the instructions. The
  * instructions a judge reads are the ones inside the program, not a README on a
- * laptop, so the explanation lives here and is rendered in the help centre with a
+ * laptop, so the explanation lives here and is rendered in the help center with a
  * link that jumps straight to each feature.
  *
  * Each entry quotes the assigned topic exactly as written, names what answers it,
@@ -61,7 +61,7 @@ export const TOPIC_COVERAGE = [
   {
     clause: 'account for real-world situations, such as unavailable items',
     answer:
-      'Eleven items are sold out, copied from what the restaurant actually had out of stock. A sold out item stays on the menu greyed out rather than disappearing, and its page offers three in stock alternatives from the same category at a similar price.',
+      'Eleven items are sold out, copied from what the restaurant actually had out of stock. A sold out item stays on the menu grayed out rather than disappearing, and its page offers three in stock alternatives from the same category at a similar price.',
     path: '/item/almond-cheesecake-slice',
     linkLabel: 'See a sold out item',
   },

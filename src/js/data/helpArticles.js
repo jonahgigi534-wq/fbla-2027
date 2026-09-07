@@ -1,9 +1,9 @@
 /**
- * The how-to articles in the help centre.
+ * The how-to articles in the help center.
  *
  * The rating sheet asks for an interactive help menu, and interactive means
  * searchable and navigable rather than a wall of text. Each article is short enough
- * to read standing up, and the search box in the help centre matches on title, body,
+ * to read standing up, and the search box in the help center matches on title, body,
  * and keywords so a customer can find one without knowing what it is called.
  */
 
@@ -35,7 +35,7 @@ export const HELP_ARTICLES = [
     group: 'Ordering',
     title: 'When something is sold out',
     keywords: ['sold out', 'unavailable', 'stock', 'substitute', 'alternative'],
-    body: 'Sold out items stay on the menu, greyed out and labelled, rather than disappearing. Hiding them would leave you hunting for something you were told the restaurant sells. Open one and the program offers three alternatives from the same part of the menu, closest in price first.',
+    body: 'Sold out items stay on the menu, grayed out and labelled, rather than disappearing. Hiding them would leave you hunting for something you were told the restaurant sells. Open one and the program offers three alternatives from the same part of the menu, closest in price first.',
   },
   {
     id: 'catering-notice',

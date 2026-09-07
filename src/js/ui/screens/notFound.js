@@ -37,7 +37,7 @@ export function renderNotFound(container, params = {}) {
       el(
         'button',
         { class: 'button button--secondary', type: 'button', onClick: () => navigate('/help') },
-        'Open the help centre'
+        'Open the help center'
       ),
     ]),
   ]);

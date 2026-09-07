@@ -2,7 +2,7 @@
  * Turns a report into sentences a manager can act on.
  *
  * A table answers "what happened". This answers "so what". The rating sheet asks for
- * reports that let the user analyse the information, and a grid of numbers only does
+ * reports that let the user analyze the information, and a grid of numbers only does
  * that if the reader already knows what to look for. These sentences say which line
  * mattered, which direction it moved, and what is about to run out.
  *

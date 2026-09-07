@@ -14,7 +14,7 @@
     "check:spelling": "node scripts/spellcheck.mjs",
     "check": "npm run test && npm run check:structure && npm run check:jsdoc && npm run check:spelling",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "check:format": "prettier --check ."
   },
   "devDependencies": {
     "prettier": "^3.4.2"

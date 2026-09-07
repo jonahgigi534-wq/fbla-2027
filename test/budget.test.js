@@ -3,7 +3,7 @@
  *
  * The removal advice is the part worth protecting. A plain most-expensive-first rule
  * tells someone two dollars over to drop the twenty dollar steak, which is useless
- * advice, so the tests pin the cheapest-that-covers behaviour.
+ * advice, so the tests pin the cheapest-that-covers behavior.
  */
 
 import { test } from 'node:test';

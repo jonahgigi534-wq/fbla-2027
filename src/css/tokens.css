@@ -1,7 +1,7 @@
 /*
  * Design tokens.
  *
- * Every colour, space, and type size in the program is named here and used by name
+ * Every color, space, and type size in the program is named here and used by name
  * everywhere else. Changing the look means editing this file, not hunting through
  * eight stylesheets.
  *

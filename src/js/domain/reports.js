@@ -1,7 +1,7 @@
 /**
  * Sales reporting: filter a date range, group it, measure it, and compare it.
  *
- * The rating sheet asks for reports the user can customise and analyse, and those
+ * The rating sheet asks for reports the user can customize and analyze, and those
  * are two different jobs. Customising is choosing the range, the grouping, and the
  * measure, which is what buildReport does. Analysing is knowing whether a number is
  * good, which needs something to compare against, which is what

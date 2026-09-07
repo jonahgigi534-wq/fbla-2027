@@ -2,8 +2,8 @@
  * The drawn tile shown for an item with no photograph.
  *
  * Sides and catering trays have no picture on the restaurant's menu and none in the
- * photo set, so rather than leave a grey box or borrow a photo of something else,
- * those tiles get a drawn one: the brand colours, a glyph chosen from the item's own
+ * photo set, so rather than leave a gray box or borrow a photo of something else,
+ * those tiles get a drawn one: the brand colors, a glyph chosen from the item's own
  * words, and the item name.
  *
  * The SVG is written inline rather than loaded from a file because the offline build

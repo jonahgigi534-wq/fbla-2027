@@ -20,7 +20,7 @@ import { navigate } from '../../app/router.js';
  *
  * Kept at module level rather than in app/store.js because it describes how this one
  * screen is being looked at, not anything about the order being built. It survives
- * moving to an item and back, which is the behaviour a customer expects.
+ * moving to an item and back, which is the behavior a customer expects.
  */
 const view = {
   query: '',

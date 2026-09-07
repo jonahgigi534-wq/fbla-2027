@@ -15,7 +15,7 @@ import { formatUSD } from '../../domain/money.js';
 /** Most orders to list before the page becomes a scroll marathon. */
 const MAX_SHOWN = 50;
 
-/** Badge colour for each status. */
+/** Badge color for each status. */
 const STATUS_TONE = {
   Received: 'info',
   Baking: 'warning',

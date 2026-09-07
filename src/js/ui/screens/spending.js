@@ -1,5 +1,5 @@
 /**
- * The customer's own spending, summarised.
+ * The customer's own spending, summarized.
  *
  * The assigned topic asks the program to let customers review their order
  * information, and a list of receipts only half answers that. This screen answers
@@ -18,7 +18,7 @@ import { findItem } from '../../data/menu.js';
 import { buildReport, sortRows } from '../../domain/reports.js';
 import { formatUSD } from '../../domain/money.js';
 
-/** How many favourites to name. */
+/** How many favorites to name. */
 const FAVOURITES_SHOWN = 5;
 
 /** Ranges the customer can look at. */
@@ -60,17 +60,17 @@ function tile(label, value, note) {
 }
 
 /**
- * Builds the favourites table.
+ * Builds the favorites table.
  *
- * @param {object[]} favourites Rows from a report grouped by item.
+ * @param {object[]} favorites Rows from a report grouped by item.
  * @returns {HTMLElement} The table, or a note when there is nothing in range.
  */
-function favouritesTable(favourites) {
-  if (favourites.length === 0) {
+function favouritesTable(favorites) {
+  if (favorites.length === 0) {
     return el('p', { class: 'muted', text: 'No orders in this range. Try a longer one.' });
   }
 
-  const body = favourites.map((row) => {
+  const body = favorites.map((row) => {
     const item = findItem(row.key);
     return el('tr', {}, [
       el('th', { scope: 'row', text: item ? item.name : row.key }),
@@ -117,7 +117,7 @@ export function renderSpending(container) {
   function draw() {
     const state = getState();
     // This customer's orders: the ones placed here, plus the slice of generated
-    // history marked as theirs so the screen has something to summarise on a
+    // history marked as theirs so the screen has something to summarize on a
     // fresh install. The banner below says that plainly.
     const mine = state.orders.filter((order) => !order.isSeeded || order.isDemoCustomer);
 
@@ -126,7 +126,7 @@ export function renderSpending(container) {
         container,
         emptyState({
           icon: '\u{1F4CA}',
-          title: 'Nothing to summarise yet',
+          title: 'Nothing to summarize yet',
           body: 'Once you have ordered a few times this shows what you have spent and what you keep coming back for.',
           action: { label: 'Browse the menu', onClick: () => navigate('/menu') },
         })
@@ -138,7 +138,7 @@ export function renderSpending(container) {
     const options = { startDate: isoDaysAgo(range.days - 1), endDate: isoDaysAgo(0) };
     const byItem = buildReport(mine, { ...options, groupBy: 'item' });
     const totals = buildReport(mine, { ...options, groupBy: 'day' }).totals;
-    const favourites = sortRows(byItem.rows, 'units').slice(0, FAVOURITES_SHOWN);
+    const favorites = sortRows(byItem.rows, 'units').slice(0, FAVOURITES_SHOWN);
     const seededCount = mine.filter((order) => order.isSeeded).length;
 
     render(container, [
@@ -187,7 +187,7 @@ export function renderSpending(container) {
 
       el('section', { class: 'section' }, [
         el('div', { class: 'section__head' }, [el('h2', { text: 'What you order most' })]),
-        favouritesTable(favourites),
+        favouritesTable(favorites),
       ]),
     ]);
   }

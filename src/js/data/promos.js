@@ -9,7 +9,7 @@
  * optional cap. domain/pricing.js applies all of them the same way.
  */
 
-/** Every code, in the order the help centre lists them. */
+/** Every code, in the order the help center lists them. */
 export const PROMOS = [
   {
     code: 'PIE10',

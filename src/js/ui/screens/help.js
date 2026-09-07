@@ -1,5 +1,5 @@
 /**
- * The help centre.
+ * The help center.
  *
  * Four things live here, and each exists for a reason the rating sheet names.
  *
@@ -21,7 +21,7 @@ import { TOPIC_COVERAGE, TOPIC_TITLE } from '../../data/topicCoverage.js';
 import { PROGRAMMING_CONCEPTS } from '../../data/programmingConcepts.js';
 import { VALIDATION_CATALOG } from '../../data/validationCatalog.js';
 
-/** The sections of the help centre, in order. */
+/** The sections of the help center, in order. */
 const SECTIONS = [
   { id: 'articles', path: '/help', label: 'Guides' },
   { id: 'topic', path: '/help/topic', label: 'How this meets the topic' },
@@ -61,7 +61,7 @@ function sectionTabs(activeId) {
  */
 function head(lede) {
   return el('div', { class: 'page-head' }, [
-    el('h1', { text: 'Help centre' }),
+    el('h1', { text: 'Help center' }),
     el('p', { class: 'page-head__lede', text: lede }),
   ]);
 }

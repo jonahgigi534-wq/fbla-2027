@@ -126,6 +126,8 @@ export function save(state) {
  * Removes everything this program saved, so the next load starts fresh.
  *
  * Backs the Reset demo data button, which matters between judging rounds.
+ *
+ * @returns {void}
  */
 export function clear() {
   memoryFallback = null;
