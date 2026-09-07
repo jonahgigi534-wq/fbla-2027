@@ -7,18 +7,18 @@ any of this is up to you.
 
 ## The numbers
 
-| | |
-| --- | --- |
-| Menu items | 426 across 34 categories |
-| Restaurants | 6, on three different schedules |
-| Items genuinely sold out | 11, copied from the restaurant's real menu |
-| Catering items with a 48 hour rule | 71 |
-| Generated order history | 90 days, about 2,300 orders |
-| Tests | 225, 97% line coverage |
-| Exported functions, all documented | 157 |
-| JavaScript modules | 64 |
-| Runtime dependencies | none |
-| Offline build | one file, 446 KB |
+|                                    |                                            |
+| ---------------------------------- | ------------------------------------------ |
+| Menu items                         | 426 across 34 categories                   |
+| Restaurants                        | 6, on three different schedules            |
+| Items genuinely sold out           | 11, copied from the restaurant's real menu |
+| Catering items with a 48 hour rule | 71                                         |
+| Generated order history            | 90 days, about 2,300 orders                |
+| Tests                              | 225, 97% line coverage                     |
+| Exported functions, all documented | 157                                        |
+| JavaScript modules                 | 64                                         |
+| Runtime dependencies               | none                                       |
+| Offline build                      | one file, 446 KB                           |
 
 ---
 
@@ -101,7 +101,7 @@ formal audit, which is worth saying plainly rather than claiming more than was d
 
 Worth keeping for the question round rather than spending presentation time on:
 
-- `npm run check` runs 225 tests and three custom checks in half a second, with
+- `npm run check` runs 237 tests and three custom checks in half a second, with
   nothing installed
 - The structure check enforces that `domain/` never imports from `ui/` or `app/`
 - The spell check found the whole interface had been written in British English

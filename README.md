@@ -5,7 +5,7 @@ owned restaurant and bakery that has been serving Houston since 1967 and now run
 locations across Houston, The Woodlands, Cypress, and Katy.
 
 Built for the FBLA 2026-2027 **Introduction to Programming** event, whose topic is
-*Local Business Digital Ordering System*.
+_Local Business Digital Ordering System_.
 
 It runs in a browser with **no libraries, no build step required, no server, and no
 internet connection**.
@@ -43,7 +43,7 @@ Keep the `dist` folder together: the photographs sit next to the HTML file.
 npm run check
 ```
 
-Runs 225 tests, then three checks of its own: that the layers have not been crossed,
+Runs 237 tests, then three checks of its own: that the layers have not been crossed,
 that every exported function is documented, and that nothing on screen is misspelled.
 Like everything else here, it needs nothing installed.
 
@@ -87,17 +87,17 @@ The full clause by clause mapping is **inside the program**, under
 Help → How this meets the topic, with a link from each clause to the feature that
 answers it. A short version:
 
-| The topic asks for | Where it is |
-| --- | --- |
-| Products **or services** | 355 menu products, plus 71 catering items and custom cakes carrying the restaurant's real 48 hour notice |
-| Place and **manage** orders | Track, edit item by item, cancel, reorder, print |
-| Calculate purchase totals | Whole cent arithmetic, discount applied before tax |
-| Review order information | Printable receipts, plus a spending summary |
-| Unavailable items | 11 items are genuinely sold out, and each offers substitutes |
-| Inventory limits | Stock counted against the cart, not just the shelf |
-| Invalid entries | Every input checked for shape, then for whether it suits the order |
-| Customer budget constraints | A spending limit that warns, blocks, and suggests |
-| Efficiency for the business | Collection slots capped so the counter does not back up |
+| The topic asks for          | Where it is                                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------------------------- |
+| Products **or services**    | 355 menu products, plus 71 catering items and custom cakes carrying the restaurant's real 48 hour notice |
+| Place and **manage** orders | Track, edit item by item, cancel, reorder, print                                                         |
+| Calculate purchase totals   | Whole cent arithmetic, discount applied before tax                                                       |
+| Review order information    | Printable receipts, plus a spending summary                                                              |
+| Unavailable items           | 11 items are genuinely sold out, and each offers substitutes                                             |
+| Inventory limits            | Stock counted against the cart, not just the shelf                                                       |
+| Invalid entries             | Every input checked for shape, then for whether it suits the order                                       |
+| Customer budget constraints | A spending limit that warns, blocks, and suggests                                                        |
+| Efficiency for the business | Collection slots capped so the counter does not back up                                                  |
 
 ---
 

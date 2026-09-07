@@ -21,7 +21,7 @@ are earned in the room rather than in the code.
 - Four layers with an enforced rule between them:
   nothing in `domain/` may import from `ui/` or `app/`. Checked by
   `scripts/check-structure.mjs`.
-- That rule is why 225 tests can run with no browser.
+- That rule is why 237 tests can run with no browser.
 - No file over 400 lines, also checked. The reports screen reached 496 during
   development and was split into `reports.js`, `reportControls.js`, `reportTable.js`,
   and `reportView.js`.

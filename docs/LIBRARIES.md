@@ -15,17 +15,17 @@ took an afternoon; a chart library that fails to load takes the whole demonstrat
 
 Things that would normally be a dependency, and what replaced them:
 
-| Usually a library | What this uses instead |
-| --- | --- |
-| A UI framework | `src/js/ui/dom.js`, about 60 lines |
-| A router | `src/js/app/router.js`, hash based |
-| A state store | `src/js/app/store.js`, one object and a subscribe list |
-| A charting library | `src/js/ui/components/barChart.js`, SVG rectangles |
-| A CSV writer | `src/js/domain/csv.js` |
-| A fuzzy search library | `src/js/domain/assistant.js`, bounded edit distance |
-| A test framework | Node's built in `node --test` |
-| A bundler | `scripts/build-standalone.mjs` |
-| A spell checker | `scripts/spellcheck.mjs` with a committed word list |
+| Usually a library      | What this uses instead                                 |
+| ---------------------- | ------------------------------------------------------ |
+| A UI framework         | `src/js/ui/dom.js`, about 60 lines                     |
+| A router               | `src/js/app/router.js`, hash based                     |
+| A state store          | `src/js/app/store.js`, one object and a subscribe list |
+| A charting library     | `src/js/ui/components/barChart.js`, SVG rectangles     |
+| A CSV writer           | `src/js/domain/csv.js`                                 |
+| A fuzzy search library | `src/js/domain/assistant.js`, bounded edit distance    |
+| A test framework       | Node's built in `node --test`                          |
+| A bundler              | `scripts/build-standalone.mjs`                         |
+| A spell checker        | `scripts/spellcheck.mjs` with a committed word list    |
 
 ## At development time: one, and it is optional
 
@@ -43,8 +43,14 @@ npm run format
 
 ## Fonts and images
 
-No web fonts. The interface uses the system font stack, which loads instantly and
-cannot fail to arrive.
+Two fonts, both the ones House of Pies uses: Bebas Neue for headings and buttons,
+Parkinsans for everything else. Both are under the SIL Open Font License 1.1 and both
+ship with the program as Latin subsets in `assets/fonts`, 42 KB for the pair.
+
+They are not loaded from Google. A webfont fetched over the network is a webfont that
+fails at a competition with no internet, and the fallback in `src/css/tokens.css` is a
+condensed stack rather than a plain sans so that even a machine that cannot use them
+gets close to the right shape. Attribution is in [CREDITS.md](CREDITS.md).
 
 Photographs are local files in `assets/img`. Nothing is loaded from a remote host, and
 `npm run build` refuses to write the offline file if any `http` or `https` address

@@ -14,7 +14,7 @@ export const PROJECT_STATS = [
   { label: 'Menu items', value: '426', note: 'across 34 categories' },
   { label: 'Restaurants', value: '6', note: 'on three different schedules' },
   { label: 'Runtime dependencies', value: 'None', note: 'no framework, no libraries' },
-  { label: 'Tests', value: '225', note: '97% line coverage' },
+  { label: 'Tests', value: '237', note: '97% line coverage' },
 ];
 
 /** What was borrowed, and from whom. */
@@ -46,7 +46,20 @@ export const ATTRIBUTION = [
   {
     what: 'Code',
     source: 'Written for this project',
-    detail: 'No template, starter, or example project was used, and nothing was copied from another codebase.',
+    detail:
+      'No template, starter, or example project was used, and nothing was copied from another codebase.',
+  },
+  {
+    what: 'Guest reviews on the home page',
+    source: 'Published by House of Pies',
+    detail:
+      'Real reviews from their own site, quoted in part and credited to the names they appear under. They are reviews of the restaurant, not of this program.',
+  },
+  {
+    what: 'Bebas Neue and Parkinsans',
+    source: 'Google Fonts, SIL Open Font License 1.1',
+    detail:
+      'The two typefaces House of Pies uses. Both ship with the program rather than loading from the network, because this has to work with no internet.',
   },
   {
     what: 'Icons',
@@ -62,7 +75,10 @@ export const INSTEAD_OF_LIBRARIES = [
   { usually: 'A state store', instead: 'src/js/app/store.js, one object and a subscribe list' },
   { usually: 'A charting library', instead: 'src/js/ui/components/barChart.js, SVG rectangles' },
   { usually: 'A CSV writer', instead: 'src/js/domain/csv.js' },
-  { usually: 'A fuzzy search library', instead: 'src/js/domain/assistant.js, bounded edit distance' },
+  {
+    usually: 'A fuzzy search library',
+    instead: 'src/js/domain/assistant.js, bounded edit distance',
+  },
   { usually: 'A test framework', instead: "Node's built in test runner" },
   { usually: 'A bundler', instead: 'scripts/build-standalone.mjs' },
   { usually: 'A spell checker', instead: 'scripts/spellcheck.mjs with a committed word list' },

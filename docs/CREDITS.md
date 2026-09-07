@@ -15,17 +15,19 @@ trading in Houston, Texas since 1967. Everything below belongs to them.
 
 ### What was used, and where it came from
 
-| Material | Source | How it is used |
-| --- | --- | --- |
-| The name "House of Pies" | The business | Used nominatively, to identify the real restaurant this project is about |
-| Logo | <https://houseofpies.com> | Shown in the page header and as the browser tab icon |
-| Six storefront photographs | Their location pages | One per restaurant on the home screen |
-| Six dish photographs | Their home page | The featured items |
-| Bakery, cake, and mini pie photographs | Their bakery page | Category images |
-| Twenty category photographs | Their online ordering menu | Shown for items that have no photograph of their own |
-| Menu item names, descriptions, and prices | Their online ordering menu | The catalog in `src/js/data/` |
-| Addresses, phone numbers, and opening hours | Their location pages | `src/js/data/locations.js` |
-| Items marked out of stock | Their online ordering menu | Kept as the sold out items, so the inventory rules have real cases |
+| Material                                    | Source                     | How it is used                                                                |
+| ------------------------------------------- | -------------------------- | ----------------------------------------------------------------------------- |
+| The name "House of Pies"                    | The business               | Used nominatively, to identify the real restaurant this project is about      |
+| Logo                                        | <https://houseofpies.com>  | Shown in the page header and as the browser tab icon                          |
+| Six storefront photographs                  | Their location pages       | One per restaurant on the home screen                                         |
+| Six dish photographs                        | Their home page            | The featured items                                                            |
+| Bakery, cake, and mini pie photographs      | Their bakery page          | Category images                                                               |
+| Twenty category photographs                 | Their online ordering menu | Shown for items that have no photograph of their own                          |
+| Menu item names, descriptions, and prices   | Their online ordering menu | The catalog in `src/js/data/`                                                 |
+| Addresses, phone numbers, and opening hours | Their location pages       | `src/js/data/locations.js`                                                    |
+| Items marked out of stock                   | Their online ordering menu | Kept as the sold out items, so the inventory rules have real cases            |
+| Bakery doodle background pattern            | Their home page            | Behind the guest reviews on the home screen                                   |
+| Five guest reviews                          | Their home page            | Quoted in the review carousel, credited to the names they are published under |
 
 All image files are in `assets/img`. Copyright in every photograph and in the logo
 remains with House of Pies.
@@ -53,7 +55,25 @@ or example project was used, and nothing was copied from another codebase.
 **Libraries.** None at runtime. See [LIBRARIES.md](LIBRARIES.md) for the full list and
 for the one optional development tool.
 
-**Fonts.** No web fonts. The interface uses whatever the reader's system provides.
+**Fonts.** Two, both the ones House of Pies uses on its own site, and both under the
+SIL Open Font License 1.1, which permits redistribution:
+
+| Face       | Designer                       | Source       |
+| ---------- | ------------------------------ | ------------ |
+| Bebas Neue | Ryoichi Tsunekawa, Dharma Type | Google Fonts |
+| Parkinsans | Commissioned by Parkinson's UK | Google Fonts |
+
+The two Latin subsets ship in `assets/fonts` and total 42 KB. They are served from
+there rather than from Google because the program has to work with no internet, and a
+webfont that fails to arrive would drop the whole interface back to a system sans. A
+copy of each license belongs beside the files if this is ever distributed further.
+
+**Guest reviews.** The five reviews in the carousel are real reviews House of Pies
+publishes on its own home page. Each is a short pull quote rather than the whole
+review, kept word for word, and credited to the name the restaurant displays it under.
+The only change is to Taman's, where a dash between two clauses is written as a comma.
+Copyright in the words remains with the people who wrote them. The screen says
+underneath where they came from, so nobody reads them as reviews of this program.
 
 **Icons.** The small pictures on tiles with no photograph are standard Unicode emoji,
 rendered by the reader's own device. No icon set was downloaded or bundled.
