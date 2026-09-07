@@ -13,6 +13,7 @@ import { isUsingTemporaryStorage } from './app/storage.js';
 import { findLocation } from './data/locations.js';
 import { el, render } from './ui/dom.js';
 import { clearToasts } from './ui/components/toast.js';
+import { openAssistant } from './ui/components/assistant.js';
 import { renderHome } from './ui/screens/home.js';
 import { renderMenu } from './ui/screens/menu.js';
 import { renderItem } from './ui/screens/item.js';
@@ -86,6 +87,16 @@ function renderNav() {
         text: link.label,
         'aria-current': path.startsWith(link.path) ? 'page' : null,
       })
+    ),
+    el(
+      'button',
+      {
+        class: 'app-nav__link app-nav__assistant',
+        id: 'assistant-toggle',
+        type: 'button',
+        onClick: openAssistant,
+      },
+      'Ask'
     ),
     el(
       'a',
