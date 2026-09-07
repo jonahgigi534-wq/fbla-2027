@@ -38,13 +38,13 @@ into the offline build. Those are the questions a reader actually has.
 
 ## Naming
 
-| Kind | Convention | Example |
-| --- | --- | --- |
-| Functions and variables | `camelCase` | `calculateOrderTotals` |
-| Booleans | a question | `isOpenAt`, `canCancel`, `hasSeenWelcome` |
-| Constants | `UPPER_SNAKE_CASE` | `SALES_TAX_BASIS_POINTS` |
-| Files | `camelCase.js` | `orderRules.js` |
-| CSS classes | block, element, modifier | `.item-card__name`, `.chip--active` |
+| Kind                    | Convention               | Example                                   |
+| ----------------------- | ------------------------ | ----------------------------------------- |
+| Functions and variables | `camelCase`              | `calculateOrderTotals`                    |
+| Booleans                | a question               | `isOpenAt`, `canCancel`, `hasSeenWelcome` |
+| Constants               | `UPPER_SNAKE_CASE`       | `SALES_TAX_BASIS_POINTS`                  |
+| Files                   | `camelCase.js`           | `orderRules.js`                           |
+| CSS classes             | block, element, modifier | `.item-card__name`, `.chip--active`       |
 
 Numbers get names. `825` in the middle of a calculation means nothing;
 `SALES_TAX_BASIS_POINTS` means something, and it can be found.
