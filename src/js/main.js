@@ -23,6 +23,12 @@ import { renderCheckout } from './ui/screens/checkout.js';
 import { renderOrderDetail } from './ui/screens/orderDetail.js';
 import { renderMyOrders } from './ui/screens/myOrders.js';
 import { renderSpending } from './ui/screens/spending.js';
+import {
+  renderHelp,
+  renderHelpConcepts,
+  renderHelpTopic,
+  renderHelpValidation,
+} from './ui/screens/help.js';
 import { renderManagerQueue } from './ui/screens/manager/queue.js';
 import { renderManagerInventory } from './ui/screens/manager/inventory.js';
 import { renderManagerReports } from './ui/screens/manager/reports.js';
@@ -39,6 +45,10 @@ const SCREENS = {
   'order-detail': renderOrderDetail,
   orders: renderMyOrders,
   spending: renderSpending,
+  help: renderHelp,
+  'help-topic': renderHelpTopic,
+  'help-concepts': renderHelpConcepts,
+  'help-validation': renderHelpValidation,
   'manager-queue': renderManagerQueue,
   'manager-inventory': renderManagerInventory,
   'manager-reports': renderManagerReports,
@@ -51,6 +61,7 @@ const NAV_LINKS = [
   { path: '/menu', label: 'Menu' },
   { path: '/orders', label: 'Orders' },
   { path: '/manager', label: 'Staff' },
+  { path: '/help', label: 'Help' },
 ];
 
 addRoute('/home', 'home');
@@ -61,6 +72,10 @@ addRoute('/cart', 'cart');
 addRoute('/checkout', 'checkout');
 addRoute('/orders', 'orders');
 addRoute('/spending', 'spending');
+addRoute('/help', 'help');
+addRoute('/help/topic', 'help-topic');
+addRoute('/help/concepts', 'help-concepts');
+addRoute('/help/validation', 'help-validation');
 addRoute('/order/:orderNumber', 'order-detail');
 addRoute('/manager', 'manager-queue');
 addRoute('/manager/queue', 'manager-queue');

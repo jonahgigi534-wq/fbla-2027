@@ -393,3 +393,41 @@
 
 .receipt__line-right { display: inline-flex; align-items: center; gap: var(--space-3); }
 .stepper--small .stepper__button { width: 28px; height: 28px; font-size: var(--text-base); }
+
+/* Help centre */
+.help-ask { display: flex; flex-direction: column; justify-content: flex-end; gap: var(--space-2); }
+.help-list { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.help-article {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.help-article__title { font-weight: 700; cursor: pointer; }
+.help-article__body { margin-top: var(--space-2); color: var(--color-text-muted); font-size: var(--text-sm); }
+
+/* Topic coverage */
+.coverage { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); counter-reset: clause; }
+
+.coverage__item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-orange);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.coverage__clause {
+  margin: 0 0 var(--space-2);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--color-orange-dark);
+}
+
+.coverage__answer { font-size: var(--text-sm); margin-bottom: var(--space-3); }
+
+/* Prose inside tables needs to wrap rather than scroll forever */
+.table__prose { white-space: normal; min-width: 18rem; font-size: var(--text-xs); }
+.code { font-family: ui-monospace, 'Cascadia Code', Consolas, monospace; font-size: var(--text-xs); background: var(--color-surface-sunk); padding: 2px 4px; border-radius: 4px; white-space: nowrap; }
