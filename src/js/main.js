@@ -28,6 +28,7 @@ import {
   renderHelpConcepts,
   renderHelpTopic,
   renderHelpValidation,
+  renderHelpAbout,
 } from './ui/screens/help.js';
 import { renderManagerQueue } from './ui/screens/manager/queue.js';
 import { renderManagerInventory } from './ui/screens/manager/inventory.js';
@@ -49,6 +50,7 @@ const SCREENS = {
   'help-topic': renderHelpTopic,
   'help-concepts': renderHelpConcepts,
   'help-validation': renderHelpValidation,
+  'help-about': renderHelpAbout,
   'manager-queue': renderManagerQueue,
   'manager-inventory': renderManagerInventory,
   'manager-reports': renderManagerReports,
@@ -76,6 +78,7 @@ addRoute('/help', 'help');
 addRoute('/help/topic', 'help-topic');
 addRoute('/help/concepts', 'help-concepts');
 addRoute('/help/validation', 'help-validation');
+addRoute('/help/about', 'help-about');
 addRoute('/order/:orderNumber', 'order-detail');
 addRoute('/manager', 'manager-queue');
 addRoute('/manager/queue', 'manager-queue');

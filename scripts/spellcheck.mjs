@@ -24,6 +24,9 @@ const ROOT = join(import.meta.dirname, '..');
 /** Where user-facing strings live. */
 const SOURCE_FOLDERS = ['src/js'];
 
+/** Prose folders. Documentation with typos in it costs the same points as the interface. */
+const PROSE_FOLDERS = ['docs', 'presentation'];
+
 /** Documents that judges read, so they are checked too. */
 const EXTRA_FILES = ['README.md', 'index.html'];
 
@@ -88,6 +91,26 @@ export function extractStrings(source) {
 }
 
 /**
+ * Pulls the readable prose out of a markdown document.
+ *
+ * Fenced code blocks, inline code, link targets, and table pipes are dropped, since
+ * none of those are words anyone reads for meaning. What is left is the sentences.
+ *
+ * @param {string} source A markdown file's contents.
+ * @returns {string[]} Lines of prose worth checking.
+ */
+export function extractProse(source) {
+  return source
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/\]\([^)]*\)/g, '] ')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/https?:\/\/\S+/g, ' ')
+    .split(String.fromCharCode(10))
+    .filter((line) => !line.startsWith('    '));
+}
+
+/**
  * Splits display text into words to check.
  *
  * Possessives and hyphenated pairs are broken apart so 'restaurant’s' is checked
@@ -121,6 +144,14 @@ async function check() {
   for (const folder of SOURCE_FOLDERS) {
     files.push(...(await listJsFiles(join(ROOT, folder))));
   }
+  for (const folder of PROSE_FOLDERS) {
+    const entries = await readdir(join(ROOT, folder), { withFileTypes: true });
+    for (const entry of entries) {
+      if (entry.name.endsWith('.md')) {
+        files.push(join(ROOT, folder, entry.name));
+      }
+    }
+  }
   for (const extra of EXTRA_FILES) {
     files.push(join(ROOT, extra));
   }
@@ -137,7 +168,8 @@ async function check() {
     }
     const id = relative(ROOT, file).split(sep).join('/');
 
-    for (const text of extractStrings(source)) {
+    const texts = file.endsWith('.md') ? extractProse(source) : extractStrings(source);
+    for (const text of texts) {
       for (const word of toCheckableWords(text)) {
         wordsChecked += 1;
         if (!dictionary.has(word)) {

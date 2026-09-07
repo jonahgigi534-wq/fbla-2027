@@ -20,6 +20,7 @@ import { HELP_ARTICLES } from '../../data/helpArticles.js';
 import { TOPIC_COVERAGE, TOPIC_TITLE } from '../../data/topicCoverage.js';
 import { PROGRAMMING_CONCEPTS } from '../../data/programmingConcepts.js';
 import { VALIDATION_CATALOG } from '../../data/validationCatalog.js';
+import { ATTRIBUTION, INSTEAD_OF_LIBRARIES, PROJECT_STATS } from '../../data/projectFacts.js';
 
 /** The sections of the help center, in order. */
 const SECTIONS = [
@@ -27,6 +28,7 @@ const SECTIONS = [
   { id: 'topic', path: '/help/topic', label: 'How this meets the topic' },
   { id: 'concepts', path: '/help/concepts', label: 'Programming concepts' },
   { id: 'validation', path: '/help/validation', label: 'Validation rules' },
+  { id: 'about', path: '/help/about', label: 'About this project' },
 ];
 
 /** What the article search is filtered to. */
@@ -291,6 +293,91 @@ export function renderHelpValidation(container) {
             ])
           )
         ),
+      ]),
+    ]),
+  ]);
+}
+
+/**
+ * Renders the about page: what was borrowed, and what was built rather than installed.
+ *
+ * This exists because the competition provides no internet and judges have no Markdown
+ * reader. The attribution and the library list are the two documents most likely to be
+ * asked about, so they are readable inside the program rather than only in the repository.
+ *
+ * @param {HTMLElement} container The main element to render into.
+ * @returns {void}
+ */
+export function renderHelpAbout(container) {
+  render(container, [
+    head('What this project is, what was borrowed, and what was built.'),
+    sectionTabs('about'),
+
+    el('div', { class: 'summary-tiles' }, PROJECT_STATS.map((stat) =>
+      el('div', { class: 'summary-tile' }, [
+        el('p', { class: 'summary-tile__label', text: stat.label }),
+        el('p', { class: 'summary-tile__value', text: stat.value }),
+        el('p', { class: 'summary-tile__previous', text: stat.note }),
+      ])
+    )),
+
+    el('div', { class: 'banner banner--warning' }, [
+      el('div', {}, [
+        el('div', { class: 'banner__title', text: 'An independent student project' }),
+        el('div', {
+          text: 'Built for an FBLA Introduction to Programming event. Not affiliated with, endorsed by, or connected to House of Pies. No order placed here reaches the restaurant and no payment is ever processed.',
+        }),
+      ]),
+    ]),
+
+    el('section', { class: 'section' }, [
+      el('div', { class: 'section__head' }, [
+        el('h2', { text: 'Credit where it is due' }),
+        el('p', { class: 'section__lede', text: 'Everything in this program that came from somewhere else.' }),
+      ]),
+      el('div', { class: 'table-wrap' }, [
+        el('table', { class: 'table' }, [
+          el('thead', {}, [
+            el('tr', {}, [
+              el('th', { scope: 'col', text: 'What' }),
+              el('th', { scope: 'col', text: 'Where from' }),
+              el('th', { scope: 'col', text: 'Notes' }),
+            ]),
+          ]),
+          el('tbody', {}, ATTRIBUTION.map((entry) =>
+            el('tr', {}, [
+              el('th', { scope: 'row', text: entry.what }),
+              el('td', { text: entry.source }),
+              el('td', { class: 'table__prose', text: entry.detail }),
+            ])
+          )),
+        ]),
+      ]),
+    ]),
+
+    el('section', { class: 'section' }, [
+      el('div', { class: 'section__head' }, [
+        el('h2', { text: 'Libraries used: none' }),
+        el('p', {
+          class: 'section__lede',
+          text: 'The competition provides no electricity and warns that venue wifi may not work, so anything fetched from a content delivery network is a risk with no upside. These were written instead.',
+        }),
+      ]),
+      el('div', { class: 'table-wrap' }, [
+        el('table', { class: 'table' }, [
+          el('thead', {}, [
+            el('tr', {}, [
+              el('th', { scope: 'col', text: 'Usually a library' }),
+              el('th', { scope: 'col', text: 'What this uses instead' }),
+            ]),
+          ]),
+          el('tbody', {}, INSTEAD_OF_LIBRARIES.map((entry) =>
+            el('tr', {}, [
+              el('th', { scope: 'row', text: entry.usually }),
+              el('td', {}, [el('code', { class: 'code', text: entry.instead })]),
+            ])
+          )),
+        ]),
       ]),
     ]),
   ]);
