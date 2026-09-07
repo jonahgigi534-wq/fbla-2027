@@ -741,7 +741,10 @@
 }
 .chart__label {
   fill: var(--color-text-muted);
-  font-size: 11px;
+  /* In user units, not screen pixels: the viewBox scales this up with everything
+     else. Kept in step with LABEL_FONT_UNITS in barChart.js, which sizes the room
+     the turned labels are given. */
+  font-size: 10px;
 }
 .chart__caption {
   margin-top: var(--space-2);

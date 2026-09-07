@@ -20,10 +20,59 @@ const SVG_NS = 'http://www.w3.org/2000/svg';
 
 /** Drawing area, in SVG user units. The viewBox scales it to fit any container. */
 const WIDTH = 720;
-const HEIGHT = 260;
-const PADDING_LEFT = 8;
-const PADDING_BOTTOM = 34;
+const HEIGHT = 300;
 const PADDING_TOP = 16;
+
+/*
+ * Category names run long: "Sandwiches & Melts", "Whole Cakes & Cheesecakes". Twelve
+ * of those across 720 units gives each one about 52 units of slot, and the name needs
+ * roughly 95. Written flat they collide into each other, so they are turned instead.
+ *
+ * Once a label is turned it no longer competes with the bar for width, it competes
+ * for the space below and to the left of its own bar. A label of length L set at
+ * LABEL_ANGLE reaches L*cos(35 degrees) sideways and L*sin(35 degrees) down, which is
+ * where the two paddings below come from. They are derived rather than guessed,
+ * because a padding that is too small clips the longest names rather than shrinking
+ * them, and the clipping only shows up on the categories with the widest letters.
+ */
+const LABEL_ANGLE = -35;
+const LABEL_MAX_CHARS = 18;
+const LABEL_FONT_UNITS = 10;
+/*
+ * Widest average advance per character, measured with getComputedTextLength over the
+ * real category names rather than estimated. They run from 0.50 em on "Breakfast
+ * Favorites" to 0.59 em on "Cakes & Cheesecakes". The figure used is a little above
+ * the worst of them, because these are Parkinsans widths and a machine that cannot
+ * load the webfont will set the labels in something wider. Too low a figure here does
+ * not wrap or shrink anything, it just quietly clips the longest labels off the
+ * bottom of the drawing.
+ */
+const LABEL_CHAR_UNITS = LABEL_FONT_UNITS * 0.64;
+const LABEL_LENGTH = LABEL_MAX_CHARS * LABEL_CHAR_UNITS;
+const LABEL_RADIANS = (Math.abs(LABEL_ANGLE) * Math.PI) / 180;
+
+/** How far under the baseline a label starts. */
+const LABEL_GAP = 14;
+
+/** Room to the left of the first bar for its own turned label to lie in. */
+const PADDING_LEFT = Math.ceil(LABEL_LENGTH * Math.cos(LABEL_RADIANS));
+
+/*
+ * Room under the baseline for the turned labels to hang in.
+ *
+ * The far end of a turned label is the lowest point of it, but not the lowest point
+ * of the glyphs: letters with a tail hang below their own baseline, and once the text
+ * is turned that tail reaches further down the drawing still. Leaving it out clipped
+ * the descender off the longest two names by about a pixel and a half.
+ */
+const LABEL_DESCENDER_UNITS = LABEL_FONT_UNITS * 0.3;
+const PADDING_BOTTOM =
+  Math.ceil(
+    LABEL_LENGTH * Math.sin(LABEL_RADIANS) + LABEL_DESCENDER_UNITS * Math.cos(LABEL_RADIANS)
+  ) + LABEL_GAP;
+
+/** The right edge only has to clear the last bar, so it stays narrow. */
+const PADDING_RIGHT = 8;
 
 /** Most bars to draw before the rest are dropped as unreadable. */
 const MAX_BARS = 12;
@@ -82,7 +131,7 @@ export function barChart({ rows, metric, labelFor, formatValue, title }) {
 
   const highest = Math.max(...visible.map((row) => row[metric]), 1);
   const plotHeight = HEIGHT - PADDING_BOTTOM - PADDING_TOP;
-  const slotWidth = (WIDTH - PADDING_LEFT * 2) / visible.length;
+  const slotWidth = (WIDTH - PADDING_LEFT - PADDING_RIGHT) / visible.length;
   const barWidth = Math.min(slotWidth * 0.62, 64);
 
   const bars = visible.flatMap((row, index) => {
@@ -118,12 +167,16 @@ export function barChart({ rows, metric, labelFor, formatValue, title }) {
       svg(
         'text',
         {
-          x: x + barWidth / 2,
-          y: HEIGHT - PADDING_BOTTOM + 16,
+          // Turned about a point just under the middle of its own bar. Anchoring at
+          // the end means the label finishes there and trails back to the left,
+          // rather than starting there and running out over the next bar along.
+          'text-anchor': 'end',
+          transform: `translate(${x + barWidth / 2} ${
+            PADDING_TOP + plotHeight + LABEL_GAP
+          }) rotate(${LABEL_ANGLE})`,
           class: 'chart__label',
-          'text-anchor': 'middle',
         },
-        [document.createTextNode(shorten(label, 14))]
+        [document.createTextNode(shorten(label, LABEL_MAX_CHARS))]
       ),
     ];
   });
@@ -131,7 +184,7 @@ export function barChart({ rows, metric, labelFor, formatValue, title }) {
   const baseline = svg('line', {
     x1: PADDING_LEFT,
     y1: PADDING_TOP + plotHeight,
-    x2: WIDTH - PADDING_LEFT,
+    x2: WIDTH - PADDING_RIGHT,
     y2: PADDING_TOP + plotHeight,
     class: 'chart__axis',
   });
