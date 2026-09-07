@@ -14,7 +14,7 @@
  * controls are set to and renders whatever comes back.
  */
 
-import { CANCELLED } from './orders.js';
+import { CANCELED } from './orders.js';
 
 /** Every way the rows can be grouped, with the label the dropdown shows. */
 export const GROUP_BY_OPTIONS = [
@@ -48,7 +48,7 @@ export function orderDate(order) {
 /**
  * Narrows a list of orders to the ones a report should count.
  *
- * Cancelled orders are always excluded. They were never revenue, and counting them
+ * Canceled orders are always excluded. They were never revenue, and counting them
  * would overstate every figure on the screen.
  *
  * @param {object[]} orders Every order.
@@ -61,7 +61,7 @@ export function orderDate(order) {
  */
 export function filterOrders(orders, { startDate, endDate, locationId, orderTypeId }) {
   return orders.filter((order) => {
-    if (order.status === CANCELLED) {
+    if (order.status === CANCELED) {
       return false;
     }
     const date = orderDate(order);

@@ -9,7 +9,7 @@
  */
 
 import { getState, update } from './store.js';
-import { ORDER_STATUSES, CANCELLED, canCancel, canModify, nextStatus } from '../domain/orders.js';
+import { ORDER_STATUSES, CANCELED, canCancel, canModify, nextStatus } from '../domain/orders.js';
 import { stockFor } from '../domain/inventory.js';
 import { findItem } from '../data/menu.js';
 import { calculateOrderTotals } from '../domain/pricing.js';
@@ -67,12 +67,12 @@ export function placeOrder({ customer, cardLastFour, slot, totals }) {
 /**
  * Cancels an order and puts its stock back on the shelf.
  *
- * Returning the stock matters: an order cancelled before the kitchen started is food
+ * Returning the stock matters: an order canceled before the kitchen started is food
  * that was never made, and leaving it deducted would slowly show the restaurant as
  * sold out of things it still has.
  *
  * @param {number} orderNumber The order to cancel.
- * @returns {{ok: boolean, message: string}} Whether it was cancelled, and why not.
+ * @returns {{ok: boolean, message: string}} Whether it was canceled, and why not.
  */
 export function cancelOrder(orderNumber) {
   const state = getState();
@@ -98,12 +98,12 @@ export function cancelOrder(orderNumber) {
 
   update((current) => ({
     orders: current.orders.map((candidate) =>
-      candidate.orderNumber === orderNumber ? { ...candidate, status: CANCELLED } : candidate
+      candidate.orderNumber === orderNumber ? { ...candidate, status: CANCELED } : candidate
     ),
     stockOverrides,
   }));
 
-  return { ok: true, message: `Order ${orderNumber} cancelled. Nothing was charged.` };
+  return { ok: true, message: `Order ${orderNumber} canceled. Nothing was charged.` };
 }
 
 /**
@@ -166,7 +166,7 @@ export function reorder(orderNumber) {
 /**
  * Changes the quantity of one line on an order that has not started cooking.
  *
- * The topic asks the program to let customers manage their orders, and cancelling
+ * The topic asks the program to let customers manage their orders, and canceling
  * is not managing. Someone who ordered three pies and wants two should not have to
  * cancel the whole thing and start again.
  *

@@ -1,7 +1,7 @@
 /**
  * Tests for the reporting engine.
  *
- * Two things matter most. Cancelled orders must never count, because they were never
+ * Two things matter most. Canceled orders must never count, because they were never
  * revenue. And the comparison period has to be the same length as the chosen one, so
  * a 30 day window is never measured against a 31 day month.
  */
@@ -51,11 +51,11 @@ const orders = [
   order({ number: 1, date: '2026-06-10', lines: [pieLine], total: 1082 }),
   order({ number: 2, date: '2026-06-11', lines: [pieLine, burgerLine], total: 2164 }),
   order({ number: 3, date: '2026-06-12', locationId: 'katy', lines: [coffeeLine], total: 1082 }),
-  order({ number: 4, date: '2026-06-12', status: 'Cancelled', lines: [burgerLine], total: 9999 }),
+  order({ number: 4, date: '2026-06-12', status: 'Canceled', lines: [burgerLine], total: 9999 }),
   order({ number: 5, date: '2026-05-20', lines: [pieLine], total: 1082 }),
 ];
 
-test('a cancelled order never counts as revenue', () => {
+test('a canceled order never counts as revenue', () => {
   const kept = filterOrders(orders, { startDate: '2026-06-01', endDate: '2026-06-30' });
   assert.equal(kept.length, 3);
   assert.ok(!kept.some((entry) => entry.orderNumber === 4));

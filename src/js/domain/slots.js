@@ -68,7 +68,7 @@ export function formatSlot(minute) {
 export function bookingsInSlot(orders, locationId, slotKey) {
   return orders.filter(
     (order) =>
-      order.locationId === locationId && order.slotKey === slotKey && order.status !== 'Cancelled'
+      order.locationId === locationId && order.slotKey === slotKey && order.status !== 'Canceled'
   ).length;
 }
 

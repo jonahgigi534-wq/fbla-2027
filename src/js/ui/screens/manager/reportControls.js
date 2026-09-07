@@ -71,7 +71,7 @@ export function exportCsv(rows, fallbackHost) {
 }
 
 /**
- * Builds one labelled dropdown.
+ * Builds one labeled dropdown.
  *
  * @param {string} id Element id.
  * @param {string} label Visible label.

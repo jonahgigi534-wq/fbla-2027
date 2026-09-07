@@ -11,37 +11,37 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 ## Where it stands
 
-| | |
-| --- | --- |
-| Tests | 225, all passing |
-| Line coverage | 97% |
-| Branch coverage | 93% |
-| Exported functions documented | 157 of 157 |
-| Files over the 400 line ceiling | none |
-| Misspelled words on screen | none, across 2,226 checked |
+|                                 |                            |
+| ------------------------------- | -------------------------- |
+| Tests                           | 225, all passing           |
+| Line coverage                   | 97%                        |
+| Branch coverage                 | 93%                        |
+| Exported functions documented   | 157 of 157                 |
+| Files over the 400 line ceiling | none                       |
+| Misspelled words on screen      | none, across 2,226 checked |
 
 ## What is tested
 
 Every module in `src/js/domain/`, which is where the decisions live:
 
-| Module | What its tests protect |
-| --- | --- |
-| `money` | Half up rounding, including on negatives, and parsing what a customer types |
-| `pricing` | That discount comes off before tax, and that the delivery fee is taxed |
-| `cart` | That nothing is edited in place, and that identical lines merge |
-| `inventory` | That stock is counted against the cart, not just the shelf |
-| `budget` | That the removal suggested is the cheapest one that closes the gap |
-| `slots` | The midnight roll, catering lead times, and the capacity cap |
-| `hours` | Three different schedules, including Katy at 3am on a Saturday |
-| `validation` | Field shape, including the Luhn checksum |
-| `orderRules` | Delivery areas, expired cards, unusable slots, backwards date ranges |
-| `orders` | The window in which an order can still be changed |
-| `reports` | That cancelled orders never count, and that periods compare like for like |
-| `insights` | That the generated sentences match the figures under them |
-| `assistant` | 40 real phrasings, 8 of them misspelled, plus nonsense |
-| `search` | Ranking, and that word matching does not match inside words |
-| `dietary` | That graham cracker is not read as ham |
-| `csv` | Escaping commas, quotes, and line breaks |
+| Module       | What its tests protect                                                      |
+| ------------ | --------------------------------------------------------------------------- |
+| `money`      | Half up rounding, including on negatives, and parsing what a customer types |
+| `pricing`    | That discount comes off before tax, and that the delivery fee is taxed      |
+| `cart`       | That nothing is edited in place, and that identical lines merge             |
+| `inventory`  | That stock is counted against the cart, not just the shelf                  |
+| `budget`     | That the removal suggested is the cheapest one that closes the gap          |
+| `slots`      | The midnight roll, catering lead times, and the capacity cap                |
+| `hours`      | Three different schedules, including Katy at 3am on a Saturday              |
+| `validation` | Field shape, including the Luhn checksum                                    |
+| `orderRules` | Delivery areas, expired cards, unusable slots, backwards date ranges        |
+| `orders`     | The window in which an order can still be changed                           |
+| `reports`    | That canceled orders never count, and that periods compare like for like    |
+| `insights`   | That the generated sentences match the figures under them                   |
+| `assistant`  | 40 real phrasings, 8 of them misspelled, plus nonsense                      |
+| `search`     | Ranking, and that word matching does not match inside words                 |
+| `dietary`    | That graham cracker is not read as ham                                      |
+| `csv`        | Escaping commas, quotes, and line breaks                                    |
 
 ## What is not tested, and why
 

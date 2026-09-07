@@ -60,7 +60,7 @@ test('a restaurant that never closes offers the very next slot', () => {
 test('counts only live orders against a slot', () => {
   const orders = [
     { locationId: 'kirby', slotKey: 'k', status: 'Received' },
-    { locationId: 'kirby', slotKey: 'k', status: 'Cancelled' },
+    { locationId: 'kirby', slotKey: 'k', status: 'Canceled' },
     { locationId: 'katy', slotKey: 'k', status: 'Received' },
   ];
   assert.equal(bookingsInSlot(orders, 'kirby', 'k'), 1);

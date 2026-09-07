@@ -2,7 +2,7 @@
  * The life of an order after it is placed.
  *
  * An order moves through a fixed sequence, and what a customer is allowed to do
- * depends on where it has got to. Cancelling is fine while the ticket is still
+ * depends on where it has got to. Canceling is fine while the ticket is still
  * sitting in the queue, and not fine once the kitchen has started cooking, because
  * by then the ingredients are gone whatever the customer decides.
  *
@@ -14,7 +14,7 @@
 export const ORDER_STATUSES = ['Received', 'Baking', 'Ready', 'Complete'];
 
 /** An order the customer or the restaurant called off. */
-export const CANCELLED = 'Cancelled';
+export const CANCELED = 'Canceled';
 
 /**
  * Finds the next stage after the current one.
@@ -31,12 +31,12 @@ export function nextStatus(status) {
 }
 
 /**
- * Reports whether an order can still be cancelled.
+ * Reports whether an order can still be canceled.
  *
  * Only while it is Received. Once the kitchen has started, the food exists.
  *
  * @param {object} order An order.
- * @returns {boolean} True when cancelling is still allowed.
+ * @returns {boolean} True when canceling is still allowed.
  */
 export function canCancel(order) {
   return order.status === ORDER_STATUSES[0];
@@ -45,7 +45,7 @@ export function canCancel(order) {
 /**
  * Reports whether an order can still be changed.
  *
- * Same window as cancelling, for the same reason.
+ * Same window as canceling, for the same reason.
  *
  * @param {object} order An order.
  * @returns {boolean} True when the lines can still be edited.
@@ -66,7 +66,7 @@ export function describeStatus(order) {
     Baking: 'Your order is being made right now.',
     Ready: 'Ready and waiting at the counter.',
     Complete: 'Collected. Thanks for ordering.',
-    [CANCELLED]: 'This order was cancelled and nothing was charged.',
+    [CANCELED]: 'This order was canceled and nothing was charged.',
   };
   return messages[order.status] ?? 'Status unknown.';
 }

@@ -313,13 +313,17 @@ export function renderHelpAbout(container) {
     head('What this project is, what was borrowed, and what was built.'),
     sectionTabs('about'),
 
-    el('div', { class: 'summary-tiles' }, PROJECT_STATS.map((stat) =>
-      el('div', { class: 'summary-tile' }, [
-        el('p', { class: 'summary-tile__label', text: stat.label }),
-        el('p', { class: 'summary-tile__value', text: stat.value }),
-        el('p', { class: 'summary-tile__previous', text: stat.note }),
-      ])
-    )),
+    el(
+      'div',
+      { class: 'summary-tiles' },
+      PROJECT_STATS.map((stat) =>
+        el('div', { class: 'summary-tile' }, [
+          el('p', { class: 'summary-tile__label', text: stat.label }),
+          el('p', { class: 'summary-tile__value', text: stat.value }),
+          el('p', { class: 'summary-tile__previous', text: stat.note }),
+        ])
+      )
+    ),
 
     el('div', { class: 'banner banner--warning' }, [
       el('div', {}, [
@@ -333,7 +337,10 @@ export function renderHelpAbout(container) {
     el('section', { class: 'section' }, [
       el('div', { class: 'section__head' }, [
         el('h2', { text: 'Credit where it is due' }),
-        el('p', { class: 'section__lede', text: 'Everything in this program that came from somewhere else.' }),
+        el('p', {
+          class: 'section__lede',
+          text: 'Everything in this program that came from somewhere else.',
+        }),
       ]),
       el('div', { class: 'table-wrap' }, [
         el('table', { class: 'table' }, [
@@ -344,13 +351,17 @@ export function renderHelpAbout(container) {
               el('th', { scope: 'col', text: 'Notes' }),
             ]),
           ]),
-          el('tbody', {}, ATTRIBUTION.map((entry) =>
-            el('tr', {}, [
-              el('th', { scope: 'row', text: entry.what }),
-              el('td', { text: entry.source }),
-              el('td', { class: 'table__prose', text: entry.detail }),
-            ])
-          )),
+          el(
+            'tbody',
+            {},
+            ATTRIBUTION.map((entry) =>
+              el('tr', {}, [
+                el('th', { scope: 'row', text: entry.what }),
+                el('td', { text: entry.source }),
+                el('td', { class: 'table__prose', text: entry.detail }),
+              ])
+            )
+          ),
         ]),
       ]),
     ]),
@@ -371,12 +382,16 @@ export function renderHelpAbout(container) {
               el('th', { scope: 'col', text: 'What this uses instead' }),
             ]),
           ]),
-          el('tbody', {}, INSTEAD_OF_LIBRARIES.map((entry) =>
-            el('tr', {}, [
-              el('th', { scope: 'row', text: entry.usually }),
-              el('td', {}, [el('code', { class: 'code', text: entry.instead })]),
-            ])
-          )),
+          el(
+            'tbody',
+            {},
+            INSTEAD_OF_LIBRARIES.map((entry) =>
+              el('tr', {}, [
+                el('th', { scope: 'row', text: entry.usually }),
+                el('td', {}, [el('code', { class: 'code', text: entry.instead })]),
+              ])
+            )
+          ),
         ]),
       ]),
     ]),

@@ -1,5 +1,5 @@
 /**
- * One labelled input with its own error message.
+ * One labeled input with its own error message.
  *
  * Each field knows how to check itself, so the checkout form does not carry a
  * separate list of which validator belongs to which input. That pairing is the thing

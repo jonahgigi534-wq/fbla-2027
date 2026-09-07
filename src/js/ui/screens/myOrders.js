@@ -9,7 +9,7 @@ import { el, emptyState, render } from '../dom.js';
 import { getState } from '../../app/store.js';
 import { navigate } from '../../app/router.js';
 import { findLocation } from '../../data/locations.js';
-import { CANCELLED } from '../../domain/orders.js';
+import { CANCELED } from '../../domain/orders.js';
 import { formatUSD } from '../../domain/money.js';
 
 /** Most orders to list before the page becomes a scroll marathon. */
@@ -21,7 +21,7 @@ const STATUS_TONE = {
   Baking: 'warning',
   Ready: 'success',
   Complete: '',
-  [CANCELLED]: 'danger',
+  [CANCELED]: 'danger',
 };
 
 /**

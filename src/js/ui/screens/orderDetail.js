@@ -17,7 +17,7 @@ import { navigate } from '../../app/router.js';
 import { findLocation } from '../../data/locations.js';
 import {
   ORDER_STATUSES,
-  CANCELLED,
+  CANCELED,
   canCancel,
   canModify,
   describeStatus,
@@ -31,8 +31,8 @@ import { formatUSD } from '../../domain/money.js';
  * @returns {HTMLElement} The tracker.
  */
 function statusTracker(order) {
-  if (order.status === CANCELLED) {
-    return banner('danger', 'Cancelled', describeStatus(order));
+  if (order.status === CANCELED) {
+    return banner('danger', 'Canceled', describeStatus(order));
   }
 
   const reachedIndex = ORDER_STATUSES.indexOf(order.status);
@@ -239,7 +239,7 @@ export function renderOrderDetail(container, params) {
                 )
               : el('p', {
                   class: 'field__hint',
-                  text: 'The kitchen has started, so this order can no longer be cancelled.',
+                  text: 'The kitchen has started, so this order can no longer be canceled.',
                 }),
             el(
               'button',

@@ -21,7 +21,7 @@ const STORAGE_KEY = 'houseofpies.ordering.v1';
  * Bumped whenever the saved shape changes in a way older data cannot satisfy.
  * migrate() below decides what to do with anything older.
  */
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 /** Holds saved state when the browser will not. Session only, by design. */
 let memoryFallback = null;
@@ -63,10 +63,14 @@ export function isUsingTemporaryStorage() {
 /**
  * Brings saved data forward to the current schema version.
  *
- * Anything older than the current version is discarded rather than guessed at. There
- * is no released older version to migrate from yet, and silently keeping data whose
- * shape no longer matches is how a demo crashes in front of a judge. When a real
- * second version exists, its conversion belongs here.
+ * Anything older than the current version is discarded rather than guessed at, and
+ * silently keeping data whose shape no longer matches is how a demo crashes in front
+ * of a judge.
+ *
+ * Version 2 renamed the cancelled order status to Canceled. Orders saved under
+ * version 1 still carry the old spelling, which no longer matches anything the status
+ * machine or the reports know about, so they are dropped rather than converted. There
+ * is nothing in them worth keeping: the seeded history rebuilds itself on load.
  *
  * @param {object} saved Parsed data straight out of storage.
  * @returns {object|null} Usable state, or null when it cannot be trusted.

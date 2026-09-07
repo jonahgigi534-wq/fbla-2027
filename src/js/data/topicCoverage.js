@@ -40,7 +40,7 @@ export const TOPIC_COVERAGE = [
   {
     clause: 'place and manage orders',
     answer:
-      'Orders can be placed, tracked through four stages, edited item by item while the kitchen has not started, cancelled in that same window, reordered later, and printed as a receipt. Cancelling returns the stock to the shelf.',
+      'Orders can be placed, tracked through four stages, edited item by item while the kitchen has not started, canceled in that same window, reordered later, and printed as a receipt. Canceling returns the stock to the shelf.',
     path: '/orders',
     linkLabel: 'Open your orders',
   },
@@ -54,7 +54,7 @@ export const TOPIC_COVERAGE = [
   {
     clause: 'review order information',
     answer:
-      'Every order keeps an itemised receipt that prints. A separate spending screen sums what has been spent over 30, 90, or 365 days and names what gets ordered most.',
+      'Every order keeps an itemized receipt that prints. A separate spending screen sums what has been spent over 30, 90, or 365 days and names what gets ordered most.',
     path: '/spending',
     linkLabel: 'Review your spending',
   },
@@ -68,7 +68,7 @@ export const TOPIC_COVERAGE = [
   {
     clause: 'inventory limits',
     answer:
-      'Stock is checked against what is already in the cart, so a customer holding the last four slices cannot add a fifth. The quantity stepper stops at what is left and says how many that is. Placing an order takes stock off the shelf; cancelling puts it back.',
+      'Stock is checked against what is already in the cart, so a customer holding the last four slices cannot add a fifth. The quantity stepper stops at what is left and says how many that is. Placing an order takes stock off the shelf; canceling puts it back.',
     path: '/manager/inventory',
     linkLabel: 'Open the stock screen',
   },

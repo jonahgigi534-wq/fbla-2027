@@ -107,12 +107,12 @@ test('a full slot is refused even though it is otherwise fine', () => {
   assert.match(result.message, /just filled up/);
 });
 
-test('a cancelled order does not hold its slot', () => {
+test('a canceled order does not hold its slot', () => {
   const slot = { minute: 20 * 60, dayOffset: 0, key: 'slot' };
   const orders = Array.from({ length: 4 }, () => ({
     locationId: 'kirby',
     slotKey: 'slot',
-    status: 'Cancelled',
+    status: 'Canceled',
   }));
   assert.equal(isSlotUsable({ slot, location: kirby, now: tuesdayEvening, orders }).valid, true);
 });

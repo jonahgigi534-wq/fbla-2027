@@ -35,7 +35,7 @@ export const HELP_ARTICLES = [
     group: 'Ordering',
     title: 'When something is sold out',
     keywords: ['sold out', 'unavailable', 'stock', 'substitute', 'alternative'],
-    body: 'Sold out items stay on the menu, grayed out and labelled, rather than disappearing. Hiding them would leave you hunting for something you were told the restaurant sells. Open one and the program offers three alternatives from the same part of the menu, closest in price first.',
+    body: 'Sold out items stay on the menu, grayed out and labeled, rather than disappearing. Hiding them would leave you hunting for something you were told the restaurant sells. Open one and the program offers three alternatives from the same part of the menu, closest in price first.',
   },
   {
     id: 'catering-notice',
@@ -47,9 +47,9 @@ export const HELP_ARTICLES = [
   {
     id: 'change-order',
     group: 'After ordering',
-    title: 'Changing or cancelling an order',
+    title: 'Changing or canceling an order',
     keywords: ['cancel', 'change', 'edit', 'modify', 'refund', 'mistake'],
-    body: 'While an order is still Received you can change the quantity of any item on it or cancel it outright, both from the order screen. Once it moves to Baking the kitchen has started and the ingredients are committed, so neither is offered any more. Cancelling puts the stock back on the shelf.',
+    body: 'While an order is still Received you can change the quantity of any item on it or cancel it outright, both from the order screen. Once it moves to Baking the kitchen has started and the ingredients are committed, so neither is offered any more. Canceling puts the stock back on the shelf.',
   },
   {
     id: 'track-order',
@@ -62,8 +62,8 @@ export const HELP_ARTICLES = [
     id: 'receipt',
     group: 'After ordering',
     title: 'Getting a receipt',
-    keywords: ['receipt', 'print', 'invoice', 'proof', 'itemised'],
-    body: 'Every order has an itemised receipt showing the restaurant, the collection time, every line, and the full breakdown of subtotal, discount, delivery, and tax. Press Print receipt and the navigation and buttons are stripped out, leaving the document on its own.',
+    keywords: ['receipt', 'print', 'invoice', 'proof', 'itemized'],
+    body: 'Every order has an itemized receipt showing the restaurant, the collection time, every line, and the full breakdown of subtotal, discount, delivery, and tax. Press Print receipt and the navigation and buttons are stripped out, leaving the document on its own.',
   },
   {
     id: 'assistant',

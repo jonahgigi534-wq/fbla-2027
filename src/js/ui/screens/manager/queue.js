@@ -13,7 +13,7 @@ import { getState } from '../../../app/store.js';
 import { advanceOrder, cancelOrder } from '../../../app/orderActions.js';
 import { navigate } from '../../../app/router.js';
 import { findLocation } from '../../../data/locations.js';
-import { CANCELLED, canCancel, nextStatus } from '../../../domain/orders.js';
+import { CANCELED, canCancel, nextStatus } from '../../../domain/orders.js';
 import { formatUSD } from '../../../domain/money.js';
 
 /** Badge color for each status. */
@@ -22,7 +22,7 @@ const STATUS_TONE = {
   Baking: 'warning',
   Ready: 'success',
   Complete: '',
-  [CANCELLED]: 'danger',
+  [CANCELED]: 'danger',
 };
 
 /**
