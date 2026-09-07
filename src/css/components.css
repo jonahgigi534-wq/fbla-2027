@@ -3,33 +3,53 @@
  */
 
 /* Buttons */
+/*
+ * The orange pill House of Pies puts on every call to action, set in Bebas Neue.
+ *
+ * The face is condensed and caps only, so it needs a larger size and looser tracking
+ * than the old system sans did to read at the same weight. The fill is the darker of
+ * the two brand oranges because this is the one place white text sits on orange, and
+ * the lighter one would not clear 4.5:1.
+ */
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
+  padding: var(--space-2) var(--space-5);
   min-height: 40px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
-  background: var(--color-orange);
+  background: var(--color-orange-dark);
   color: var(--color-text-inverse);
-  font-size: var(--text-sm);
-  font-weight: 700;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   cursor: pointer;
   text-decoration: none;
-  transition: background 120ms ease, border-color 120ms ease;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease;
 }
 
-.button:hover:not(:disabled) { background: var(--color-orange-dark); }
-.button:disabled { opacity: 0.5; cursor: not-allowed; }
+.button:hover:not(:disabled) {
+  background: var(--color-orange-darker);
+}
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
 .button--secondary {
   background: var(--color-surface);
   color: var(--color-text);
   border-color: var(--color-border-strong);
 }
-.button--secondary:hover:not(:disabled) { background: var(--color-surface-sunk); }
+.button--secondary:hover:not(:disabled) {
+  background: var(--color-surface-sunk);
+}
 
 .button--quiet {
   background: transparent;
@@ -37,10 +57,18 @@
   border-color: transparent;
   padding-inline: var(--space-2);
 }
-.button--quiet:hover:not(:disabled) { background: var(--color-orange-soft); }
+.button--quiet:hover:not(:disabled) {
+  background: var(--color-orange-soft);
+}
 
-.button--small { min-height: 32px; padding: var(--space-1) var(--space-3); font-size: var(--text-xs); }
-.button--block { width: 100%; }
+.button--small {
+  min-height: 32px;
+  padding: var(--space-1) var(--space-4);
+  font-size: var(--text-base);
+}
+.button--block {
+  width: 100%;
+}
 
 /* Cards */
 .card {
@@ -57,7 +85,9 @@
   width: 100%;
   padding: 0;
   cursor: pointer;
-  transition: box-shadow 120ms ease, transform 120ms ease;
+  transition:
+    box-shadow 120ms ease,
+    transform 120ms ease;
 }
 
 .card--interactive:hover {
@@ -65,9 +95,19 @@
   transform: translateY(-2px);
 }
 
-.card__body { padding: var(--space-4); }
-.card__media { aspect-ratio: 3 / 2; overflow: hidden; background: var(--color-surface-sunk); }
-.card__media img { width: 100%; height: 100%; object-fit: cover; }
+.card__body {
+  padding: var(--space-4);
+}
+.card__media {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-surface-sunk);
+}
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* Chips, used for filters and dietary tags */
 .chip {
@@ -102,10 +142,22 @@
   color: var(--color-text-muted);
 }
 
-.badge--success { background: var(--color-success-soft); color: var(--color-success); }
-.badge--warning { background: var(--color-warning-soft); color: var(--color-warning); }
-.badge--danger  { background: var(--color-danger-soft);  color: var(--color-danger); }
-.badge--info    { background: var(--color-info-soft);    color: var(--color-info); }
+.badge--success {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+.badge--warning {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+.badge--danger {
+  background: var(--color-danger-soft);
+  color: var(--color-danger);
+}
+.badge--info {
+  background: var(--color-info-soft);
+  color: var(--color-info);
+}
 
 /* Banners carry a message the customer needs before they act */
 .banner {
@@ -118,12 +170,27 @@
   font-size: var(--text-sm);
 }
 
-.banner--info    { background: var(--color-info-soft);    border-color: #bcd6e4; }
-.banner--warning { background: var(--color-warning-soft); border-color: #e4cd9c; }
-.banner--danger  { background: var(--color-danger-soft);  border-color: #e8bdb7; }
-.banner--success { background: var(--color-success-soft); border-color: #b9d8c6; }
+.banner--info {
+  background: var(--color-info-soft);
+  border-color: #bcd6e4;
+}
+.banner--warning {
+  background: var(--color-warning-soft);
+  border-color: #e4cd9c;
+}
+.banner--danger {
+  background: var(--color-danger-soft);
+  border-color: #e8bdb7;
+}
+.banner--success {
+  background: var(--color-success-soft);
+  border-color: #b9d8c6;
+}
 
-.banner__title { font-weight: 700; margin-bottom: 2px; }
+.banner__title {
+  font-weight: 700;
+  margin-bottom: 2px;
+}
 
 /*
  * Empty states.
@@ -140,14 +207,38 @@
   background: var(--color-surface);
 }
 
-.empty-state__icon { font-size: 2rem; margin-bottom: var(--space-2); }
-.empty-state__title { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-1); }
-.empty-state__body { color: var(--color-text-muted); max-width: 44ch; margin: 0 auto var(--space-4); }
+.empty-state__icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-2);
+}
+.empty-state__title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+.empty-state__body {
+  color: var(--color-text-muted);
+  max-width: 44ch;
+  margin: 0 auto var(--space-4);
+}
 
 /* Form controls */
-.field { display: block; margin-bottom: var(--space-4); }
-.field__label { display: block; font-size: var(--text-sm); font-weight: 700; margin-bottom: var(--space-1); }
-.field__hint { display: block; font-size: var(--text-xs); color: var(--color-text-muted); margin-top: var(--space-1); }
+.field {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+.field__label {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+.field__hint {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
 
 .field__control {
   width: 100%;
@@ -158,8 +249,12 @@
   background: var(--color-surface);
 }
 
-.field__control:focus { border-color: var(--color-orange); }
-.field--invalid .field__control { border-color: var(--color-danger); }
+.field__control:focus {
+  border-color: var(--color-orange);
+}
+.field--invalid .field__control {
+  border-color: var(--color-danger);
+}
 
 .field__error {
   display: block;
@@ -176,11 +271,19 @@
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
-.grid--wide { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.grid--wide {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
 
 /* Price display, kept consistent everywhere money appears */
-.price { font-weight: 700; font-variant-numeric: tabular-nums; }
-.price--muted { color: var(--color-text-muted); font-weight: 600; }
+.price {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.price--muted {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
 
 /* Toasts: the short confirmation or refusal shown after an action */
 .toast-host {
@@ -206,10 +309,18 @@
   animation: toast-in 160ms ease-out;
 }
 
-.toast--success { background: var(--color-brown); color: var(--color-text-inverse); }
-.toast--error { background: var(--color-danger); color: var(--color-text-inverse); }
+.toast--success {
+  background: var(--color-brown);
+  color: var(--color-text-inverse);
+}
+.toast--error {
+  background: var(--color-danger);
+  color: var(--color-text-inverse);
+}
 
-.toast__text { flex: 1; }
+.toast__text {
+  flex: 1;
+}
 
 .toast__close {
   background: none;
@@ -222,8 +333,14 @@
 }
 
 @keyframes toast-in {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /*
@@ -256,8 +373,13 @@
   color: var(--color-text-inverse);
 }
 
-.assistant__title { font-size: var(--text-lg); }
-.assistant__subtitle { font-size: var(--text-xs); opacity: 0.75; }
+.assistant__title {
+  font-size: var(--text-lg);
+}
+.assistant__subtitle {
+  font-size: var(--text-xs);
+  opacity: 0.75;
+}
 
 .assistant__close {
   background: none;
@@ -284,7 +406,9 @@
   background: var(--color-surface-sunk);
 }
 
-.assistant__foot .field { margin-bottom: var(--space-2); }
+.assistant__foot .field {
+  margin-bottom: var(--space-2);
+}
 
 .chat__who {
   font-size: var(--text-xs);
@@ -301,17 +425,137 @@
   padding: var(--space-2) var(--space-3);
 }
 
-.chat__body { font-size: var(--text-sm); }
-.chat__items { display: grid; gap: var(--space-2); margin-top: var(--space-3); }
-.chat__items .card__media { aspect-ratio: 5 / 2; }
-.chat__items .item-card__description { display: none; }
-.chat__links { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-3); }
-.chat__chips { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-2); }
-.chat__followup { margin-top: var(--space-3); font-size: var(--text-xs); color: var(--color-text-muted); }
+.chat__body {
+  font-size: var(--text-sm);
+}
+.chat__items {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.chat__items .card__media {
+  aspect-ratio: 5 / 2;
+}
+.chat__items .item-card__description {
+  display: none;
+}
+.chat__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+.chat__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.chat__followup {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
 
-.app-nav__assistant { background: var(--color-orange-soft); border: 0; cursor: pointer; font-family: inherit; }
-.app-nav__assistant:hover { background: var(--color-orange); color: var(--color-text-inverse); }
+.app-nav__assistant {
+  background: var(--color-orange-soft);
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+.app-nav__assistant:hover {
+  background: var(--color-orange);
+  color: var(--color-text-inverse);
+}
 
 @media (max-width: 520px) {
-  .assistant { width: 100vw; }
+  .assistant {
+    width: 100vw;
+  }
+}
+
+/*
+ * Fan favorites.
+ *
+ * House of Pies frames these with no card chrome at all: a rounded photograph, the
+ * dish name in caps beneath it, the description, then the order button. Matching that
+ * meant dropping the border and surface the other grids use, so this is its own
+ * component rather than a modifier on .card.
+ */
+.favorite-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-3);
+}
+
+/*
+ * A three line description and a two line one would otherwise leave their order
+ * buttons on different lines across a row. Clamping the text and dropping the button
+ * to the bottom of whichever card is tallest keeps the row reading straight across.
+ */
+.favorite-card .button {
+  margin-top: auto;
+}
+
+.favorite-card__media {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  background: var(--color-surface-sunk);
+}
+
+.favorite-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.favorite-card__name {
+  font-size: var(--text-2xl);
+  letter-spacing: 0.02em;
+}
+
+.favorite-card__description {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin: 0;
+  max-width: 44ch;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.favorite-card__price {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.favorite-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  justify-content: center;
+}
+
+/* A centered heading block, the way the restaurant sets its own section titles. */
+.section--feature {
+  text-align: center;
+}
+.section--feature .section__head {
+  margin-bottom: var(--space-6);
+}
+.section--feature .section__lede {
+  max-width: 64ch;
+  margin-inline: auto;
+}
+
+/* The orange half of a two tone heading, as in "our 6 locations". */
+.brand-mark {
+  color: var(--color-orange);
 }
