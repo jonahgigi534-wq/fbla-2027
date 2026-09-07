@@ -14,6 +14,7 @@ import { findLocation } from './data/locations.js';
 import { el, render } from './ui/dom.js';
 import { clearToasts } from './ui/components/toast.js';
 import { openAssistant } from './ui/components/assistant.js';
+import { maybeStartTour } from './ui/components/tour.js';
 import { renderHome } from './ui/screens/home.js';
 import { renderMenu } from './ui/screens/menu.js';
 import { renderLocations } from './ui/screens/locations.js';
@@ -196,6 +197,9 @@ start((name, params, path) => {
 });
 
 warnAboutTemporaryStorage();
+
+// Offered once, after the first screen is drawn so the header exists to point at.
+maybeStartTour();
 
 // A bare address should land somewhere real rather than an empty screen.
 if (window.location.hash === '') {

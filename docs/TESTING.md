@@ -68,6 +68,15 @@ writing the test found the half that was left.
 differ; they came out exactly equal. The assumption was wrong rather than the code,
 and the tie break is now pinned as deliberate behavior.
 
+**The offline build had no header, footer, or buttons.** `print.css` is linked with
+`media="print"` and hides all of them, which is right for a printed receipt. The
+bundler concatenated every stylesheet into one unmediated `<style>` block, so those
+rules applied on screen in `dist/standalone.html` alone. It survived because the route
+checks drove the program with scripted clicks, and a scripted click works perfectly
+well on a button with `display: none`. Found only when the tour tried to measure the
+header and got back a box of zero by zero. The bundler now keeps each stylesheet under
+the media it was linked with.
+
 **One exported function had no `@returns`.** Found by the documentation check, not by
 reading.
 

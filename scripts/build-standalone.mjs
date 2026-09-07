@@ -213,14 +213,31 @@ function findOfflineProblems(html) {
 async function build() {
   const html = await readFile(join(ROOT, 'index.html'), 'utf8');
 
-  // Inline every stylesheet the page links to, in the order it links to them.
-  const stylesheetPaths = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map(
-    (match) => match[1]
-  );
+  /*
+   * Inline every stylesheet the page links to, in the order it links to them, keeping
+   * each one under the media it was linked with.
+   *
+   * print.css is the reason this matters. It hides the header, the footer and every
+   * button, which is right for a printed receipt and catastrophic on screen. Dropping
+   * media="print" while bundling applied those rules to the offline build, so the one
+   * copy that actually gets presented had no navigation and no buttons.
+   */
+  const links = [...html.matchAll(/<link rel="stylesheet"([^>]*)>/g)].map((match) => ({
+    href: /href="([^"]+)"/.exec(match[1])?.[1],
+    media: /media="([^"]+)"/.exec(match[1])?.[1] ?? null,
+  }));
+  const stylesheetPaths = links.map((link) => link.href);
+
   const styles = [];
-  for (const path of stylesheetPaths) {
-    const css = await readFile(join(ROOT, path), 'utf8');
-    styles.push(`/* ${path} */\n${rebaseAssetUrls(css)}`);
+  const printStyles = [];
+  for (const link of links) {
+    const css = rebaseAssetUrls(await readFile(join(ROOT, link.href), 'utf8'));
+    const block = `/* ${link.href} */\n${css}`;
+    if (link.media === 'print') {
+      printStyles.push(block);
+    } else {
+      styles.push(block);
+    }
   }
 
   const modules = await collectModules(ENTRY);
@@ -228,7 +245,11 @@ async function build() {
 
   const built = html
     .replace(/\s*<link rel="stylesheet"[^>]*>/g, '')
-    .replace('</head>', `  <style>\n${styles.join('\n')}\n  </style>\n  </head>`)
+    .replace(
+      '</head>',
+      `  <style>\n${styles.join('\n')}\n  </style>\n` +
+        `  <style media="print">\n${printStyles.join('\n')}\n  </style>\n  </head>`
+    )
     .replace(/<script type="module" src="[^"]+"><\/script>/, `<script>\n${script}\n</script>`)
     .replace(
       '<title>House of Pies Ordering</title>',

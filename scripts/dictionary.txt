@@ -68,6 +68,7 @@ animals
 announced
 another
 answer
+answered
 answers
 any
 anyone
@@ -120,6 +121,7 @@ audience
 audio
 audit
 authoritative
+authors
 autocomplete
 automatically
 available
@@ -242,6 +244,7 @@ browns
 browse
 browser
 browsers
+bubble
 budget
 bug
 bugs
@@ -388,6 +391,7 @@ clears
 click
 clicked
 clicking
+clicks
 clock
 close
 closed
@@ -427,6 +431,7 @@ compared
 comparewithpreviousperiod
 competition
 complete
+concatenated
 concentrated
 concepts
 conclude
@@ -459,6 +464,7 @@ cookies
 cooking
 copes
 copied
+copies
 copy
 copyright
 copyrighted
@@ -478,6 +484,7 @@ counted
 counter
 country
 counts
+cover
 coverage
 covered
 covers
@@ -648,6 +655,7 @@ drinks
 drive
 drizzle
 drop
+drove
 during
 dutch
 each
@@ -1145,6 +1153,7 @@ levels
 libraries
 library
 license
+licenses
 lid
 lighter
 lightly
@@ -1157,6 +1166,7 @@ limits
 line
 lines
 link
+linked
 linking
 links
 list
@@ -1587,6 +1597,7 @@ quesadilla
 question
 questions
 queue
+quick
 quietly
 quote
 quoted
@@ -1676,6 +1687,7 @@ representative
 reproduced
 require
 required
+requires
 rescan
 reset
 rest
@@ -1766,6 +1778,7 @@ screen
 screens
 screensaver
 script
+scripted
 search
 searchable
 searching
@@ -1989,6 +2002,7 @@ sunshine
 super
 supreme
 survive
+survived
 survives
 surviving
 svg
@@ -2104,6 +2118,7 @@ total
 totals
 touch
 touches
+tour
 trace
 track
 tracked
@@ -2113,11 +2128,13 @@ trading
 traditional
 trailing
 transformed
+travel
 tray
 trays
 tree
 tres
 triangles
+tried
 triple
 true
 trust
@@ -2147,10 +2164,12 @@ underneath
 understand
 understanding
 understands
+unedited
 unicode
 unknown
 unlike
 unlock
+unmediated
 unreliable
 unsweet
 until
@@ -2180,6 +2199,7 @@ validatezip
 validation
 value
 vanilla
+vanishing
 variables
 variety
 vegan
@@ -2231,6 +2251,7 @@ when
 where
 whether
 which
+whichever
 while
 whipped
 white

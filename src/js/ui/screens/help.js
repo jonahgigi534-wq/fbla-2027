@@ -11,6 +11,7 @@
 import { el, emptyState, render } from '../dom.js';
 import { navigate } from '../../app/router.js';
 import { openAssistant } from '../components/assistant.js';
+import { startTour } from '../components/tour.js';
 import { HELP_ARTICLES } from '../../data/helpArticles.js';
 import { head, sectionTabs } from './helpShell.js';
 
@@ -69,11 +70,16 @@ export function renderHelp(container) {
           searchField,
         ]),
         el('div', { class: 'help-ask' }, [
-          el('p', { class: 'field__hint', text: 'Would rather just ask?' }),
+          el('p', { class: 'field__hint', text: 'Would rather just ask, or be shown around?' }),
           el(
             'button',
             { class: 'button button--secondary', type: 'button', onClick: openAssistant },
             'Open the Pie Assistant'
+          ),
+          el(
+            'button',
+            { class: 'button button--secondary', type: 'button', onClick: startTour },
+            'Take the tour again'
           ),
         ]),
       ]),

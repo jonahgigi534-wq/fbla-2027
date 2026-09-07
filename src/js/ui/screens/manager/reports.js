@@ -38,6 +38,70 @@ import { reportTable } from './reportTable.js';
 import { formatMetric, labelForKey, view } from './reportView.js';
 
 /**
+ * Builds the sentences generated from the report.
+ *
+ * A manager reading a table of numbers still has to work out what changed. These say
+ * it outright, which is the difference between a report that can be analyzed and one
+ * that merely can be read.
+ *
+ * @param {string[]} insights Sentences from domain/insights.js.
+ * @returns {HTMLElement} The section.
+ */
+function insightsSection(insights) {
+  return el('section', { class: 'insights' }, [
+    el('h2', { class: 'insights__title', text: 'What the numbers say' }),
+    el(
+      'ul',
+      { class: 'insights__list' },
+      insights.map((line) => el('li', { text: line }))
+    ),
+  ]);
+}
+
+/**
+ * Builds the four headline figures, each against the same figure last period.
+ *
+ * @param {object} comparison The result of compareWithPreviousPeriod.
+ * @returns {HTMLElement} The row of tiles.
+ */
+function summaryTiles(comparison) {
+  const now = comparison.current.totals;
+  const before = comparison.previous.totals;
+  return el('div', { class: 'summary-tiles' }, [
+    summaryTile('Revenue', formatUSD(now.revenue), formatUSD(before.revenue)),
+    summaryTile('Orders', String(now.orders), String(before.orders)),
+    summaryTile('Items sold', String(now.units), String(before.units)),
+    summaryTile('Average order', formatUSD(now.averageOrder), formatUSD(before.averageOrder)),
+  ]);
+}
+
+/**
+ * Builds the two ways to get the report off the screen.
+ *
+ * @param {object[]} rows The rows currently shown.
+ * @param {HTMLElement} csvFallback Where the CSV goes when a download is refused.
+ * @returns {HTMLElement} The button row.
+ */
+function takeAwayRow(rows, csvFallback) {
+  return el('div', { class: 'row' }, [
+    el(
+      'button',
+      {
+        class: 'button button--secondary',
+        type: 'button',
+        onClick: () => exportCsv(rows, csvFallback),
+      },
+      'Export CSV'
+    ),
+    el(
+      'button',
+      { class: 'button button--secondary', type: 'button', onClick: () => window.print() },
+      'Print this report'
+    ),
+  ]);
+}
+
+/**
  * Renders the reports screen.
  *
  * @param {HTMLElement} container The main element to render into.
@@ -104,37 +168,9 @@ export function renderManagerReports(container) {
         managerTabs('/manager/reports'),
         controls(draw),
 
-        el('section', { class: 'insights' }, [
-          el('h2', { class: 'insights__title', text: 'What the numbers say' }),
-          el(
-            'ul',
-            { class: 'insights__list' },
-            insights.map((line) => el('li', { text: line }))
-          ),
-        ]),
+        insightsSection(insights),
 
-        el('div', { class: 'summary-tiles' }, [
-          summaryTile(
-            'Revenue',
-            formatUSD(comparison.current.totals.revenue),
-            formatUSD(comparison.previous.totals.revenue)
-          ),
-          summaryTile(
-            'Orders',
-            String(comparison.current.totals.orders),
-            String(comparison.previous.totals.orders)
-          ),
-          summaryTile(
-            'Items sold',
-            String(comparison.current.totals.units),
-            String(comparison.previous.totals.units)
-          ),
-          summaryTile(
-            'Average order',
-            formatUSD(comparison.current.totals.averageOrder),
-            formatUSD(comparison.previous.totals.averageOrder)
-          ),
-        ]),
+        summaryTiles(comparison),
 
         barChart({
           rows,
@@ -146,22 +182,7 @@ export function renderManagerReports(container) {
 
         reportTable(rows, draw),
 
-        el('div', { class: 'row' }, [
-          el(
-            'button',
-            {
-              class: 'button button--secondary',
-              type: 'button',
-              onClick: () => exportCsv(rows, csvFallback),
-            },
-            'Export CSV'
-          ),
-          el(
-            'button',
-            { class: 'button button--secondary', type: 'button', onClick: () => window.print() },
-            'Print this report'
-          ),
-        ]),
+        takeAwayRow(rows, csvFallback),
         csvFallback,
       ]);
     }

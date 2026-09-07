@@ -65,8 +65,18 @@ SIL Open Font License 1.1, which permits redistribution:
 
 The two Latin subsets ship in `assets/fonts` and total 42 KB. They are served from
 there rather than from Google because the program has to work with no internet, and a
-webfont that fails to arrive would drop the whole interface back to a system sans. A
-copy of each license belongs beside the files if this is ever distributed further.
+webfont that fails to arrive would drop the whole interface back to a system sans.
+
+The license requires the copyright notice and license text to travel with the font
+files, so both sit beside them, unedited and named after the face they cover:
+
+| File                              | Covers                   | Copyright                            |
+| --------------------------------- | ------------------------ | ------------------------------------ |
+| `assets/fonts/OFL-BebasNeue.txt`  | `bebas-neue-latin.woff2` | Dharma Type, 2010                    |
+| `assets/fonts/OFL-Parkinsans.txt` | `parkinsans-latin.woff2` | The Parkinsans Project Authors, 2024 |
+
+`npm run build` copies the whole `assets` folder next to `dist/standalone.html`, so
+the licenses travel with the offline build as well as with the repository.
 
 **Guest reviews.** The five reviews in the carousel are real reviews House of Pies
 publishes on its own home page, reproduced in full, word for word, and credited to the
