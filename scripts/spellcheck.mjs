@@ -65,9 +65,12 @@ async function listJsFiles(folder) {
  */
 export function extractStrings(source) {
   const found = [];
-  for (const match of source.matchAll(/'([^'\\n]{4,})'|"([^"\\n]{4,})"/g)) {
+  for (const match of source.matchAll(/'([^'\n]{4,})'|"([^"\n]{4,})"/g)) {
     const text = match[1] ?? match[2];
     const looksLikeCode =
+      // An escape sequence is not prose. Without this, the flatbread emoji in
+      // foodPlaceholder.js offers up 'fad' as a word to check.
+      text.includes('\\') ||
       text.startsWith('.') ||
       text.startsWith('/') ||
       text.startsWith(':') ||
