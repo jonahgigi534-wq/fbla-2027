@@ -70,6 +70,18 @@ img {
   display: block;
 }
 
+/*
+ * The hidden attribute has to outrank a component's own display rule.
+ *
+ * A browser hides [hidden] with display: none from its own stylesheet, and any author
+ * rule beats that. The assistant panel sets display: flex, so marking it hidden did
+ * nothing and the close button appeared dead. This puts the attribute back in charge
+ * everywhere, rather than patching one component and leaving the next to find out.
+ */
+[hidden] {
+  display: none !important;
+}
+
 a {
   color: var(--color-orange-dark);
   text-decoration-thickness: 1px;
