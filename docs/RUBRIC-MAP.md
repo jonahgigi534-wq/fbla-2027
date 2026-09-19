@@ -7,7 +7,7 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every function has a documentation block, private helpers included. 234 of 234,
+- Every function has a documentation block, private helpers included. 249 of 249,
   checked by
   `npm run check`, not by inspection.
 - Every file opens with a block saying what it is for and who calls it.
@@ -22,7 +22,7 @@ are earned in the room rather than in the code.
 - Four layers with an enforced rule between them:
   nothing in `domain/` may import from `ui/` or `app/`. Checked by
   `scripts/check-structure.mjs`.
-- That rule is why 237 tests can run with no browser.
+- That rule is why 253 tests can run with no browser.
 - No file over 400 lines and no function over its ceiling, also checked. A function
   in domain or app may run to 80 lines, one in ui to 130, because a view builder is a
   declarative tree rather than branching logic. The reports screen reached 496 during

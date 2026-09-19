@@ -14,7 +14,7 @@ export const PROJECT_STATS = [
   { label: 'Menu items', value: '426', note: 'across 34 categories' },
   { label: 'Restaurants', value: '6', note: 'on three different schedules' },
   { label: 'Runtime dependencies', value: 'None', note: 'no framework, no libraries' },
-  { label: 'Tests', value: '237', note: '97% line coverage' },
+  { label: 'Tests', value: '253', note: '97% of the logic they cover' },
 ];
 
 /** What was borrowed, and from whom. */
@@ -70,7 +70,7 @@ export const ATTRIBUTION = [
 
 /** Things that would normally be a library, and what replaced them. */
 export const INSTEAD_OF_LIBRARIES = [
-  { usually: 'A UI framework', instead: 'src/js/ui/dom.js, about 60 lines' },
+  { usually: 'A UI framework', instead: 'src/js/ui/dom.js, 107 lines' },
   { usually: 'A router', instead: 'src/js/app/router.js, hash based' },
   { usually: 'A state store', instead: 'src/js/app/store.js, one object and a subscribe list' },
   { usually: 'A charting library', instead: 'src/js/ui/components/barChart.js, SVG rectangles' },

@@ -123,6 +123,7 @@ audit
 authoritative
 authors
 autocomplete
+automated
 automatically
 available
 avatar
@@ -134,6 +135,7 @@ awkward
 axis
 back
 backed
+backfills
 background
 backup
 backwards
@@ -233,6 +235,7 @@ brewed
 brien
 brightness
 bring
+bringing
 brings
 british
 broke
@@ -448,6 +451,7 @@ consistently
 constants
 constraints
 construct
+consumed
 containing
 contains
 content
@@ -473,6 +477,7 @@ corned
 corner
 corporate
 correct
+correctly
 correlation
 corrupt
 cost
@@ -747,6 +752,7 @@ fails
 failure
 fajita
 fajitas
+fake
 fall
 fallback
 falls
@@ -1301,6 +1307,7 @@ mousse
 move
 moved
 moves
+moving
 mozzarella
 muffin
 muffins
@@ -1410,6 +1417,7 @@ over
 overcharges
 overdone
 overnight
+overwrites
 own
 owned
 packages
@@ -1417,6 +1425,7 @@ padding
 page
 pager
 pages
+paging
 paid
 pair
 pancake
@@ -1511,6 +1520,7 @@ point
 points
 poise
 polyfill
+popped
 popping
 poppyseed
 popular
@@ -1587,6 +1597,7 @@ punctuation
 purchase
 pure
 purpose
+pushes
 put
 puts
 putting
@@ -1618,6 +1629,7 @@ reach
 reachable
 reached
 reaches
+reaching
 react
 read
 readability
@@ -1679,6 +1691,7 @@ repeat
 replaced
 replacements
 replaces
+replacing
 report
 reports
 reporttable
@@ -2071,6 +2084,7 @@ thick
 thin
 thing
 things
+thinking
 thinly
 this
 those
@@ -2128,6 +2142,7 @@ trading
 traditional
 trailing
 transformed
+trapped
 travel
 tray
 trays
@@ -2219,6 +2234,7 @@ waffles
 waiting
 waived
 walk
+walking
 walks
 wall
 walnuts

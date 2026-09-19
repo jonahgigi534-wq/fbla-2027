@@ -17,7 +17,7 @@ Things that would normally be a dependency, and what replaced them:
 
 | Usually a library      | What this uses instead                                 |
 | ---------------------- | ------------------------------------------------------ |
-| A UI framework         | `src/js/ui/dom.js`, about 60 lines                     |
+| A UI framework         | `src/js/ui/dom.js`, 107 lines                          |
 | A router               | `src/js/app/router.js`, hash based                     |
 | A state store          | `src/js/app/store.js`, one object and a subscribe list |
 | A charting library     | `src/js/ui/components/barChart.js`, SVG rectangles     |
