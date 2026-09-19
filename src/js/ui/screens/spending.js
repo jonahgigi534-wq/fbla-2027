@@ -15,7 +15,7 @@ import { el, banner, emptyState, render } from '../dom.js';
 import { getState } from '../../app/store.js';
 import { navigate } from '../../app/router.js';
 import { findItem } from '../../data/menu.js';
-import { buildReport, sortRows } from '../../domain/reports.js';
+import { buildReport, filterOrders, sortRows } from '../../domain/reports.js';
 import { formatUSD } from '../../domain/money.js';
 
 /** How many favorites to name. */
@@ -147,7 +147,13 @@ export function renderSpending(container) {
     const byItem = buildReport(mine, { ...options, groupBy: 'item' });
     const totals = buildReport(mine, { ...options, groupBy: 'day' }).totals;
     const favorites = sortRows(byItem.rows, 'units').slice(0, FAVOURITES_SHOWN);
-    const seededCount = mine.filter((order) => order.isSeeded).length;
+    /*
+     * Counted from the same narrowed set the tiles above are built from, not from
+     * every order this customer has ever had. Counting the wider set put "64 of these
+     * are sample orders" under a tile reading 59 orders, because the wider set
+     * ignores both the chosen range and the canceled orders a report leaves out.
+     */
+    const seededCount = filterOrders(mine, options).filter((order) => order.isSeeded).length;
 
     render(container, [
       el('div', { class: 'page-head' }, [
