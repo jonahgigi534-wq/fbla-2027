@@ -19,6 +19,7 @@ import { findAnswer } from '../../domain/assistant.js';
 import { INTENTS } from '../../data/assistantKnowledge.js';
 import { getState } from '../../app/store.js';
 import { navigate, registerDialog, clearDialog } from '../../app/router.js';
+import { trapFocus } from '../focusTrap.js';
 import { ALL_ITEMS } from '../../data/menu.js';
 import { findLocation } from '../../data/locations.js';
 import { stockFor } from '../../domain/inventory.js';
@@ -33,6 +34,9 @@ let transcript = null;
 
 /** Whether the panel is currently on screen. */
 let isOpen = false;
+
+/** Releases the focus trap, set while the panel is open. */
+let releaseFocus = null;
 
 /**
  * Assembles everything the answer functions read.
@@ -177,6 +181,8 @@ export function close() {
   }
   isOpen = false;
   panel.hidden = true;
+  releaseFocus?.();
+  releaseFocus = null;
   clearDialog();
   document.querySelector('#assistant-toggle')?.focus();
 }
@@ -203,47 +209,63 @@ function buildPanel() {
     },
   });
 
-  panel = el('aside', { class: 'assistant', hidden: true, 'aria-label': 'Pie Assistant' }, [
-    el('div', { class: 'assistant__head' }, [
-      el('div', {}, [
-        el('h2', { class: 'assistant__title', text: 'Pie Assistant' }),
-        el('p', {
-          class: 'assistant__subtitle',
-          text: 'Answers from this device. No internet needed.',
-        }),
-      ]),
-      el(
-        'button',
-        {
-          class: 'assistant__close',
-          type: 'button',
-          'aria-label': 'Close the assistant',
-          onClick: close,
-        },
-        '×'
-      ),
-    ]),
-    transcript,
-    el('div', { class: 'assistant__foot' }, [
-      suggestionChips(INTENTS.filter((intent) => intent.isSuggested)),
-      el('label', { class: 'field', for: 'assistant-input' }, [
-        el('span', { class: 'visually-hidden', text: 'Ask a question' }),
-        input,
-      ]),
-      el(
-        'button',
-        {
-          class: 'button button--block',
-          type: 'button',
-          onClick: () => {
-            ask(input.value);
-            input.value = '';
+  /*
+   * A dialog rather than a bare aside. It covers the screen, takes focus when it
+   * opens, gives it back when it closes, and shuts on Escape or Back. aria-modal is
+   * what tells a screen reader the rest of the page is out of play while it is there,
+   * and focusTrap makes that true for the keyboard as well.
+   */
+  panel = el(
+    'aside',
+    {
+      class: 'assistant',
+      hidden: true,
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': 'Pie Assistant',
+    },
+    [
+      el('div', { class: 'assistant__head' }, [
+        el('div', {}, [
+          el('h2', { class: 'assistant__title', text: 'Pie Assistant' }),
+          el('p', {
+            class: 'assistant__subtitle',
+            text: 'Answers from this device. No internet needed.',
+          }),
+        ]),
+        el(
+          'button',
+          {
+            class: 'assistant__close',
+            type: 'button',
+            'aria-label': 'Close the assistant',
+            onClick: close,
           },
-        },
-        'Ask'
-      ),
-    ]),
-  ]);
+          '×'
+        ),
+      ]),
+      transcript,
+      el('div', { class: 'assistant__foot' }, [
+        suggestionChips(INTENTS.filter((intent) => intent.isSuggested)),
+        el('label', { class: 'field', for: 'assistant-input' }, [
+          el('span', { class: 'visually-hidden', text: 'Ask a question' }),
+          input,
+        ]),
+        el(
+          'button',
+          {
+            class: 'button button--block',
+            type: 'button',
+            onClick: () => {
+              ask(input.value);
+              input.value = '';
+            },
+          },
+          'Ask'
+        ),
+      ]),
+    ]
+  );
 
   document.body.append(panel);
 
@@ -276,5 +298,7 @@ export function openAssistant() {
   panel.hidden = false;
   // Back closes the panel rather than leaving the screen behind it.
   registerDialog(close);
+  // And Tab stays inside it, rather than walking out into the page underneath.
+  releaseFocus = trapFocus(panel);
   panel.querySelector('#assistant-input').focus();
 }
