@@ -43,7 +43,7 @@ Keep the `dist` folder together: the photographs sit next to the HTML file.
 npm run check
 ```
 
-Runs 256 tests, then four checks of its own: that the layers have not been crossed,
+Runs the whole test suite, then four checks of its own: that the layers have not been crossed,
 that every function is documented, that nothing on screen is misspelled, and that
 every figure quoted in these documents still matches the code. Like everything else
 here, it needs nothing installed.

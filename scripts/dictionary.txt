@@ -52,6 +52,7 @@ allow
 allowed
 almond
 alone
+along
 alongside
 already
 also
@@ -223,6 +224,7 @@ boys
 brackets
 branch
 branching
+brand
 bread
 breadcrumb
 breaded
@@ -598,6 +600,7 @@ device
 devices
 dharma
 dialog
+dialogs
 diced
 did
 diet
@@ -900,6 +903,7 @@ glass
 glaze
 glazed
 global
+glossed
 gluten
 glyph
 goes
@@ -1017,6 +1021,7 @@ idea
 identical
 identically
 identify
+ignores
 ignoring
 image
 imageid
@@ -1073,6 +1078,7 @@ interferes
 internet
 interrupt
 into
+intolerant
 introduction
 intuitive
 invalid
@@ -1251,6 +1257,7 @@ mayonnaise
 meal
 mean
 means
+meant
 measure
 measured
 measures
@@ -1293,6 +1300,7 @@ mistyped
 mix
 mixed
 mocha
+modal
 mode
 model
 modern
@@ -1425,6 +1433,7 @@ oven
 over
 overcharges
 overdone
+overlays
 overnight
 overwrites
 own
@@ -1507,6 +1516,7 @@ pineapple
 pineapples
 pinned
 piping
+pixels
 place
 placed
 placeholder
@@ -1527,6 +1537,7 @@ plugged
 plus
 poached
 point
+pointed
 points
 poise
 polyfill
@@ -1747,6 +1758,7 @@ round
 rounding
 rounds
 route
+routed
 router
 routes
 routing
@@ -1771,6 +1783,7 @@ sampler
 sandwich
 sandwiches
 sans
+sat
 saturday
 sauce
 sausage
@@ -2015,6 +2028,7 @@ suggested
 suggestions
 suggestremovals
 suggests
+suite
 suits
 summarize
 summarized
@@ -2250,6 +2264,7 @@ waffles
 waiting
 waived
 walk
+walked
 walking
 walks
 wall

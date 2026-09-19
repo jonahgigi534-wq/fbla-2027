@@ -14,9 +14,9 @@ any of this is up to you.
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
-| Tests                              | 256, 97% line coverage of the logic        |
-| Functions, all documented          | 274                                        |
-| JavaScript modules                 | 78                                         |
+| Tests                              | 259, 97% line coverage of the logic        |
+| Functions, all documented          | 277                                        |
+| JavaScript modules                 | 79                                         |
 | Runtime dependencies               | none                                       |
 | Offline build                      | about 520 KB in one file                   |
 
@@ -50,12 +50,12 @@ secret in a file that ships to the browser would be worse: it would look like se
 without being any.
 
 **How does the assistant work?**
-It scores a question against a knowledge base of 14 intents. Keywords score, whole
+It scores a question against a knowledge base of 15 intents. Keywords score, whole
 phrases score more, and a word within one edit of a keyword still counts, which is how
 it handles "vegitarian" and "delivary". The winning intent then builds its answer from
 the live menu, stock, cart, and orders, so it cannot contradict the screens. If nothing
 scores confidently it offers the closest topics instead of giving up. No model, no
-network. 32 phrasings and 8 misspellings are pinned in the tests.
+network. 33 phrasings and 8 misspellings are pinned in the tests.
 
 **Why is money stored as whole cents?**
 An order applies a promo, then 8.25% tax, then a tip. Three multiplications in a row on
@@ -91,13 +91,21 @@ Write the tests earlier. Three real bugs were found by writing tests after the f
 and all three had been on screen for days.
 
 **Is it accessible?**
-Keyboard reachable throughout, with visible focus rings, a skip link, labeled
-controls, and live regions so status messages are announced. Every control and image
-was checked for a name, and text was measured against the background behind it: the
-header navigation failed at 4.08:1 and the darker orange was changed to clear 4.5:1 on
-all three backgrounds the palette uses. That is a contrast and naming pass, not a full
-audit with a screen reader, which is worth saying plainly rather than claiming more
-than was done.
+Keyboard reachable throughout, with visible focus rings, a working skip link, labeled
+controls, live regions so status messages are announced, and the two overlays set up
+as real dialogs: they take focus when they open, keep Tab inside themselves, hand it
+back when they close, and carry aria-modal so a screen reader ignores the page behind
+them.
+
+Three things were wrong and were fixed rather than glossed over. The skip link pointed
+at the fragment main, which in a program routed by the fragment meant the first thing
+a keyboard user did on any page was land on Not Found. The header navigation sat at
+4.08:1 against the 4.5:1 small text needs, along with five other places putting white
+on the brand orange at twelve pixels. And Tab walked straight out of both overlays
+into the page underneath.
+
+That is a contrast, naming and keyboard pass. It has not been through a screen reader
+end to end, which is worth saying plainly rather than claiming more than was done.
 
 ---
 
@@ -105,7 +113,7 @@ than was done.
 
 Worth keeping for the question round rather than spending presentation time on:
 
-- `npm run check` runs 256 tests and four custom checks in about a second, with
+- `npm run check` runs the whole suite and four custom checks in about a second, with
   nothing installed
 - The structure check enforces that `domain/` never imports from `ui/` or `app/`
 - The spell check found the whole interface had been written in British English

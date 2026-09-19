@@ -13,10 +13,10 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 256, all passing         |
+| Tests                            | 259, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 93%                      |
-| Functions documented             | 274 of 274               |
+| Functions documented             | 277 of 277               |
 | Files over the 400 line ceiling  | none                     |
 | Misspelled words on screen       | none, across 16,000 plus |
 
@@ -53,7 +53,7 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `orders`     | The window in which an order can still be changed                           |
 | `reports`    | That canceled orders never count, and that periods compare like for like    |
 | `insights`   | That the generated sentences match the figures under them                   |
-| `assistant`  | 32 real phrasings, 8 of them misspelled, plus nonsense                      |
+| `assistant`  | 33 real phrasings, 8 of them misspelled, plus nonsense                      |
 | `search`     | Ranking, and that word matching does not match inside words                 |
 | `dietary`    | That graham cracker is not read as ham                                      |
 | `csv`        | Escaping commas, quotes, and line breaks                                    |
