@@ -17,6 +17,7 @@
 import { ALL_ITEMS } from './menu.js';
 import { LOCATIONS } from './locations.js';
 import { calculateOrderTotals } from '../domain/pricing.js';
+import { CANCELED } from '../domain/orders.js';
 
 /** Fixed seed. Change it and every figure in the reports changes with it. */
 const SEED = 19670425;
@@ -42,6 +43,15 @@ const DEMO_CUSTOMER_SHARE = 0.03;
 
 /** Chance that a restaurant takes a catering booking on any given day. */
 const CATERING_CHANCE_PER_DAY = 0.13;
+
+/**
+ * Share of past orders that were canceled rather than collected.
+ *
+ * Ninety days of trading with not one cancellation in it is not ninety days of real
+ * trading, and it left the rule that canceled orders never count as revenue as
+ * something only the tests could show. Now the reports have some to leave out.
+ */
+const CANCELED_SHARE = 0.04;
 
 /** The most items one generated order can contain. */
 const MAX_LINES_PER_ORDER = 3;
@@ -179,7 +189,7 @@ function buildOrder({ random, pool, location, placedAt, orderNumber }) {
     placedAt: placedAt.toISOString(),
     locationId: location.id,
     orderTypeId,
-    status: 'Complete',
+    status: random() < CANCELED_SHARE ? CANCELED : 'Complete',
     lines,
     customer: { name: 'Past customer', phone: '', email: '', street: null, zip: null },
     cardLastFour: '0000',
