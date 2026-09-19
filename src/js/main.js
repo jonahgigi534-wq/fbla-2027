@@ -188,6 +188,21 @@ function warnAboutTemporaryStorage() {
     );
 }
 
+/*
+ * The skip link moves focus rather than following its own address.
+ *
+ * It points at #main, which is how a skip link is written everywhere, and in a program
+ * routed by the fragment that is also a request for the screen called 'main'. There is
+ * no such screen, so the first thing a keyboard user did on every page was land on Not
+ * Found. The href stays, because it is what makes the link announce itself correctly,
+ * and the navigation is simply not allowed to happen.
+ */
+document.querySelector('.skip-link')?.addEventListener('click', (event) => {
+  event.preventDefault();
+  main.focus();
+  main.scrollIntoView({ block: 'start', behavior: 'auto' });
+});
+
 subscribe(() => {
   showScreen(activeScreen.name, activeScreen.params);
 });
