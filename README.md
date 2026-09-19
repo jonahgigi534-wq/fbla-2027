@@ -43,7 +43,7 @@ Keep the `dist` folder together: the photographs sit next to the HTML file.
 npm run check
 ```
 
-Runs 237 tests, then three checks of its own: that the layers have not been crossed,
+Runs 253 tests, then three checks of its own: that the layers have not been crossed,
 that every function is documented, and that nothing on screen is misspelled.
 Like everything else here, it needs nothing installed.
 
@@ -59,7 +59,8 @@ Like everything else here, it needs nothing installed.
 - Pick from **six restaurants**, each with its own hours and delivery area
 - Set a **spending limit** that warns you as you approach it and blocks checkout if
   you pass it, naming the cheapest item to remove
-- Order for pickup, delivery, or dine in, with promo codes and a full tax breakdown
+- Order for pickup, delivery, or dine in, with promo codes, an optional tip, and a
+  full tax breakdown
 - Change or cancel an order until the kitchen starts cooking, then track it through
   four stages and print an itemized receipt
 - Ask the **Pie Assistant** a question in plain English, entirely offline

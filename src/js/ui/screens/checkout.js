@@ -113,7 +113,6 @@ export function renderCheckout(container) {
   const now = new Date();
   const location = findLocation(state.locationId);
   const promo = state.promoCode ? findPromo(state.promoCode) : null;
-  const totals = calculateOrderTotals(state.cart, { orderTypeId: state.orderTypeId, promo });
   const leadTimeHours = longestLeadTimeHours(state.cart);
   const slots = buildSlots({ location, now, leadTimeHours, orders: state.orders });
   const isDelivery = state.orderTypeId === 'delivery';
@@ -122,16 +121,35 @@ export function renderCheckout(container) {
   const picker = buildSlotPicker(slots);
 
   /**
+   * Works out the totals for one tip choice.
+   *
+   * Passed to the summary rather than a finished set of totals, because the customer
+   * can change the tip after the screen is drawn and the arithmetic belongs to
+   * domain/pricing.js either way.
+   *
+   * @param {number} tipBasisPoints Tip rate, where 10000 is 100 percent.
+   * @returns {object} Totals from domain/pricing.js.
+   */
+  function totalsFor(tipBasisPoints) {
+    return calculateOrderTotals(state.cart, {
+      orderTypeId: state.orderTypeId,
+      promo,
+      tipBasisPoints,
+    });
+  }
+
+  /**
    * Hands the whole checkout to the rules and places the order if they pass.
    *
+   * @param {number} tipBasisPoints The tip the customer settled on.
    * @returns {void}
    */
-  function place() {
+  function place(tipBasisPoints) {
     submitCheckout({
       fields,
       isDelivery,
       location,
-      totals,
+      totals: totalsFor(tipBasisPoints),
       orderTypeId: state.orderTypeId,
       slot: slots.find((candidate) => candidate.key === picker.select.value),
       now,
@@ -189,7 +207,7 @@ export function renderCheckout(container) {
 
       checkoutSummary({
         cart: state.cart,
-        totals,
+        totalsFor,
         onPlace: place,
         onBack: () => navigate('/cart'),
       }),

@@ -188,6 +188,9 @@ function receiptCard(order, location, placed, isPickup) {
           : null,
         order.totals.deliveryFee > 0 ? receiptRow('Delivery', order.totals.deliveryFee) : null,
         receiptRow('Sales tax, 8.25%', order.totals.tax),
+        // Hidden when zero, but never dropped: a printed receipt whose lines do not
+        // add up to the total it charges is the one thing a customer will query.
+        order.totals.tip > 0 ? receiptRow('Tip', order.totals.tip) : null,
         receiptRow('Total', order.totals.total, true),
       ]),
     ]),

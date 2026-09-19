@@ -6,15 +6,21 @@
  * that asks the customer for nothing, it only shows them what they are about to agree
  * to, and mixing that in with the validation made the screen hard to follow.
  *
- * The totals are read, never recalculated. domain/pricing.js works them out once and
- * this displays what it was handed, so the number on screen and the number saved to
- * the order can never drift apart.
+ * The totals are never worked out here. domain/pricing.js is asked for them and this
+ * displays what it was handed, so the number on screen and the number saved to the
+ * order can never drift apart. Choosing a tip asks pricing again rather than adding
+ * anything to the figure already on screen.
+ *
+ * The tip is held in this file rather than in the store because every state update
+ * redraws the whole screen, and redrawing checkout while someone is halfway through
+ * typing their phone number would empty the form under them.
  *
  * Used by ui/screens/checkout.js.
  */
 
-import { el } from '../dom.js';
+import { el, render } from '../dom.js';
 import { formatUSD } from '../../domain/money.js';
+import { TIP_PRESETS_BASIS_POINTS } from '../../domain/pricing.js';
 
 /**
  * Builds one labelled money row.
@@ -32,16 +38,94 @@ function totalRow(label, cents, isGrand = false) {
 }
 
 /**
+ * Names one tip rate the way a customer would say it.
+ *
+ * @param {number} basisPoints A rate where 10000 is 100 percent.
+ * @returns {string} 'No tip' or a percentage.
+ */
+function tipLabel(basisPoints) {
+  return basisPoints === 0 ? 'No tip' : `${basisPoints / 100}%`;
+}
+
+/**
+ * Builds the rows of the totals block, in the order the money moves through them.
+ *
+ * Discount, delivery, and tip each appear only when they are not zero. A row reading
+ * 'Tip $0.00' invites the question of whether the tip failed to apply.
+ *
+ * @param {object} totals Totals from domain/pricing.js.
+ * @returns {Array<HTMLElement|null>} The rows.
+ */
+function totalRows(totals) {
+  return [
+    totalRow('Subtotal', totals.subtotal),
+    totals.discount > 0 ? totalRow('Discount', -totals.discount) : null,
+    totals.deliveryFee > 0 ? totalRow('Delivery', totals.deliveryFee) : null,
+    totalRow('Sales tax, 8.25%', totals.tax),
+    totals.tip > 0 ? totalRow('Tip', totals.tip) : null,
+    totalRow('Total', totals.total, true),
+  ];
+}
+
+/**
+ * Builds the row of tip buttons, marking the one in force.
+ *
+ * aria-pressed rather than a class, so the choice is announced to a screen reader
+ * rather than only being visible.
+ *
+ * @param {number} selected The rate currently chosen.
+ * @param {Function} onChoose Called with the rate the customer picked.
+ * @returns {HTMLElement[]} The buttons.
+ */
+function tipChips(selected, onChoose) {
+  return TIP_PRESETS_BASIS_POINTS.map((basisPoints) =>
+    el(
+      'button',
+      {
+        class: 'chip',
+        type: 'button',
+        'aria-pressed': basisPoints === selected ? 'true' : 'false',
+        onClick: () => onChoose(basisPoints),
+      },
+      tipLabel(basisPoints)
+    )
+  );
+}
+
+/**
  * Builds the summary panel.
  *
  * @param {object} options What to show and what the buttons do.
  * @param {object[]} options.cart The cart lines.
- * @param {object} options.totals Totals from domain/pricing.js.
- * @param {Function} options.onPlace Called when Place order is pressed.
+ * @param {Function} options.totalsFor Given a tip rate, returns the totals for it.
+ * @param {Function} options.onPlace Called with the chosen tip rate when Place order
+ *   is pressed.
  * @param {Function} options.onBack Called when the customer wants the cart again.
  * @returns {HTMLElement} The summary aside.
  */
-export function checkoutSummary({ cart, totals, onPlace, onBack }) {
+export function checkoutSummary({ cart, totalsFor, onPlace, onBack }) {
+  let tipBasisPoints = 0;
+  const totalsBox = el('div', { class: 'totals' });
+  const tipBox = el('div', { class: 'tip-choices' });
+
+  /**
+   * Redraws the tip buttons and the totals under the current choice.
+   *
+   * @returns {void}
+   */
+  function draw() {
+    render(totalsBox, totalRows(totalsFor(tipBasisPoints)));
+    render(
+      tipBox,
+      tipChips(tipBasisPoints, (chosen) => {
+        tipBasisPoints = chosen;
+        draw();
+      })
+    );
+  }
+
+  draw();
+
   return el('aside', { class: 'checkout-summary' }, [
     el('section', { class: 'card' }, [
       el('div', { class: 'card__body stack' }, [
@@ -56,16 +140,18 @@ export function checkoutSummary({ cart, totals, onPlace, onBack }) {
             ])
           )
         ),
-        el('div', { class: 'totals' }, [
-          totalRow('Subtotal', totals.subtotal),
-          totals.discount > 0 ? totalRow('Discount', -totals.discount) : null,
-          totals.deliveryFee > 0 ? totalRow('Delivery', totals.deliveryFee) : null,
-          totalRow('Sales tax, 8.25%', totals.tax),
-          totalRow('Total', totals.total, true),
+        el('div', { class: 'tip-picker' }, [
+          el('p', { class: 'tip-picker__label', text: 'Add a tip for the kitchen' }),
+          tipBox,
         ]),
+        totalsBox,
         el(
           'button',
-          { class: 'button button--block', type: 'button', onClick: onPlace },
+          {
+            class: 'button button--block',
+            type: 'button',
+            onClick: () => onPlace(tipBasisPoints),
+          },
           'Place order'
         ),
         el(
