@@ -11,12 +11,14 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { findAnswer, isWithinOneEdit, normalize, tokenize } from '../src/js/domain/assistant.js';
 import { INTENTS } from '../src/js/data/assistantKnowledge.js';
+import { ALL_ITEMS } from '../src/js/data/menu.js';
 
 /** Real phrasings mapped to the intent that should answer them. */
 const PHRASINGS = [
   ['what is vegetarian', 'diet'],
   ['do you have vegan food', 'diet'],
-  ['gluten free?', 'diet'],
+  ['gluten free?', 'gluten'],
+  ['is anything gluten free', 'gluten'],
   ['anything under $10', 'cheap'],
   ['whats the cheapest thing', 'cheap'],
   ['im on a budget', 'cheap'],
@@ -107,6 +109,25 @@ test('an empty question offers topics rather than throwing', () => {
   const result = findAnswer(INTENTS, '   ');
   assert.equal(result.matched, false);
   assert.ok(result.suggestions.length > 0);
+});
+
+test('a gluten question is never answered with vegetarian counts', () => {
+  /*
+   * This used to be routed into the diet intent, so asking what was gluten free came
+   * back with a tally of vegetarian dishes, and the tour invited people to ask it.
+   * Nothing in the catalog carries gluten information, and being confidently wrong
+   * about a diet someone may be medically bound to is the worst answer available.
+   */
+  for (const question of ['what is gluten free', 'gluten free?', 'im coeliac']) {
+    const result = findAnswer(INTENTS, question);
+    assert.equal(result.matched, true, `"${question}" matched nothing`);
+    assert.equal(result.intent.id, 'gluten', `"${question}" reached ${result.intent.id}`);
+
+    // Answered against the real catalog, since the point is what it says about it.
+    const answer = result.intent.answer({ items: ALL_ITEMS });
+    assert.ok(!/vegetarian|vegan/i.test(answer.text), 'a gluten answer must not talk about diet');
+    assert.match(answer.text, /not marked for gluten/);
+  }
 });
 
 test('every intent can be reached by its own suggested label', () => {

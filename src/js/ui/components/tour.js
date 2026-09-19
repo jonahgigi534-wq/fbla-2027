@@ -18,6 +18,7 @@
 import { el } from '../dom.js';
 import { getState, update } from '../../app/store.js';
 import { registerDialog, clearDialog } from '../../app/router.js';
+import { trapFocus } from '../focusTrap.js';
 
 /** How far below the highlighted control the bubble sits. */
 const BUBBLE_GAP = 14;
@@ -52,7 +53,7 @@ const STEPS = [
   {
     target: '#assistant-toggle',
     title: 'Ask the Pie Assistant',
-    body: 'Questions answered from this device with no internet at all. Try what is gluten free, anything under ten dollars, or where is my order.',
+    body: 'Questions answered from this device with no internet at all. Try what is vegetarian, anything under ten dollars, or where is my order.',
   },
   {
     target: 'a[href="#/manager"]',
@@ -63,6 +64,9 @@ const STEPS = [
 
 /** The overlay while a tour is running, or null when none is. */
 let overlay = null;
+
+/** Releases the focus trap, set while the tour is running. */
+let releaseFocus = null;
 
 /**
  * Takes the tour off the screen and remembers that it has been seen.
@@ -75,6 +79,8 @@ function closeTour() {
   }
   overlay.remove();
   overlay = null;
+  releaseFocus?.();
+  releaseFocus = null;
   clearDialog();
   document.querySelector('#assistant-toggle')?.focus();
   if (!getState().hasSeenWelcome) {
@@ -129,7 +135,13 @@ function positionStep(step, spotlight, bubble) {
 function buildBubble({ counter, title, body, backButton, nextButton }) {
   return el(
     'div',
-    { class: 'tour__bubble', role: 'dialog', 'aria-label': 'Quick tour', 'aria-live': 'polite' },
+    {
+      class: 'tour__bubble',
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': 'Quick tour',
+      'aria-live': 'polite',
+    },
     [
       counter,
       title,
@@ -210,6 +222,12 @@ export function startTour() {
   document.body.append(overlay);
   // Back leaves the tour rather than the program.
   registerDialog(closeTour);
+  /*
+   * And Tab stays in the bubble. The backdrop hides the page behind it, so tabbing out
+   * there meant focus landing on a control nobody could see, on top of which clicking
+   * the backdrop is what closes the tour.
+   */
+  releaseFocus = trapFocus(overlay);
 
   /*
    * The spotlight is drawn in viewport coordinates, so anything that moves the header

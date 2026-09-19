@@ -38,8 +38,8 @@ export const INTENTS = [
     id: 'diet',
     label: 'What is vegetarian?',
     isSuggested: true,
-    phrases: ['gluten free', 'plant based'],
-    keywords: ['vegetarian', 'vegan', 'veggie', 'meatless', 'dietary', 'gluten', 'diet'],
+    phrases: ['plant based'],
+    keywords: ['vegetarian', 'vegan', 'veggie', 'meatless', 'dietary', 'diet'],
     answer: ({ items }) => {
       const vegetarian = items.filter(
         (item) => item.dietaryTags.includes('vegetarian') && item.stock > 0
@@ -197,6 +197,39 @@ export const INTENTS = [
       return reply(`You have ${summary}, coming to ${formatUSD(cartTotalCents)} including tax.`, {
         links: [{ label: 'Open your cart', path: '/cart' }],
       });
+    },
+  },
+  {
+    /*
+     * Gluten gets an intent of its own, and the answer is that this program does not
+     * know.
+     *
+     * It used to be routed into the diet intent, so asking what is gluten free came
+     * back with a count of vegetarian dishes. Nothing in the catalog carries gluten
+     * information: the dietary tags are vegetarian, vegan, sugar free and seasonal,
+     * and none of them is about gluten. A confidently wrong answer about a diet
+     * someone may be medically bound to is worse than no answer at all.
+     *
+     * What the data does hold is the wheat allergen, read off the ingredient list, so
+     * the answer offers that and is plain about what it is not.
+     */
+    id: 'gluten',
+    label: 'Is anything gluten free?',
+    isSuggested: false,
+    phrases: ['gluten free', 'gluten intolerant', 'coeliac', 'celiac'],
+    keywords: ['gluten'],
+    answer: ({ items }) => {
+      const withWheat = items.filter((item) => item.allergens.includes('wheat'));
+      const withoutWheat = items.filter(
+        (item) => !item.allergens.includes('wheat') && item.stock > 0
+      );
+      return reply(
+        `This menu is not marked for gluten, so nothing here is listed as gluten free and I will not guess. What it does track is wheat: ${withWheat.length} items list it as an ingredient and ${withoutWheat.length} in stock items do not. That is read off the ingredient list rather than tested, and a kitchen this size shares its surfaces, so please tell the restaurant when you order.`,
+        {
+          items: withoutWheat.slice(0, 4),
+          links: [{ label: 'See how allergens work', path: '/help' }],
+        }
+      );
     },
   },
   {
