@@ -13,8 +13,8 @@ export const HELP_ARTICLES = [
     id: 'place-an-order',
     group: 'Ordering',
     title: 'How to place an order',
-    keywords: ['order', 'start', 'buy', 'checkout', 'begin'],
-    body: 'Pick a restaurant on the home screen, since hours and delivery areas differ between the six. Open the menu, tap an item, choose a quantity, and add it. When you are ready, open your order from the header, choose pickup, delivery, or dine in, then go to checkout. You will be asked for a name, a phone number, an email for the receipt, and a collection time.',
+    keywords: ['order', 'start', 'buy', 'checkout', 'begin', 'tip'],
+    body: 'Pick a restaurant on the home screen, since hours and delivery areas differ between the six. Open the menu, tap an item, choose a quantity, and add it. When you are ready, open your order from the header, choose pickup, delivery, or dine in, then go to checkout. You will be asked for a name, a phone number, an email for the receipt, and a collection time. The order summary beside the form is where you add a tip if you want one, and the total updates as you choose.',
   },
   {
     id: 'find-something',
@@ -62,8 +62,8 @@ export const HELP_ARTICLES = [
     id: 'receipt',
     group: 'After ordering',
     title: 'Getting a receipt',
-    keywords: ['receipt', 'print', 'invoice', 'proof', 'itemized'],
-    body: 'Every order has an itemized receipt showing the restaurant, the collection time, every line, and the full breakdown of subtotal, discount, delivery, and tax. Press Print receipt and the navigation and buttons are stripped out, leaving the document on its own.',
+    keywords: ['receipt', 'print', 'invoice', 'proof', 'itemized', 'tip'],
+    body: 'Every order has an itemized receipt showing the restaurant, the collection time, every line, and the full breakdown of subtotal, discount, delivery, tax, and any tip you added. Press Print receipt and the navigation and buttons are stripped out, leaving the document on its own.',
   },
   {
     id: 'assistant',

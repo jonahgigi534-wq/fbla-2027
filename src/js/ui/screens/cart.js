@@ -132,7 +132,12 @@ function budgetPanel(state, totals) {
         text: 'Set what you want to stay under and we will warn you before you go over.',
       }),
       el('div', { class: 'cart-panel__row' }, [
-        capField,
+        // The hint above is a paragraph, not a label, so the field needs its own
+        // name. A placeholder is not one: it disappears the moment anyone types.
+        el('label', { class: 'field', for: 'budget-cap' }, [
+          el('span', { class: 'visually-hidden', text: 'Spending limit in dollars' }),
+          capField,
+        ]),
         el(
           'button',
           {
@@ -180,7 +185,10 @@ function promoPanel(state) {
   }
 
   return el('div', { class: 'cart-panel__row' }, [
-    codeField,
+    el('label', { class: 'field', for: 'promo-code' }, [
+      el('span', { class: 'visually-hidden', text: 'Promo code' }),
+      codeField,
+    ]),
     el(
       'button',
       {
