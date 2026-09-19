@@ -12,7 +12,8 @@
     "check:structure": "node scripts/check-structure.mjs",
     "check:jsdoc": "node scripts/check-jsdoc.mjs",
     "check:spelling": "node scripts/spellcheck.mjs",
-    "check": "npm run test && npm run check:structure && npm run check:jsdoc && npm run check:spelling",
+    "check:facts": "node scripts/check-facts.mjs",
+    "check": "npm run test && npm run check:structure && npm run check:jsdoc && npm run check:spelling && npm run check:facts",
     "format": "prettier --write .",
     "check:format": "prettier --check ."
   },

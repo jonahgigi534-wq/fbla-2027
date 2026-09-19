@@ -17,8 +17,17 @@ import { join, relative, sep } from 'node:path';
 /** Everything is resolved from the project root. */
 const ROOT = join(import.meta.dirname, '..');
 
-/** Folders to check. Data files export arrays, not behavior worth documenting per entry. */
-const FOLDERS = ['src/js/domain', 'src/js/app', 'src/js/ui'];
+/**
+ * What to check, which is the whole source tree.
+ *
+ * It used to name the four layer folders individually, which quietly left out data/
+ * on the grounds that it exports arrays rather than behavior, and left out main.js by
+ * accident because it is a file rather than a folder. Between them that was twenty
+ * four functions the documentation claimed were checked and were not. They all turned
+ * out to be documented anyway, so pointing this at the root costs nothing and makes
+ * the claim true.
+ */
+const FOLDERS = ['src/js'];
 
 /**
  * Lists every JavaScript file under a folder.

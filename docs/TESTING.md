@@ -1,7 +1,7 @@
 # Testing
 
 ```
-npm run check       tests, then structure, documentation, and spelling
+npm run check       tests, then structure, documentation, spelling, and facts
 npm test            just the tests
 npm run coverage    the tests with a coverage report
 ```
@@ -13,10 +13,10 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 253, all passing         |
+| Tests                            | 256, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 93%                      |
-| Functions documented             | 249 of 249               |
+| Functions documented             | 274 of 274               |
 | Files over the 400 line ceiling  | none                     |
 | Misspelled words on screen       | none, across 16,000 plus |
 
@@ -24,10 +24,16 @@ whole quality gate runs on a machine that has never seen `npm install`.
 `src/js/data/`, every module in `src/js/domain/`, and the router. Those files are what
 the percentage is measured over, and they are where every decision the program makes
 gets taken. The screens in `src/js/ui/` have no automated tests. They build elements
-and hand the thinking to `domain/`, so testing them would mean bringing in a fake
-browser, which is a dependency this project does not have and does not want; they are
-checked by walking through the program instead. Read the figure as 97% of the logic,
-not 97% of every line in the repository.
+and hand the thinking to `domain/`, so testing them would mean standing up a whole
+document, and most of what came back would be a test of the DOM rather than of this
+program; they are checked by walking through it instead. Read the figure as 97% of the
+logic, not 97% of every line in the repository.
+
+The router is the exception, and it is worth knowing why. Its tests do fake a window,
+but only just: a hash, the list of hashes visited, and one listener, in about fifty
+lines at the top of `test/router.test.js`. That is the whole surface the router
+touches, which is the reason it can be tested at all, and it is a long way from
+pulling in a headless browser to render screens.
 
 ## What is tested
 
@@ -47,7 +53,7 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `orders`     | The window in which an order can still be changed                           |
 | `reports`    | That canceled orders never count, and that periods compare like for like    |
 | `insights`   | That the generated sentences match the figures under them                   |
-| `assistant`  | 40 real phrasings, 8 of them misspelled, plus nonsense                      |
+| `assistant`  | 32 real phrasings, 8 of them misspelled, plus nonsense                      |
 | `search`     | Ranking, and that word matching does not match inside words                 |
 | `dietary`    | That graham cracker is not read as ham                                      |
 | `csv`        | Escaping commas, quotes, and line breaks                                    |

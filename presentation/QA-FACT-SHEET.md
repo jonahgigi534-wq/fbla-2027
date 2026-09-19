@@ -13,12 +13,12 @@ any of this is up to you.
 | Restaurants                        | 6, on three different schedules            |
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
-| Generated order history            | 90 days, about 2,300 orders                |
-| Tests                              | 253, 97% line coverage of the logic        |
-| Functions, all documented          | 249                                        |
+| Generated order history            | 90 days, about 2,250 orders                |
+| Tests                              | 256, 97% line coverage of the logic        |
+| Functions, all documented          | 274                                        |
 | JavaScript modules                 | 78                                         |
 | Runtime dependencies               | none                                       |
-| Offline build                      | one file, 518 KB                           |
+| Offline build                      | about 520 KB in one file                   |
 
 ---
 
@@ -55,7 +55,7 @@ phrases score more, and a word within one edit of a keyword still counts, which 
 it handles "vegitarian" and "delivary". The winning intent then builds its answer from
 the live menu, stock, cart, and orders, so it cannot contradict the screens. If nothing
 scores confidently it offers the closest topics instead of giving up. No model, no
-network. 40 phrasings and 8 misspellings are pinned in the tests.
+network. 32 phrasings and 8 misspellings are pinned in the tests.
 
 **Why is money stored as whole cents?**
 An order applies a promo, then 8.25% tax, then a tip. Three multiplications in a row on
@@ -92,8 +92,12 @@ and all three had been on screen for days.
 
 **Is it accessible?**
 Keyboard reachable throughout, with visible focus rings, a skip link, labeled
-controls, and live regions so status messages are announced. It has not been through a
-formal audit, which is worth saying plainly rather than claiming more than was done.
+controls, and live regions so status messages are announced. Every control and image
+was checked for a name, and text was measured against the background behind it: the
+header navigation failed at 4.08:1 and the darker orange was changed to clear 4.5:1 on
+all three backgrounds the palette uses. That is a contrast and naming pass, not a full
+audit with a screen reader, which is worth saying plainly rather than claiming more
+than was done.
 
 ---
 
@@ -101,7 +105,7 @@ formal audit, which is worth saying plainly rather than claiming more than was d
 
 Worth keeping for the question round rather than spending presentation time on:
 
-- `npm run check` runs 253 tests and three custom checks in half a second, with
+- `npm run check` runs 256 tests and four custom checks in about a second, with
   nothing installed
 - The structure check enforces that `domain/` never imports from `ui/` or `app/`
 - The spell check found the whole interface had been written in British English
