@@ -69,6 +69,8 @@ function fakeBrowser(startHash) {
     },
   };
 
+  const clickHandlers = [];
+
   return {
     window: {
       location,
@@ -78,6 +80,30 @@ function fakeBrowser(startHash) {
         }
       },
       removeEventListener() {},
+    },
+    document: {
+      addEventListener(type, listener) {
+        if (type === 'click') {
+          clickHandlers.push(listener);
+        }
+      },
+      removeEventListener() {},
+    },
+    /**
+     * Clicks a link pointing at a fragment, the way the header's links are built.
+     *
+     * The browser follows an anchor by changing the address itself, so that is the
+     * order here too: the click handlers run, then the hash moves.
+     *
+     * @param {string} href The link target, such as '#/menu'.
+     * @returns {void}
+     */
+    clickLink(href) {
+      const anchor = { closest: (selector) => (selector === 'a[href^="#"]' ? anchor : null) };
+      for (const handler of clickHandlers) {
+        handler({ target: anchor });
+      }
+      location.hash = href;
     },
     back() {
       if (entries.length < 2) {
@@ -113,6 +139,7 @@ addRoute('/order/:orderId', 'order');
 function bootRouter(startHash) {
   const browser = fakeBrowser(startHash);
   globalThis.window = browser.window;
+  globalThis.document = browser.document;
   clearDialog();
 
   const visited = [];
@@ -250,6 +277,24 @@ describe('Back closes an open dialog instead of leaving the screen', () => {
     assert.equal(isOpen, false, 'following a link should close the dialog');
     assert.equal(visited.at(-1).name, 'item', 'and should still navigate');
     assert.equal(browser.hash, '#/item/pecan-slice');
+  });
+
+  test('a header link still goes where it points, which Back must not be mistaken for', () => {
+    const { browser, visited } = bootRouter('#/home');
+
+    let isOpen = true;
+    registerDialog(() => {
+      isOpen = false;
+      clearDialog();
+    });
+
+    // An anchor moves the address itself, exactly as Back does. Told apart wrongly,
+    // this closes the overlay and then swallows the navigation behind it.
+    browser.clickLink('#/menu');
+
+    assert.equal(isOpen, false, 'the click should close the dialog');
+    assert.equal(browser.hash, '#/menu', 'and should still arrive at the link target');
+    assert.equal(visited.at(-1).name, 'menu');
   });
 
   test('once closed on its own, Back navigates normally again', () => {

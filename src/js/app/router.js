@@ -176,7 +176,11 @@ function dismissDialog() {
 function handleLocationChange() {
   /*
    * Reaching here with a dialog still open means the browser moved the address on its
-   * own, which is Back or Forward, because navigate and replace both dismiss first.
+   * own, which is Back or Forward. Everything else that can move it has dismissed the
+   * dialog already: navigate and replace do it themselves, and a click on one of the
+   * header's links is caught by the listener start() installs, because an anchor
+   * changing the fragment looks exactly like a Back press from in here.
+   *
    * The address has already left for the previous screen, so it is put back: closing
    * the dialog is what the press meant, and the screen under it should not move.
    *
@@ -211,5 +215,27 @@ function handleLocationChange() {
 export function start(handler) {
   onNavigate = handler;
   window.addEventListener('hashchange', handleLocationChange);
+
+  /*
+   * Every link in this program is an anchor pointing at a fragment, which the browser
+   * follows by changing the address itself. From inside hashchange that is
+   * indistinguishable from a Back press, so with the assistant or the tour open a
+   * click on Menu would close the overlay and then be swallowed as though it had been
+   * Back: the panel went away and the screen never moved.
+   *
+   * Catching the click first, while it is still recognisably a click, is what keeps
+   * the two apart. The navigation is not interfered with, only the dialog is let go
+   * of, so by the time the address changes there is nothing left to absorb it.
+   */
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (event.target.closest?.('a[href^="#"]')) {
+        dismissDialog();
+      }
+    },
+    true
+  );
+
   handleLocationChange();
 }
