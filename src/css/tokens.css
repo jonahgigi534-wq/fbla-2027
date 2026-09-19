@@ -9,16 +9,22 @@
  * storefront: burnt orange signage, off white walls, near black lettering.
  *
  * Two oranges, because one is not enough to be both on brand and readable. The
- * restaurant uses #d35c00 for headings and fills and #bb5200 as its darker step.
- * White text on #d35c00 measures 3.96:1, under the 4.5:1 that normal size text
- * needs, so anything small and white sits on --color-orange-dark instead, which
- * measures 4.86:1. Both colors are theirs. Only the job each one does is ours.
+ * restaurant uses #d35c00 for headings and fills, which carries white text at only
+ * 3.96:1, under the 4.5:1 that normal size text needs. So anything small and white
+ * sits on --color-orange-dark instead.
+ *
+ * That darker step is measured against the background it actually sits on, which is
+ * the lesson of having got it wrong once. It was #bb5200, picked because it clears
+ * 4.86:1 on white, and then used for the header navigation, which is not white: it is
+ * --color-orange-soft, where the same color measures 4.08:1 and fails. #a94a00 clears
+ * the bar on all three backgrounds this palette uses, at 4.81:1 on the soft orange,
+ * 5.44:1 on the cream, and 5.73:1 on white.
  */
 
 :root {
   /* Brand */
   --color-orange: #d35c00;
-  --color-orange-dark: #bb5200;
+  --color-orange-dark: #a94a00;
   --color-orange-darker: #9c4400;
   --color-orange-soft: #fbe8d8;
   --color-brown: #150303;

@@ -126,8 +126,10 @@
 }
 
 .chip[aria-pressed='true'] {
-  background: var(--color-orange);
-  border-color: var(--color-orange);
+  /* Chip text is 12px, so it needs 4.5:1. White on the brand orange gives 3.96:1,
+     the same trap the cart badge fell into. */
+  background: var(--color-orange-dark);
+  border-color: var(--color-orange-dark);
   color: var(--color-text-inverse);
 }
 
@@ -199,11 +201,6 @@
   background: var(--color-danger-soft);
   border-color: #e8bdb7;
 }
-.banner--success {
-  background: var(--color-success-soft);
-  border-color: #b9d8c6;
-}
-
 .banner__title {
   font-weight: 700;
   margin-bottom: 2px;
@@ -288,20 +285,11 @@
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
 }
 
-.grid--wide {
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-}
-
 /* Price display, kept consistent everywhere money appears */
 .price {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
-.price--muted {
-  color: var(--color-text-muted);
-  font-weight: 600;
-}
-
 /* Toasts: the short confirmation or refusal shown after an action */
 .toast-host {
   position: fixed;
@@ -481,7 +469,7 @@
   font-family: inherit;
 }
 .app-nav__assistant:hover {
-  background: var(--color-orange);
+  background: var(--color-orange-dark);
   color: var(--color-text-inverse);
 }
 
