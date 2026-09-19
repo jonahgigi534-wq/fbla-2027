@@ -17,6 +17,7 @@
 
 import { el } from '../dom.js';
 import { getState, update } from '../../app/store.js';
+import { registerDialog, clearDialog } from '../../app/router.js';
 
 /** How far below the highlighted control the bubble sits. */
 const BUBBLE_GAP = 14;
@@ -74,6 +75,7 @@ function closeTour() {
   }
   overlay.remove();
   overlay = null;
+  clearDialog();
   document.querySelector('#assistant-toggle')?.focus();
   if (!getState().hasSeenWelcome) {
     update(() => ({ hasSeenWelcome: true }));
@@ -206,6 +208,8 @@ export function startTour() {
     bubble,
   ]);
   document.body.append(overlay);
+  // Back leaves the tour rather than the program.
+  registerDialog(closeTour);
 
   /*
    * The spotlight is drawn in viewport coordinates, so anything that moves the header

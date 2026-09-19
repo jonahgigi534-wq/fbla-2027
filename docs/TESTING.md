@@ -11,14 +11,23 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 ## Where it stands
 
-|                                 |                            |
-| ------------------------------- | -------------------------- |
-| Tests                           | 225, all passing           |
-| Line coverage                   | 97%                        |
-| Branch coverage                 | 93%                        |
-| Exported functions documented   | 157 of 157                 |
-| Files over the 400 line ceiling | none                       |
-| Misspelled words on screen      | none, across 2,226 checked |
+|                                  |                          |
+| -------------------------------- | ------------------------ |
+| Tests                            | 253, all passing         |
+| Line coverage, of what is tested | 97%                      |
+| Branch coverage, of the same     | 93%                      |
+| Functions documented             | 249 of 249               |
+| Files over the 400 line ceiling  | none                     |
+| Misspelled words on screen       | none, across 16,000 plus |
+
+**What that coverage figure covers, and what it does not.** The tests reach
+`src/js/data/`, every module in `src/js/domain/`, and the router. Those files are what
+the percentage is measured over, and they are where every decision the program makes
+gets taken. The screens in `src/js/ui/` have no automated tests. They build elements
+and hand the thinking to `domain/`, so testing them would mean bringing in a fake
+browser, which is a dependency this project does not have and does not want; they are
+checked by walking through the program instead. Read the figure as 97% of the logic,
+not 97% of every line in the repository.
 
 ## What is tested
 
@@ -42,6 +51,14 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `search`     | Ranking, and that word matching does not match inside words                 |
 | `dietary`    | That graham cracker is not read as ham                                      |
 | `csv`        | Escaping commas, quotes, and line breaks                                    |
+| `carousel`   | Paging, and that the last page backfills rather than leaving a gap          |
+
+One module outside `domain/` is tested too, because the rating sheet asks for no
+navigation errors and the router is what decides them:
+
+| Module       | What its tests protect                                                                                                                                          |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/router` | Route matching, a refresh landing on the same screen, an unknown address reaching Not Found, and Back closing an open dialog without moving the screen under it |
 
 ## What is not tested, and why
 
@@ -77,6 +94,14 @@ well on a button with `display: none`. Found only when the tour tried to measure
 header and got back a box of zero by zero. The bundler now keeps each stylesheet under
 the media it was linked with.
 
+**Back closed a dialog and then trapped you on the screen.** Putting the address back
+after closing a dialog was written with `location.replace`, which overwrites the
+current history entry rather than adding one. Back had just popped an entry, so
+replacing consumed it: the dialog closed correctly, and then a second Back did
+nothing at all, because there was no longer anywhere to go. Navigating instead of
+replacing pushes the entry back and leaves the history exactly as it was. The test
+that asks for a second Back is the only reason this was found before a judge did.
+
 **One exported function had no `@returns`.** Found by the documentation check, not by
 reading.
 
@@ -92,15 +117,17 @@ The checklist run before the offline build is considered ready:
 2. `npm start`, then visit every screen. Press Back, Forward, and F5 on each.
 3. Open an item, press Back, and confirm the menu returns rather than the program
    exiting.
-4. Type a nonsense address and confirm the Not Found screen appears.
-5. Place a full order, then cancel it and confirm the stock returns.
-6. Ask the assistant eight questions including two with typos and one nonsense
+4. Open the assistant and press Back. The panel should close and leave you on the same
+   screen. Press Back again and you should leave it as normal.
+5. Type a nonsense address and confirm the Not Found screen appears.
+6. Place a full order, then cancel it and confirm the stock returns.
+7. Ask the assistant eight questions including two with typos and one nonsense
    string. Confirm none returns an empty answer.
-7. Break things on purpose: `-5` into a stock field, a report start date after its end
+8. Break things on purpose: `-5` into a stock field, a report start date after its end
    date, a quantity above what is left, a collection time outside opening hours, a
    delivery ZIP outside the area, and an expired card. Every one should produce a
    message that says why.
-8. `npm run build`, turn the wifi off, and open `dist/standalone.html` by double
+9. `npm run build`, turn the wifi off, and open `dist/standalone.html` by double
    clicking it. Place an order, run a report, export a CSV, and open print preview.
-9. Repeat step 8 in a second browser and in a guest profile, in case an extension on
-   the presenting laptop interferes.
+10. Repeat step 9 in a second browser and in a guest profile, in case an extension on
+    the presenting laptop interferes.

@@ -18,7 +18,7 @@ import { itemCard } from './itemCard.js';
 import { findAnswer } from '../../domain/assistant.js';
 import { INTENTS } from '../../data/assistantKnowledge.js';
 import { getState } from '../../app/store.js';
-import { navigate } from '../../app/router.js';
+import { navigate, registerDialog, clearDialog } from '../../app/router.js';
 import { ALL_ITEMS } from '../../data/menu.js';
 import { findLocation } from '../../data/locations.js';
 import { stockFor } from '../../domain/inventory.js';
@@ -177,6 +177,7 @@ export function close() {
   }
   isOpen = false;
   panel.hidden = true;
+  clearDialog();
   document.querySelector('#assistant-toggle')?.focus();
 }
 
@@ -273,5 +274,7 @@ export function openAssistant() {
   }
   isOpen = true;
   panel.hidden = false;
+  // Back closes the panel rather than leaving the screen behind it.
+  registerDialog(close);
   panel.querySelector('#assistant-input').focus();
 }

@@ -24,8 +24,17 @@ const routes = [];
 /** Called after every navigation with the matched route and its parameters. */
 let onNavigate = null;
 
-/** Set while a dialog is open, so Back can close it instead of navigating. */
-let closeOpenDialog = null;
+/**
+ * Set while a dialog is open, so Back can close it instead of navigating.
+ *
+ * The path is kept beside the close function because a hash route cannot add a history
+ * entry for a dialog: opening one does not change the address, so there is nothing for
+ * Back to pop. Back therefore leaves for the previous screen first, and the router has
+ * to close the dialog and put the address back afterwards.
+ *
+ * @type {{close: Function, path: string}|null}
+ */
+let openDialog = null;
 
 /**
  * Registers one route.
@@ -89,6 +98,9 @@ export function matchPath(path, routeTable = routes) {
  * @returns {void}
  */
 export function navigate(path) {
+  // A call to navigate is always something the customer asked for, a link or a button,
+  // so an open dialog is dismissed rather than allowed to swallow the move.
+  dismissDialog();
   const target = `#${path}`;
   if (window.location.hash === target) {
     handleLocationChange();
@@ -107,20 +119,22 @@ export function navigate(path) {
  * @returns {void}
  */
 export function replace(path) {
+  dismissDialog();
   window.location.replace(`#${path}`);
 }
 
 /**
  * Registers a dialog so the next Back press closes it instead of navigating.
  *
- * Without this, a customer who opens an item, then presses Back, leaves the menu
- * entirely and has to find their place again.
+ * Without this, someone who opens the assistant on the menu and then presses Back to
+ * dismiss it, which is what a phone teaches you to do, leaves the menu entirely and
+ * has to find their place again.
  *
  * @param {Function} close Called to dismiss the dialog.
  * @returns {void}
  */
 export function registerDialog(close) {
-  closeOpenDialog = close;
+  openDialog = { close, path: currentPath() };
 }
 
 /**
@@ -129,7 +143,25 @@ export function registerDialog(close) {
  * @returns {void}
  */
 export function clearDialog() {
-  closeOpenDialog = null;
+  openDialog = null;
+}
+
+/**
+ * Closes whatever dialog is open, if one is.
+ *
+ * Cleared before the close function runs rather than after, because every dialog here
+ * calls clearDialog on its way out and would otherwise re-enter this.
+ *
+ * @returns {{path: string}|null} Where the dialog was opened from, or null if none was.
+ */
+function dismissDialog() {
+  if (openDialog === null) {
+    return null;
+  }
+  const { close, path } = openDialog;
+  openDialog = null;
+  close();
+  return { path };
 }
 
 /**
@@ -142,10 +174,20 @@ export function clearDialog() {
  * @returns {void}
  */
 function handleLocationChange() {
-  if (closeOpenDialog !== null) {
-    const close = closeOpenDialog;
-    closeOpenDialog = null;
-    close();
+  /*
+   * Reaching here with a dialog still open means the browser moved the address on its
+   * own, which is Back or Forward, because navigate and replace both dismiss first.
+   * The address has already left for the previous screen, so it is put back: closing
+   * the dialog is what the press meant, and the screen under it should not move.
+   *
+   * Put back by navigating rather than replacing. Back popped an entry, so pushing one
+   * leaves the history exactly as it was and a second Back still goes where the first
+   * would have. Replacing here would overwrite the entry Back had just returned to,
+   * and the customer would find themselves unable to leave the screen at all.
+   */
+  const dismissed = dismissDialog();
+  if (dismissed !== null) {
+    navigate(dismissed.path);
     return;
   }
 
