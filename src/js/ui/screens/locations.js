@@ -12,7 +12,8 @@ import { el, render } from '../dom.js';
 import { locationTile } from '../components/locationTile.js';
 import { LOCATIONS, DAY_NAMES } from '../../data/locations.js';
 import { describeStatus } from '../../domain/hours.js';
-import { getState, update } from '../../app/store.js';
+import { getState } from '../../app/store.js';
+import { setLocation } from '../../app/actions.js';
 
 /**
  * Renders the locations screen.
@@ -51,7 +52,7 @@ export function renderLocations(container) {
         LOCATIONS.map((location) =>
           locationTile(location, now, {
             isSelected: location.id === state.locationId,
-            onSelect: (chosen) => update(() => ({ locationId: chosen.id })),
+            onSelect: (chosen) => setLocation(chosen.id),
             isDetailed: true,
           })
         )

@@ -28,7 +28,7 @@ const STORAGE_KEY = 'houseofpies.ordering';
  * Bumped whenever the saved shape changes in a way older data cannot satisfy.
  * migrate() below decides what to do with anything older.
  */
-export const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 2;
 
 /** Holds saved state when the browser will not. Session only, by design. */
 let memoryFallback = null;
@@ -82,7 +82,7 @@ export function isUsingTemporaryStorage() {
  * @param {object} saved Parsed data straight out of storage.
  * @returns {object|null} Usable state, or null when it cannot be trusted.
  */
-export function migrate(saved) {
+function migrate(saved) {
   if (saved === null || typeof saved !== 'object') {
     return null;
   }

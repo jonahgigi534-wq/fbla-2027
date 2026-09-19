@@ -17,7 +17,7 @@ import { getState, resetToDefaults, update } from '../../../app/store.js';
 import { navigate } from '../../../app/router.js';
 
 /** The demo PIN, shown on the gate so nobody is locked out of the demonstration. */
-export const DEMO_PIN = '1967';
+const DEMO_PIN = '1967';
 
 /** Wrong attempts before the gate pauses, so it behaves like a real one would. */
 const MAX_ATTEMPTS = 5;

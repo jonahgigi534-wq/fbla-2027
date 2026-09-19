@@ -56,7 +56,7 @@ const MAX_LINES_PER_ORDER = 3;
  * @param {number} seed Any integer.
  * @returns {Function} A function returning a number from 0 up to but not including 1.
  */
-export function createRandom(seed) {
+function createRandom(seed) {
   let state = seed >>> 0;
   return function random() {
     state += 0x6d2b79f5;

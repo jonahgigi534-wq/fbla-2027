@@ -95,7 +95,7 @@ const DEFAULT_GLYPH = '\u{1F37D}';
  * @param {string} name The item name.
  * @returns {string} A single emoji.
  */
-export function glyphFor(name) {
+function glyphFor(name) {
   const lower = name.toLowerCase();
   const match = GLYPH_BY_KEYWORD.find(([keyword]) => lower.includes(keyword));
   return match ? match[1] : DEFAULT_GLYPH;

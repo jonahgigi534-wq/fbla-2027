@@ -87,7 +87,7 @@ const PHRASE_MATCH_SCORE = 18;
 const MIN_FUZZY_LENGTH = 5;
 
 /** Below this score, nothing is confidently the answer. */
-export const CONFIDENCE_FLOOR = 8;
+const CONFIDENCE_FLOOR = 8;
 
 /**
  * Reduces text to comparable lowercase words.
@@ -177,7 +177,7 @@ export function isWithinOneEdit(first, second) {
  * @param {string[]} words The question's meaningful words.
  * @returns {number} A score. Zero means no match at all.
  */
-export function scoreIntent(intent, normalizedQuestion, words) {
+function scoreIntent(intent, normalizedQuestion, words) {
   let score = 0;
 
   for (const phrase of intent.phrases ?? []) {
@@ -211,7 +211,7 @@ export function scoreIntent(intent, normalizedQuestion, words) {
  * @returns {Array<{intent: object, score: number}>} Every intent that scored above
  *   zero, best first.
  */
-export function rankIntents(intents, question) {
+function rankIntents(intents, question) {
   const normalized = normalize(question);
   const words = tokenize(question);
 

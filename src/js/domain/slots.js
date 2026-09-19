@@ -18,7 +18,7 @@
 import { MINUTES_PER_DAY } from '../data/locations.js';
 
 /** Slots are offered on the quarter hour. */
-export const SLOT_MINUTES = 15;
+const SLOT_MINUTES = 15;
 
 /** How many orders one slot can hold at a single restaurant. */
 export const SLOT_CAPACITY = 4;
@@ -79,7 +79,7 @@ export function bookingsInSlot(orders, locationId, slotKey) {
  * @param {number} minute Minutes past midnight.
  * @returns {string} A key such as '2026-09-08:1110'.
  */
-export function slotKeyFor(day, minute) {
+function slotKeyFor(day, minute) {
   const year = day.getFullYear();
   const month = String(day.getMonth() + 1).padStart(2, '0');
   const date = String(day.getDate()).padStart(2, '0');

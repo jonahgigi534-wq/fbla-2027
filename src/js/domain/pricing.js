@@ -23,7 +23,7 @@
 import { clampToZero, percentOfCents, roundCents, sumCents } from './money.js';
 
 /** Houston combined state and local sales tax, 8.25 percent, in basis points. */
-export const SALES_TAX_BASIS_POINTS = 825;
+const SALES_TAX_BASIS_POINTS = 825;
 
 /** Flat delivery charge before any threshold is applied. */
 export const DELIVERY_FEE_CENTS = 499;
@@ -43,7 +43,7 @@ export const TIP_PRESETS_BASIS_POINTS = [0, 1000, 1500, 1800, 2000];
  * @param {{priceCents: number, quantity: number}} line A cart line.
  * @returns {number} What that line costs in cents.
  */
-export function lineTotalCents(line) {
+function lineTotalCents(line) {
   return line.priceCents * line.quantity;
 }
 

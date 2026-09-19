@@ -41,7 +41,7 @@ export const METRIC_OPTIONS = [
  * @param {object} order An order.
  * @returns {string} An ISO date such as '2026-08-14'.
  */
-export function orderDate(order) {
+function orderDate(order) {
   return order.placedAt.slice(0, 10);
 }
 
@@ -89,7 +89,7 @@ export function filterOrders(orders, { startDate, endDate, locationId, orderType
  * @param {object} [line] One line of it, needed for category and item.
  * @returns {string} The bucket key.
  */
-export function groupKeyFor(groupBy, order, line) {
+function groupKeyFor(groupBy, order, line) {
   if (groupBy === 'day') {
     return orderDate(order);
   }

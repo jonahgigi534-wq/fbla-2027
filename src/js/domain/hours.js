@@ -28,7 +28,7 @@ const DAYS_PER_WEEK = 7;
  * @param {Date} moment Any date and time.
  * @returns {number} Minutes since midnight, from 0 to 1439.
  */
-export function minutesIntoDay(moment) {
+function minutesIntoDay(moment) {
   return moment.getHours() * MINUTES_PER_HOUR + moment.getMinutes();
 }
 

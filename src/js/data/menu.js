@@ -115,7 +115,7 @@ export const SECTIONS = [
 ];
 
 /** Every category across every section, flattened for the category filter. */
-export const ALL_CATEGORIES = SECTIONS.flatMap((section) => section.categories);
+const ALL_CATEGORIES = SECTIONS.flatMap((section) => section.categories);
 
 /** Every orderable item, flattened. This is the array search and reports work over. */
 export const ALL_ITEMS = ALL_CATEGORIES.flatMap((category) => category.items);
@@ -150,14 +150,4 @@ export function findItem(itemId) {
  */
 export function findCategory(categoryId) {
   return CATEGORIES_BY_ID.get(categoryId);
-}
-
-/**
- * Finds one section by id.
- *
- * @param {string} sectionId Identifier such as 'bakery'.
- * @returns {object|undefined} The section, or undefined when the id is unknown.
- */
-export function findSection(sectionId) {
-  return SECTIONS.find((section) => section.id === sectionId);
 }
