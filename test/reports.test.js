@@ -11,6 +11,7 @@ import assert from 'node:assert/strict';
 import {
   buildReport,
   compareWithPreviousPeriod,
+  coversPeriod,
   filterOrders,
   percentChange,
   previousPeriod,
@@ -48,6 +49,11 @@ const burgerLine = { itemId: 'burger', categoryId: 'burgers', priceCents: 1000, 
 const coffeeLine = { itemId: 'coffee', categoryId: 'drinks', priceCents: 300, quantity: 1 };
 
 const orders = [
+  // The history has to start well before the windows these tests compare, the way
+  // ninety days of real history does. Without it every comparison below would be
+  // measured against a period the history only partly covers, which the engine
+  // refuses to quote a percentage for.
+  order({ number: 0, date: '2026-04-15', lines: [pieLine], total: 1082 }),
   order({ number: 1, date: '2026-06-10', lines: [pieLine], total: 1082 }),
   order({ number: 2, date: '2026-06-11', lines: [pieLine, burgerLine], total: 2164 }),
   order({ number: 3, date: '2026-06-12', locationId: 'katy', lines: [coffeeLine], total: 1082 }),
@@ -59,6 +65,38 @@ test('a canceled order never counts as revenue', () => {
   const kept = filterOrders(orders, { startDate: '2026-06-01', endDate: '2026-06-30' });
   assert.equal(kept.length, 3);
   assert.ok(!kept.some((entry) => entry.orderNumber === 4));
+});
+
+test('a period the history starts inside is not covered', () => {
+  // The earliest order is 2026-04-15, so a period starting before that is only
+  // partly in the history and cannot be a fair baseline.
+  assert.equal(coversPeriod(orders, '2026-04-15'), true);
+  assert.equal(coversPeriod(orders, '2026-04-14'), false);
+  assert.equal(coversPeriod([], '2026-04-15'), false);
+});
+
+test('no comparison is offered when the history does not span the period before', () => {
+  // June 1 to 30 compares against May 2 to 31, which the history spans.
+  const fair = compareWithPreviousPeriod(orders, {
+    startDate: '2026-06-01',
+    endDate: '2026-06-30',
+    groupBy: 'location',
+  });
+  assert.equal(fair.isPreviousComplete, true);
+
+  // The whole history compared against the same span before it, which holds nothing
+  // but the single earliest order. Left alone this reports a rise of several
+  // thousand percent off that one day, which is the bug this guards.
+  const unfair = compareWithPreviousPeriod(orders, {
+    startDate: '2026-04-15',
+    endDate: '2026-06-30',
+    groupBy: 'location',
+  });
+  assert.equal(unfair.isPreviousComplete, false);
+  assert.ok(
+    unfair.rows.every((row) => row.changePercent === null),
+    'every row should report no baseline rather than an impossible percentage'
+  );
 });
 
 test('the date range includes both ends', () => {

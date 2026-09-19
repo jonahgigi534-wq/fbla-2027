@@ -98,14 +98,18 @@ function selectField(id, label, options, value, onChange) {
  *
  * @param {string} label What the figure is.
  * @param {string} value The figure now.
- * @param {string} previous The same figure last period.
+ * @param {string|null} previous The same figure last period, or null when the history
+ *   does not reach back far enough for there to be one.
  * @returns {HTMLElement} The tile.
  */
 export function summaryTile(label, value, previous) {
   return el('div', { class: 'summary-tile' }, [
     el('p', { class: 'summary-tile__label', text: label }),
     el('p', { class: 'summary-tile__value', text: value }),
-    el('p', { class: 'summary-tile__previous', text: `was ${previous}` }),
+    el('p', {
+      class: 'summary-tile__previous',
+      text: previous === null ? 'no earlier period' : `was ${previous}`,
+    }),
   ]);
 }
 

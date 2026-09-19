@@ -18,9 +18,12 @@ import { formatMetric, labelForKey, view } from './reportView.js';
  *
  * @param {object[]} rows Rows to show, already sorted.
  * @param {Function} onChange Called when the sort direction flips.
+ * @param {boolean} [isPreviousComplete] Whether the history spans the preceding
+ *   period. When it does not there is no comparison to draw, and the column says so
+ *   once rather than labelling every row as new.
  * @returns {HTMLElement} The table, in a horizontally scrollable wrapper.
  */
-export function reportTable(rows, onChange) {
+export function reportTable(rows, onChange, isPreviousComplete = true) {
   if (rows.length === 0) {
     return el(
       'div',
@@ -57,7 +60,11 @@ export function reportTable(rows, onChange) {
         ),
       ])
     ),
-    el('th', { scope: 'col', class: 'numeric', text: 'vs previous' }),
+    el('th', {
+      scope: 'col',
+      class: 'numeric',
+      text: isPreviousComplete ? 'vs previous' : 'vs previous (none)',
+    }),
   ]);
 
   const body = rows.map((row) =>
@@ -68,7 +75,12 @@ export function reportTable(rows, onChange) {
       ),
       el('td', { class: 'numeric' }, [
         row.changePercent === null
-          ? el('span', { class: 'muted', text: 'new' })
+          ? el('span', {
+              class: 'muted',
+              // Nothing before it at all reads as new. Nothing before the whole
+              // period reads as no baseline, which is a different thing to say.
+              text: isPreviousComplete ? 'new' : '—',
+            })
           : el('span', {
               class: `change ${row.changePercent >= 0 ? 'change--up' : 'change--down'}`,
               text: `${row.changePercent > 0 ? '+' : ''}${row.changePercent}%`,

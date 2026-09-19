@@ -68,6 +68,18 @@ test('summarises a period against the one before it', () => {
   assert.match(sentence, /up 25%/);
 });
 
+test('a period the history does not span gets no percentage', () => {
+  // These are the real ninety day figures. Trusting the partial baseline reported
+  // a rise of twelve thousand percent, which is the bug this guards.
+  const sentence = periodSummaryInsight(
+    { orders: 2287, revenue: 8015790, averageOrder: 3505 },
+    { orders: 21, revenue: 66144, averageOrder: 3149 },
+    false
+  );
+  assert.match(sentence, /nothing to compare it against/);
+  assert.ok(!/%/.test(sentence), 'no percentage should appear at all');
+});
+
 test('an empty range says so rather than dividing by zero', () => {
   const sentence = periodSummaryInsight({ orders: 0, revenue: 0, averageOrder: 0 }, { revenue: 0 });
   assert.match(sentence, /No orders/);

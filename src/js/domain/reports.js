@@ -253,17 +253,52 @@ export function percentChange(current, previous) {
 }
 
 /**
+ * Decides whether the history actually reaches back across a whole period.
+ *
+ * A percentage is only honest when both sides of it were measured over the same
+ * amount of time. Ask for the last ninety days and the period before it is the ninety
+ * days before that, which this history does not reach: it holds ninety days in total.
+ * The comparison then puts ninety days of trading against whatever single day falls
+ * inside the window, and reports the difference as an increase of thirty thousand
+ * percent.
+ *
+ * That figure is arithmetically correct and completely useless, and a manager reading
+ * it would be right to stop trusting the rest of the table. So the period is checked
+ * for coverage first, and one the history does not span is reported as having no
+ * baseline rather than a spectacular one.
+ *
+ * @param {object[]} orders Every order.
+ * @param {string} startDate ISO date the period starts.
+ * @returns {boolean} True when the history begins on or before that date.
+ */
+export function coversPeriod(orders, startDate) {
+  if (orders.length === 0) {
+    return false;
+  }
+  let earliest = orderDate(orders[0]);
+  for (const order of orders) {
+    const date = orderDate(order);
+    if (date < earliest) {
+      earliest = date;
+    }
+  }
+  return earliest <= startDate;
+}
+
+/**
  * Builds the report with the preceding period alongside it.
  *
  * @param {object[]} orders Every order.
  * @param {object} options The same options buildReport takes.
- * @returns {{current: object, previous: object, rows: object[], range: object}}
- *   The report, the baseline, and rows carrying both plus the change between them.
+ * @returns {{current: object, previous: object, rows: object[], range: object,
+ *   isPreviousComplete: boolean}} The report, the baseline, rows carrying both plus
+ *   the change between them, and whether that change is worth showing at all.
  */
 export function compareWithPreviousPeriod(orders, options) {
   const current = buildReport(orders, options);
   const range = previousPeriod(options.startDate, options.endDate);
   const previous = buildReport(orders, { ...options, ...range });
+  const isPreviousComplete = coversPeriod(orders, range.startDate);
 
   const previousByKey = new Map(previous.rows.map((row) => [row.key, row]));
   const metric = options.metric ?? 'revenue';
@@ -274,9 +309,9 @@ export function compareWithPreviousPeriod(orders, options) {
     return {
       ...row,
       previousValue,
-      changePercent: percentChange(row[metric], previousValue),
+      changePercent: isPreviousComplete ? percentChange(row[metric], previousValue) : null,
     };
   });
 
-  return { current, previous, rows, range };
+  return { current, previous, rows, range, isPreviousComplete };
 }

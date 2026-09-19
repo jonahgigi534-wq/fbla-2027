@@ -118,14 +118,17 @@ export function stockWarningInsight(catalog, stockOverrides, stockFor) {
  *
  * @param {object} current Totals for the chosen range.
  * @param {object} previous Totals for the preceding range.
+ * @param {boolean} [isPreviousComplete] Whether the history spans the whole preceding
+ *   range. When it does not, the sentence says there is nothing to compare against
+ *   rather than quoting a percentage measured against a partial period.
  * @returns {string|null} The sentence, or null when there is nothing to say.
  */
-export function periodSummaryInsight(current, previous) {
+export function periodSummaryInsight(current, previous, isPreviousComplete = true) {
   if (current.orders === 0) {
     return 'No orders fall inside this range.';
   }
   const revenueChange =
-    previous.revenue === 0
+    previous.revenue === 0 || !isPreviousComplete
       ? null
       : Math.round(((current.revenue - previous.revenue) / previous.revenue) * 1000) / 10;
 
@@ -144,6 +147,8 @@ export function periodSummaryInsight(current, previous) {
  * @param {object[]} input.catalog Every catalog item.
  * @param {Object<string, number>} input.stockOverrides Live stock.
  * @param {Function} input.stockFor Reads an item's current stock.
+ * @param {boolean} [input.isPreviousComplete] Whether the history spans the whole
+ *   preceding range, from compareWithPreviousPeriod.
  * @returns {string[]} Sentences, in the order they should be shown.
  */
 export function buildInsights({
@@ -155,9 +160,10 @@ export function buildInsights({
   catalog,
   stockOverrides,
   stockFor,
+  isPreviousComplete = true,
 }) {
   return [
-    periodSummaryInsight(current, previous),
+    periodSummaryInsight(current, previous, isPreviousComplete),
     topPerformerInsight(rows, current.revenue, labelFor),
     peakHourInsight(hourRows),
     stockWarningInsight(catalog, stockOverrides, stockFor),

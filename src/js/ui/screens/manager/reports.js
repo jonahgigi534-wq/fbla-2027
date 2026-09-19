@@ -67,11 +67,14 @@ function insightsSection(insights) {
 function summaryTiles(comparison) {
   const now = comparison.current.totals;
   const before = comparison.previous.totals;
+  // A figure from a period the history only partly covers is not the same figure,
+  // so the tiles say there is no earlier period rather than quoting a fragment of one.
+  const was = (value) => (comparison.isPreviousComplete ? value : null);
   return el('div', { class: 'summary-tiles' }, [
-    summaryTile('Revenue', formatUSD(now.revenue), formatUSD(before.revenue)),
-    summaryTile('Orders', String(now.orders), String(before.orders)),
-    summaryTile('Items sold', String(now.units), String(before.units)),
-    summaryTile('Average order', formatUSD(now.averageOrder), formatUSD(before.averageOrder)),
+    summaryTile('Revenue', formatUSD(now.revenue), was(formatUSD(before.revenue))),
+    summaryTile('Orders', String(now.orders), was(String(before.orders))),
+    summaryTile('Items sold', String(now.units), was(String(before.units))),
+    summaryTile('Average order', formatUSD(now.averageOrder), was(formatUSD(before.averageOrder))),
   ]);
 }
 
@@ -153,6 +156,7 @@ export function renderManagerReports(container) {
         catalog: ALL_ITEMS,
         stockOverrides: state.stockOverrides,
         stockFor,
+        isPreviousComplete: comparison.isPreviousComplete,
       });
 
       const csvFallback = el('div', { class: 'csv-fallback' });
@@ -162,7 +166,9 @@ export function renderManagerReports(container) {
           el('h1', { text: 'Reports' }),
           el('p', {
             class: 'page-head__lede',
-            text: `${view.startDate} to ${view.endDate}, measured against ${comparison.range.startDate} to ${comparison.range.endDate}.`,
+            text: comparison.isPreviousComplete
+              ? `${view.startDate} to ${view.endDate}, measured against ${comparison.range.startDate} to ${comparison.range.endDate}.`
+              : `${view.startDate} to ${view.endDate}. The ninety days of history do not reach back to ${comparison.range.startDate}, so there is no period to measure this one against.`,
           }),
         ]),
         managerTabs('/manager/reports'),
@@ -180,7 +186,7 @@ export function renderManagerReports(container) {
           title: `${METRIC_OPTIONS.find((option) => option.id === view.metric).label} by ${GROUP_BY_OPTIONS.find((option) => option.id === view.groupBy).label.toLowerCase()}`,
         }),
 
-        reportTable(rows, draw),
+        reportTable(rows, draw, comparison.isPreviousComplete),
 
         takeAwayRow(rows, csvFallback),
         csvFallback,
