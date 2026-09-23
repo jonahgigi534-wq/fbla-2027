@@ -20,7 +20,7 @@ export const PROGRAMMING_CONCEPTS = [
     concept: 'Conditionals',
     where: 'src/js/domain/orderRules.js',
     detail:
-      'isSlotUsable checks four separate things that can be wrong with a collection time, in order of how likely they are, and returns a different message for each rather than one shared failure.',
+      'isSlotUsable checks six separate things that can be wrong with a collection time, from no time being picked at all to the slot having just filled up, and returns a different message for each rather than one shared failure.',
   },
   {
     concept: 'Loops',

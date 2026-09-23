@@ -68,7 +68,7 @@ export const TOPIC_COVERAGE = [
   {
     clause: 'inventory limits',
     answer:
-      'Stock is checked against what is already in the cart, so a customer holding the last four slices cannot add a fifth. The quantity stepper stops at what is left and says how many that is. Placing an order takes stock off the shelf; canceling puts it back.',
+      'Stock is checked against what is already in the cart, not just the shelf, so nobody can order more of something than is left. The quantity stepper stops at the limit and says how many remain. Every level can be changed on the stock screen and the customer side follows immediately: set an item to two and a third will not go in the cart. Placing an order takes stock off the shelf; canceling puts it back.',
     path: '/manager/inventory',
     linkLabel: 'Open the stock screen',
   },
