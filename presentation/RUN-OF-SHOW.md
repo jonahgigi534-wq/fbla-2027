@@ -35,7 +35,8 @@ Do not assume either way.
 
 ## Before you leave
 
-- [ ] `npm run check` passes
+- [ ] `npm run check` passes **on the presenting laptop itself**, which also proves Node
+      is installed there. With airplane mode on there is no way to install it on the day
 - [ ] `npm run build` has been run, and `dist/standalone.html` opens **with the wifi
       off** by double clicking it
 - [ ] The same file opens in a second browser and in a guest profile, in case an
@@ -63,9 +64,11 @@ Silent. No talking to judges. Practice it with a timer until it fits comfortably
    to a fresh install and rebuilds the ninety days of history, so the previous round
    leaves no trace.
 5. Navigate back to the home screen and leave it there.
-6. If you plan to show the code or the test run, open those windows now and size them.
-   Turn the terminal font up. Judges are looking at a laptop screen from the far side
-   of a table.
+6. Get the code ready for the segment under **Showing the code** below: editor font at
+   24 to 28 point, every tab closed except `domain/pricing.js`, the explorer collapsed
+   to the four folders in `src/js`, the minimap off, and a terminal in the project
+   folder with `npm run check` typed but not run. Judges are looking at a laptop screen
+   from the far side of a table, so angle it toward them for that part.
 7. Stand ready. Do not touch anything else.
 
 ---
@@ -92,6 +95,57 @@ There are roughly fifteen demonstrable features here and time for about six. Dec
 advance which ones, and deliberately hold the rest back for the question round, where
 answers that go beyond what was shown are worth points of their own.
 
-`npm run check` runs in about half a second and prints 225 passing tests plus three
-clean checks. If you want one moment that separates this from a website, that is
-probably it.
+---
+
+## Showing the code
+
+Nobody sees the code before the event. The rating sheet gives twenty points to the code
+itself, ten for comments, naming, and formatting and ten for modular structure, and the
+only evidence the judges get for either is what is shown in the room. Ninety seconds is
+enough. It goes straight after the live demonstration, as the step from what the
+program does to how it is built.
+
+1. **Help → Programming concepts**, fifteen seconds. Every concept the topic names is
+   matched to a file and a function. _"Everything the topic asks us to show is mapped
+   here. Let me open one."_
+2. **The folders**, fifteen seconds. Switch to the editor with `src/js` open one level:
+   `data`, `domain`, `app`, `ui`. Four folders with one job each, and the logic never
+   reaches into the screens, which a script checks. This is modular structure.
+3. **`domain/pricing.js`**, thirty seconds. It is the file the Variables row points at.
+   Point at the numbered steps in the comment at the top, then at `subtotal`,
+   `discount`, `goods`, `tax`, and `tip` inside `calculateOrderTotals`. The comments say
+   why rather than what: the discount comes off before tax, because taxing first
+   overcharges the customer. Each step is its own named variable, so the arithmetic
+   reads top to bottom. This is comments, naming, and formatting.
+4. **`npm run check`**, twenty seconds. It is already typed, so it takes one keypress.
+   Read the test count off the screen rather than quoting one from memory, then name the
+   four checks: every function documented, the layers kept apart, nothing misspelled,
+   and every figure in the documentation still true. If you want one moment that
+   separates this from a website, it is this one.
+
+Then back to the program, or to the closing slide.
+
+**Never open `dist/standalone.html` in the editor.** It is the whole program bundled
+into one file so it can run offline. A judge who sees it will reasonably conclude the
+code is one file, which undoes step 2.
+
+**Stay out of `data/`.** The menu files are long lists of items and read as noise.
+
+**No code on slides.** A screenshot of code is unreadable across a table, and the real
+thing running is more convincing.
+
+### In the question round
+
+Know these by name, so any of them opens in a couple of seconds with Ctrl+P in VS Code:
+
+| If the question is about | Open                                                                 |
+| ------------------------ | -------------------------------------------------------------------- |
+| Totals, tax, money       | `domain/pricing.js`                                                  |
+| Validation               | `domain/validation.js` for shape, `domain/orderRules.js` for meaning |
+| The Pie Assistant        | `domain/assistant.js`                                                |
+| Reports                  | `domain/reports.js`                                                  |
+| How it is organized      | the `src/js` folder                                                  |
+
+**Expect "did you write all this?"** It is a fair question at an introductory event,
+about a program this size. The answer that lands is opening a file and explaining it
+without notes, so practice exactly that, on `pricing.js` and on one other file.

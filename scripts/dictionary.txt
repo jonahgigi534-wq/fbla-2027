@@ -66,6 +66,7 @@ amount
 analyze
 analyzing
 and
+angle
 animals
 announced
 another
@@ -76,6 +77,7 @@ any
 anyone
 anything
 anywhere
+apart
 apostrophes
 app
 appear
@@ -414,6 +416,7 @@ codes
 coffee
 coke
 cola
+collapsed
 collect
 collected
 collection
@@ -440,6 +443,7 @@ competition
 complete
 concatenated
 concentrated
+concept
 concepts
 conclude
 concoction
@@ -467,6 +471,7 @@ controls
 convenient
 convention
 conventions
+convincing
 cooked
 cookie
 cookies
@@ -494,6 +499,7 @@ counted
 counter
 country
 counts
+couple
 cover
 coverage
 covered
@@ -519,6 +525,7 @@ crust
 crusted
 css
 csv
+ctrl
 cucumber
 cup
 cups
@@ -679,6 +686,7 @@ easy
 edit
 edited
 editing
+editor
 effect
 efficiency
 efficiently
@@ -725,10 +733,12 @@ every
 everyone
 everything
 everywhere
+evidence
 exact
 exactly
 example
 exceed
+except
 exception
 execution
 exempt
@@ -736,12 +746,14 @@ exercised
 exist
 exit
 exiting
+expect
 experience
 expired
 expiry
 explain
 explained
 explaining
+explorer
 exploring
 export
 exported
@@ -759,6 +771,7 @@ failed
 failing
 fails
 failure
+fair
 fajita
 fajitas
 fake
@@ -830,8 +843,10 @@ fluffy
 focus
 folded
 folder
+folders
 follow
 following
+follows
 font
 fonts
 food
@@ -897,6 +912,7 @@ gets
 getstate
 getting
 given
+gives
 giving
 glad
 glass
@@ -1080,6 +1096,7 @@ interrupt
 into
 intolerant
 introduction
+introductory
 intuitive
 invalid
 invented
@@ -1119,6 +1136,7 @@ keeps
 kept
 key
 keyboard
+keypress
 keyword
 keywords
 kids
@@ -1256,6 +1274,7 @@ mayo
 mayonnaise
 meal
 mean
+meaning
 means
 meant
 measure
@@ -1290,6 +1309,7 @@ midnight
 milk
 millisecond
 mini
+minimap
 minimum
 minute
 minutes
@@ -1362,6 +1382,7 @@ nine
 ninety
 nobody
 node
+noise
 nominatively
 none
 nonsense
@@ -1370,12 +1391,14 @@ normally
 northwest
 not
 note
+notes
 nothing
 notice
 notices
 notification
 now
 number
+numbered
 numbers
 nunez
 nut
@@ -1603,6 +1626,7 @@ property
 protect
 protection
 protocols
+proves
 provide
 provided
 provides
@@ -1664,6 +1688,7 @@ ready
 real
 realistic
 reason
+reasonably
 reasoning
 reassigned
 rebuilds
@@ -1815,6 +1840,7 @@ scratch
 screen
 screens
 screensaver
+screenshot
 script
 scripted
 search
@@ -1823,6 +1849,7 @@ searching
 seasonal
 seasoning
 second
+seconds
 secret
 section
 sections
@@ -1830,6 +1857,8 @@ security
 see
 seed
 seen
+sees
+segment
 selection
 seller
 sells
@@ -1907,6 +1936,8 @@ sleep
 slice
 sliced
 slices
+slide
+slides
 slightly
 slot
 slots
@@ -2051,6 +2082,7 @@ swap
 sweet
 sweetened
 swiss
+switch
 syntactic
 syntactical
 syrup
@@ -2114,6 +2146,8 @@ thing
 things
 thinking
 thinly
+third
+thirty
 this
 those
 three
@@ -2161,6 +2195,7 @@ totals
 touch
 touches
 tour
+toward
 trace
 track
 tracked
@@ -2195,6 +2230,7 @@ twenty
 twice
 two
 type
+typed
 typefaces
 types
 typing
@@ -2207,12 +2243,14 @@ underneath
 understand
 understanding
 understands
+undoes
 unedited
 unicode
 unknown
 unlike
 unlock
 unmediated
+unreadable
 unreliable
 unsweet
 until
@@ -2244,6 +2282,7 @@ validation
 value
 vanilla
 vanishing
+variable
 variables
 variety
 vegan
