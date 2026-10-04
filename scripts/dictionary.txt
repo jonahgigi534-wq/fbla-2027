@@ -1,20 +1,25 @@
+# Words the interface is allowed to use.
 #
 # "Interface contains no spelling errors" is scored on the rating sheet, and a
-# Anything genuinely new belongs here, one word per line. If a word looks wrong,
-# It covers the interface, the documentation, and the presentation notes. It is a
-# It was built by running the checker over the whole interface and reading every
-# Lines starting with # are ignored.
-# This list is committed so the same words are accepted everywhere.
-# Words the interface is allowed to use.
-# and a list of "favourites". Those are fixed, and the American spellings are what
-# dictionary of English. That is the point: a word that is not on it is either new
-# is listed here.
-# it probably is.
-# or wrong, and both are worth a look.
 # spell checker whose word list depends on the machine it runs on is not a check.
-# vocabulary of words this project has actually used and someone has read, not a
+# This list is committed so the same words are accepted everywhere.
+#
+# It was built by running the checker over the whole interface and reading every
 # word it did not know. That pass found a real problem: the interface had been
 # written in British English throughout, so a Houston diner had a "Help centre"
+# and a list of "favourites". Those are fixed, and the American spellings are what
+# is listed here.
+#
+# It covers the interface, the documentation, and the presentation notes. It is a
+# vocabulary of words this project has actually used and someone has read, not a
+# dictionary of English. That is the point: a word that is not on it is either new
+# or wrong, and both are worth a look.
+#
+# Anything genuinely new belongs here, one word per line. If a word looks wrong,
+# it probably is.
+#
+# Lines starting with # are ignored.
+
 about
 above
 acapulco
@@ -723,8 +728,8 @@ emoji
 empties
 empty
 end
-ends
 endorsed
+ends
 enforced
 enforces
 english
