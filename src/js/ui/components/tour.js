@@ -53,7 +53,7 @@ const STEPS = [
   {
     target: '#assistant-toggle',
     title: 'Ask the Pie Assistant',
-    body: 'Questions answered from this device with no internet at all. Try what is vegetarian, anything under ten dollars, or where is my order.',
+    body: 'Ask in plain English. With a key it answers using Llama 3.3, told this menu and your cart; without one it answers from this device. Try what is vegetarian, anything under ten dollars, or where is my order.',
   },
   {
     target: 'a[href="#/manager"]',

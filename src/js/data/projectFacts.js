@@ -66,6 +66,12 @@ export const ATTRIBUTION = [
     source: 'Standard Unicode emoji',
     detail: 'Rendered by your own device. No icon set was downloaded or bundled.',
   },
+  {
+    what: 'AI answers in the Pie Assistant',
+    source: 'Llama 3.3 by Meta, through OpenRouter',
+    detail:
+      'Used only when a key is saved under AI settings. Built with Llama 3.3, under the Llama 3.3 Community License. The rules it answers under and the facts it is given were written for this project. Without a key the assistant answers from this device instead.',
+  },
 ];
 
 /** Things that would normally be a library, and what replaced them. */

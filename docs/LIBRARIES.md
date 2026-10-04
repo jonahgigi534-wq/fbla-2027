@@ -27,6 +27,19 @@ Things that would normally be a dependency, and what replaced them:
 | A bundler              | `scripts/build-standalone.mjs`                         |
 | A spell checker        | `scripts/spellcheck.mjs` with a committed word list    |
 
+## Outside services: one, and it is optional
+
+The Pie Assistant can answer with **Meta's Llama 3.3 70B**, reached through
+**OpenRouter**. This is a service, not a library: nothing is installed or bundled, and
+the program talks to it with one request built on the browser's own `fetch`, in
+`src/js/app/aiClient.js`. OpenRouter is asked to send each question to whichever host
+is answering fastest, which for this model is usually Groq.
+
+It only switches on when a key is pasted into the assistant's AI settings. Without one,
+or whenever the service cannot be reached, the assistant answers from this device with
+the built in matcher, so nothing else in the program depends on it. The offline build
+allows that one address and refuses to build if any other file makes a network call.
+
 ## At development time: one, and it is optional
 
 **Prettier** formats the source consistently. It is the only entry in

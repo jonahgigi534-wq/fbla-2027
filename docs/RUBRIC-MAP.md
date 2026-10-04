@@ -7,7 +7,7 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every function has a documentation block, private helpers included. 277 of 277,
+- Every function has a documentation block, private helpers included. 309 of 309,
   checked by
   `npm run check`, not by inspection.
 - Every file opens with a block saying what it is for and who calls it.
@@ -50,17 +50,20 @@ are earned in the room rather than in the code.
 - **No navigation errors:** hash routing, so Back and Forward work, refresh returns to
   the same screen, Back closes a dialog rather than leaving, and an unknown address
   lands on a real Not Found screen.
-- **An intelligent feature:** the **Pie Assistant**, an offline question and answer
-  system. It scores keyword matches against a knowledge base, tolerates typos through
-  bounded edit distance, reads live menu, stock, cart, and order state to build its
-  answers, and always offers somewhere to go next. 33 phrasings and 8 misspellings are
-  pinned in `test/assistant.test.js`.
+- **An intelligent feature:** the **Pie Assistant**, which answers in two ways. With a
+  key saved, questions go to Llama 3.3 through OpenRouter, sent with the live menu,
+  stock, hours, and cart and a set of rules against guessing; `test/aiPrompt.test.js`
+  pins what it is told, including that nothing personal is sent. Without a key, or when
+  the model cannot be reached, a built in matcher answers from this device: it scores
+  keyword matches against a knowledge base and tolerates typos through bounded edit
+  distance. 33 phrasings and 8 misspellings are pinned in `test/assistant.test.js`.
+  Either way the customer gets an answer, and the panel says which one gave it.
 
 **Input validation on both syntactical and semantic levels**
 
 - The split is the design, not a claim: `domain/validation.js` asks whether a value is
   well formed, `domain/orderRules.js` asks whether it suits this order.
-- All 15 inputs, with both checks side by side, are listed in the program under
+- All 16 inputs, with both checks side by side, are listed in the program under
   **Help → Validation rules**.
 - The clearest example: a ZIP code can be five real digits and still not be one this
   restaurant delivers to. Each gets a different message.

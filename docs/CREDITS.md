@@ -55,6 +55,13 @@ or example project was used, and nothing was copied from another codebase.
 **Libraries.** None at runtime. See [LIBRARIES.md](LIBRARIES.md) for the full list and
 for the one optional development tool.
 
+**AI model.** When AI answers are switched on, the Pie Assistant's replies are written
+by **Llama 3.3 70B**, made by Meta and used under the Llama 3.3 Community License, and
+reached through **OpenRouter**, which passes each request to a hosting company such as
+Groq. The assistant says "Built with Llama 3.3" whenever it is the one answering. The
+prompt it is given, the rules it answers under, and everything around it were written
+for this project; the model itself is theirs.
+
 **Fonts.** Two, both the ones House of Pies uses on its own site, and both under the
 SIL Open Font License 1.1, which permits redistribution:
 

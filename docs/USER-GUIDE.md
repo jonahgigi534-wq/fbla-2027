@@ -64,8 +64,17 @@ the ingredients are committed whatever anyone decides. Canceling puts the stock 
 
 ## Asking the assistant
 
-Press **Ask** in the header. It answers from this device, with no internet, reading
-the live menu, stock, cart, and orders.
+Press **Ask** in the header. It reads the live menu, stock, cart, and orders, so what it
+says matches what the screens show.
+
+**Two ways it can answer.** With a key saved under **AI settings** at the bottom of the
+panel, questions go to Llama 3.3 through OpenRouter and the answers are written fresh.
+Without a key it answers from this device, with no internet. If the AI cannot be
+reached, or the key is rejected, the built in answers take over and the reply says so.
+The line under the title always says which one is answering.
+
+The key is kept in this browser only. Reset demo data does not remove it; the Remove
+key button does.
 
 Things it handles: what is vegetarian, anything under ten dollars, what do you
 recommend, what is sold out, when are you open, do you deliver, where is my order,

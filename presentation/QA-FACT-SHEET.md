@@ -14,11 +14,12 @@ any of this is up to you.
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
-| Tests                              | 259, 97% line coverage of the logic        |
-| Functions, all documented          | 277                                        |
-| JavaScript modules                 | 79                                         |
+| Tests                              | 275, 97% line coverage of the logic        |
+| Functions, all documented          | 309                                        |
+| JavaScript modules                 | 84                                         |
 | Runtime dependencies               | none                                       |
-| Offline build                      | about 520 KB in one file                   |
+| Outside services                   | one, optional: Llama 3.3 via OpenRouter    |
+| Offline build                      | about 560 KB in one file                   |
 
 ---
 
@@ -28,7 +29,9 @@ any of this is up to you.
 None at runtime. No framework, no chart library, no date library, no CSS framework.
 The router, state store, chart, CSV writer, fuzzy matcher, bundler, and spell checker
 were all written for this. Prettier formats the code and is optional; `npm run check`
-runs without it. Full list in `docs/LIBRARIES.md`.
+runs without it. The one outside service is the AI behind the assistant, which is
+optional and called with the browser's own fetch, not a library. Full list in
+`docs/LIBRARIES.md`.
 
 **Why no database?**
 There is no server to put one on. Everything is saved in the browser's own storage,
@@ -37,7 +40,7 @@ wifi failing. A real deployment would put orders on a server, and the code is ar
 for that: the whole `domain/` layer has no idea where its data comes from.
 
 **Are you storing credit card numbers?**
-No. Nothing is sent anywhere and no card number is kept. Only the last four digits
+No. Card details are never sent anywhere and no card number is kept. Only the last four digits
 reach the saved order, so a receipt can say which card. The payment step says so on
 screen. The Luhn checksum is run to catch a mistyped digit, which is the only useful
 check possible without a payment processor.
@@ -50,12 +53,42 @@ secret in a file that ships to the browser would be worse: it would look like se
 without being any.
 
 **How does the assistant work?**
-It scores a question against a knowledge base of 15 intents. Keywords score, whole
-phrases score more, and a word within one edit of a keyword still counts, which is how
-it handles "vegitarian" and "delivary". The winning intent then builds its answer from
-the live menu, stock, cart, and orders, so it cannot contradict the screens. If nothing
-scores confidently it offers the closest topics instead of giving up. No model, no
-network. 33 phrasings and 8 misspellings are pinned in the tests.
+Two ways, and it always says which one is answering.
+
+With a key saved, each question goes to Llama 3.3 70B through OpenRouter. The model
+knows nothing about House of Pies on its own, so every question is sent with the facts
+it may use: all 426 items with prices, stock, tags and allergens, the six restaurants
+and whether each is open right now, the cart, and the customer's recent order numbers.
+Rules go first: answer only from those facts, never invent a price, never call
+anything gluten free. The tests check exactly what it is told.
+
+Without a key, or whenever the AI cannot answer, a built in matcher answers from the
+device. It scores a question against a knowledge base of 15 intents. Keywords score,
+whole phrases score more, and a word within one edit of a keyword still counts, which
+is how it handles "vegitarian" and "delivary". 33 phrasings and 8 misspellings are
+pinned in the tests.
+
+**Why Llama through OpenRouter?**
+OpenRouter is one address in front of many models and many hosts, and it is asked to
+send each question to whichever host is fastest, usually Groq. Speed matters in a live
+demonstration. And if one host is slow or down, the next takes the request, and the
+model is one line in `src/js/app/aiClient.js` if it ever needs changing.
+
+**Where is the API key? Is it exposed?**
+Not in the code. The code is public and there is no server to keep a secret on, so
+anything written into it would be readable by anyone. The key is pasted into AI
+settings and kept in that browser only. It is a password field, so it never shows on
+screen.
+
+**What is sent to the AI, and what is not?**
+The question, the menu, stock, hours, cart, and recent order numbers. Never the
+customer's name, phone, email, address, or card. A test fails if any of those appear.
+
+**What if the AI says something wrong?**
+It can, which is why it answers under rules and from a fixed set of facts, and why the
+buttons under its answers come from the program rather than the model. It also cannot
+place, change, or cancel anything. Every decision about an order is still made by the
+program's own checked code.
 
 **Why is money stored as whole cents?**
 An order applies a promo, then 8.25% tax, then a tip. Three multiplications in a row on

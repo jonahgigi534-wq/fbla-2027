@@ -36,7 +36,12 @@ Do not assume either way.
 ## Before you leave
 
 - [ ] `npm run check` passes **on the presenting laptop itself**, which also proves Node
-      is installed there. With airplane mode on there is no way to install it on the day
+      is installed there. There is no time to install it on the day
+- [ ] **The AI key is saved on the presenting laptop, from the double clicked
+      `dist/standalone.html` itself.** Browsers keep saved data per address, so a key
+      saved while using `npm start` does not carry over to the file. Check the
+      OpenRouter account has credit, then ask one question and confirm the subtitle
+      reads "Built with Llama 3.3"
 - [ ] `npm run build` has been run, and `dist/standalone.html` opens **with the wifi
       off** by double clicking it
 - [ ] The same file opens in a second browser and in a guest profile, in case an
@@ -57,8 +62,10 @@ Do not assume either way.
 Silent. No talking to judges. Practice it with a timer until it fits comfortably.
 
 1. Laptop out, lid open, plugged into nothing.
-2. Close every other application. Airplane mode on, so nothing can interrupt and
-   nothing can be blamed on the venue wifi.
+2. Close every other application and turn on Do Not Disturb. Leave wifi **on**, since
+   the assistant's AI answers need it. If the venue connection turns out to be bad,
+   switch to airplane mode: everything still works, and the assistant answers from the
+   device instead.
 3. Open `dist/standalone.html`.
 4. **Reset demo data**: Staff, PIN 1967, Reset demo data. This puts the program back
    to a fresh install and rebuilds the ninety days of history, so the previous round
@@ -78,7 +85,12 @@ Silent. No talking to judges. Practice it with a timer until it fits comfortably
 **The staff PIN is 1967.** It is printed on the screen that asks for it, on purpose,
 so a judge who wanders into the staff area is never stuck.
 
-**Reset demo data** is under Staff. Use it between rounds.
+**Reset demo data** is under Staff. Use it between rounds. It does not remove the AI
+key, so there is nothing to paste in again.
+
+**If the assistant says the AI could not be reached**, keep going. It has already
+answered from the device, and "it still works with no connection" is a better thing to
+show a judge than a perfect connection.
 
 **A judge may ask to try it themselves.** Let them. The program is built to survive
 it: every screen has a way out, unknown addresses land on a real Not Found page, and

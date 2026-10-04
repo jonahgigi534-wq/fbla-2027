@@ -69,8 +69,8 @@ export const HELP_ARTICLES = [
     id: 'assistant',
     group: 'Using this program',
     title: 'Asking the Pie Assistant',
-    keywords: ['assistant', 'ask', 'question', 'help', 'chat'],
-    body: 'Press Ask in the header to open the assistant. It answers from this device with no internet, reading the live menu, stock, cart, and orders, so what it tells you matches what the screens show. It copes with typos, and if it does not understand a question it offers the nearest things it can help with rather than giving up. The buttons under the box are questions that are guaranteed to work.',
+    keywords: ['assistant', 'ask', 'question', 'help', 'chat', 'ai', 'llama', 'key'],
+    body: 'Press Ask in the header to open the assistant. It reads the live menu, stock, cart, and orders, so what it tells you matches what the screens show. With a key saved under AI settings it answers with Llama 3.3 through OpenRouter. Without one it answers from this device with no internet, copes with typos, and offers the nearest topics when it does not understand. If the AI cannot answer, the built in answers take over and say so. The line under the title always says which one is answering.',
   },
   {
     id: 'allergens',
@@ -83,8 +83,8 @@ export const HELP_ARTICLES = [
     id: 'privacy',
     group: 'Using this program',
     title: 'What this program stores',
-    keywords: ['privacy', 'data', 'card', 'payment', 'saved', 'security'],
-    body: 'Everything stays on this device in your browser. Nothing is sent anywhere, because there is no server to send it to. No payment is processed and no card number is kept: only the last four digits reach the saved order, so a receipt can identify which card was used. Some browsers block saving on a page opened directly from a file, and the program says so at the top if that happens.',
+    keywords: ['privacy', 'data', 'card', 'payment', 'saved', 'security', 'ai', 'sent'],
+    body: 'Everything is saved on this device in your browser, because there is no server to keep it on. No payment is processed and no card number is kept: only the last four digits reach the saved order, so a receipt can identify which card was used. The one thing that ever leaves this device is a question to the assistant while AI answers are switched on. It goes to OpenRouter with a summary of the menu, stock, your cart, and your recent order numbers. Your name, phone, email, address, and card are never included. Some browsers block saving on a page opened directly from a file, and the program says so at the top if that happens.',
   },
   {
     id: 'staff',

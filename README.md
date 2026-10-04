@@ -7,8 +7,9 @@ locations across Houston, The Woodlands, Cypress, and Katy.
 Built for the FBLA 2026-2027 **Introduction to Programming** event, whose topic is
 _Local Business Digital Ordering System_.
 
-It runs in a browser with **no libraries, no build step required, no server, and no
-internet connection**.
+It runs in a browser with **no libraries, no build step required, and no server**.
+Everything works with no internet connection. The one thing that uses it is the
+optional AI in the Pie Assistant, which falls back to built in answers without it.
 
 ---
 
@@ -31,11 +32,24 @@ Then open <http://localhost:4173>.
 npm run build
 ```
 
-That writes `dist/standalone.html`. Double click it. No server, no network, no
-terminal. This is the copy used for the presentation, because the competition
-provides no electricity and warns that venue wifi may not work.
+That writes `dist/standalone.html`. Double click it. No server and no terminal. This
+is the copy used for the presentation, because the competition provides no
+electricity.
 
 Keep the `dist` folder together: the photographs sit next to the HTML file.
+
+### Turning on AI answers
+
+The Pie Assistant answers from this device by default. To have it answer with
+Llama 3.3 instead:
+
+1. Make an account at openrouter.ai, add a few dollars of credit, and create a key.
+2. Open the program, press **Ask**, then **AI settings** at the bottom of the panel.
+3. Paste the key and press **Save key**.
+
+The key is saved in that browser only and is never written into the code, which is
+public. It survives Reset demo data. If the key is rejected or the connection drops,
+the assistant says so and answers from this device instead.
 
 ### Checking it
 
@@ -64,7 +78,9 @@ here, it needs nothing installed.
   full tax breakdown
 - Change or cancel an order until the kitchen starts cooking, then track it through
   four stages and print an itemized receipt
-- Ask the **Pie Assistant** a question in plain English, entirely offline
+- Ask the **Pie Assistant** a question in plain English. With a key it answers with
+  Llama 3.3, told the live menu, stock, hours, and cart; without one it answers from
+  this device
 - See what you have spent over 30, 90, or 365 days and what you order most
 
 **For staff**
