@@ -31,6 +31,7 @@ import { stockFor } from '../domain/inventory.js';
 import { SECTIONS } from '../data/menu.js';
 import { DAY_NAMES, LOCATIONS } from '../data/locations.js';
 import { PROMOS, findPromo } from '../data/promos.js';
+import { HELP_ARTICLES } from '../data/helpArticles.js';
 
 /** Earlier questions and answers, oldest first. Replaced, never edited in place. */
 let history = [];
@@ -70,6 +71,7 @@ function gatherFacts(now) {
       deliveryMinimumCents: DELIVERY_MINIMUM_CENTS,
       promos: PROMOS,
     },
+    howTo: HELP_ARTICLES,
   };
 }
 

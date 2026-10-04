@@ -14,8 +14,8 @@ any of this is up to you.
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
-| Tests                              | 275, 97% line coverage of the logic        |
-| Functions, all documented          | 309                                        |
+| Tests                              | 279, 97% line coverage of the logic        |
+| Functions, all documented          | 310                                        |
 | JavaScript modules                 | 84                                         |
 | Runtime dependencies               | none                                       |
 | Outside services                   | one, optional: Llama 3.3 via OpenRouter    |
@@ -57,10 +57,11 @@ Two ways, and it always says which one is answering.
 
 With a key saved, each question goes to Llama 3.3 70B through OpenRouter. The model
 knows nothing about House of Pies on its own, so every question is sent with the facts
-it may use: all 426 items with prices, stock, tags and allergens, the six restaurants
-and whether each is open right now, the cart, and the customer's recent order numbers.
-Rules go first: answer only from those facts, never invent a price, never call
-anything gluten free. The tests check exactly what it is told.
+it may use: all 426 items with prices, ingredients, stock, tags and allergens, the six
+restaurants and whether each is open right now, the cart, the customer's recent order
+numbers, and the program's own help guides. Rules go first: anything about the
+restaurant comes only from those facts, never invent a price, never call anything
+gluten free. The tests check exactly what it is told.
 
 Without a key, or whenever the AI cannot answer, a built in matcher answers from the
 device. It scores a question against a knowledge base of 15 intents. Keywords score,
@@ -80,8 +81,16 @@ where anyone can read it with View Source, and there is no server to keep a secr
 settings and kept in that browser only. It is a password field, so it never shows on
 screen.
 
+**What happens if someone asks it something off topic?**
+Each kind of question has its own rule. A greeting gets a greeting, simple math gets
+an answer and a nudge back to the menu, and politics or medical advice gets a polite
+no. The menu lists no calories, so a calorie question gets told that honestly, along
+with lighter dishes picked from their ingredients. It never gives a calorie number it
+would have to make up.
+
 **What is sent to the AI, and what is not?**
-The question, the menu, stock, hours, cart, and recent order numbers. Never the
+The question, the menu with its ingredients, stock, hours, cart, recent order numbers,
+and the help guides. Never the
 customer's name, phone, email, address, or card. A test fails if any of those appear.
 
 **What if the AI says something wrong?**

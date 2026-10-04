@@ -13,10 +13,10 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 275, all passing         |
+| Tests                            | 279, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 93%                      |
-| Functions documented             | 309 of 309               |
+| Functions documented             | 310 of 310               |
 | Files over the 400 line ceiling  | none                     |
 | Misspelled words on screen       | none, across 16,000 plus |
 
@@ -46,26 +46,26 @@ whether its answers are any good.
 
 Every module in `src/js/domain/`, which is where the decisions live:
 
-| Module       | What its tests protect                                                           |
-| ------------ | -------------------------------------------------------------------------------- |
-| `money`      | Half up rounding, including on negatives, and parsing what a customer types      |
-| `pricing`    | That discount comes off before tax, and that the delivery fee is taxed           |
-| `cart`       | That nothing is edited in place, and that identical lines merge                  |
-| `inventory`  | That stock is counted against the cart, not just the shelf                       |
-| `budget`     | That the removal suggested is the cheapest one that closes the gap               |
-| `slots`      | The midnight roll, catering lead times, and the capacity cap                     |
-| `hours`      | Three different schedules, including Katy at 3am on a Saturday                   |
-| `validation` | Field shape, including the Luhn checksum                                         |
-| `orderRules` | Delivery areas, expired cards, unusable slots, backwards date ranges             |
-| `orders`     | The window in which an order can still be changed                                |
-| `reports`    | That canceled orders never count, and that periods compare like for like         |
-| `insights`   | That the generated sentences match the figures under them                        |
-| `assistant`  | 33 real phrasings, 8 of them misspelled, plus nonsense                           |
-| `search`     | Ranking, and that word matching does not match inside words                      |
-| `dietary`    | That graham cracker is not read as ham                                           |
-| `csv`        | Escaping commas, quotes, and line breaks                                         |
-| `carousel`   | Paging, and that the last page backfills rather than leaving a gap               |
-| `aiPrompt`   | Every item at its real price, sold out marked, the gluten rule, nothing personal |
+| Module       | What its tests protect                                                                                                                  |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `money`      | Half up rounding, including on negatives, and parsing what a customer types                                                             |
+| `pricing`    | That discount comes off before tax, and that the delivery fee is taxed                                                                  |
+| `cart`       | That nothing is edited in place, and that identical lines merge                                                                         |
+| `inventory`  | That stock is counted against the cart, not just the shelf                                                                              |
+| `budget`     | That the removal suggested is the cheapest one that closes the gap                                                                      |
+| `slots`      | The midnight roll, catering lead times, and the capacity cap                                                                            |
+| `hours`      | Three different schedules, including Katy at 3am on a Saturday                                                                          |
+| `validation` | Field shape, including the Luhn checksum                                                                                                |
+| `orderRules` | Delivery areas, expired cards, unusable slots, backwards date ranges                                                                    |
+| `orders`     | The window in which an order can still be changed                                                                                       |
+| `reports`    | That canceled orders never count, and that periods compare like for like                                                                |
+| `insights`   | That the generated sentences match the figures under them                                                                               |
+| `assistant`  | 33 real phrasings, 8 of them misspelled, plus nonsense                                                                                  |
+| `search`     | Ranking, and that word matching does not match inside words                                                                             |
+| `dietary`    | That graham cracker is not read as ham                                                                                                  |
+| `csv`        | Escaping commas, quotes, and line breaks                                                                                                |
+| `carousel`   | Paging, and that the last page backfills rather than leaving a gap                                                                      |
+| `aiPrompt`   | Every item at its real price with its ingredients, sold out marked, the gluten rule, a rule for each kind of question, nothing personal |
 
 Two modules outside `domain/` are tested too. The router, because the rating sheet
 asks for no navigation errors and the router is what decides them, and the AI client,
@@ -126,6 +126,14 @@ showed $12.95. Found while reading what the AI would be told, which printed pric
 without the sign. The script now goes in through a function, which is inserted as it
 is, and the build refuses to write a page whose script changed on the way in.
 
+**The AI would not say hello.** Its first rules said to answer only from the facts
+and otherwise say it did not know. It obeyed exactly: "hi" got a list of screen names,
+and "what is 5 + 5", a question about politics, and a question about calories all got
+the same refusal. Found by asking it things a judge might, not things a customer
+would. The rules now sort questions into kinds, so a greeting gets a greeting, simple
+math gets an answer, politics gets a polite no, and a calorie question gets the truth
+that the menu lists none, with lighter dishes picked from their ingredients.
+
 **Cleaning up the AI's answers merged its paragraphs.** Stripping a markdown bullet
 used `^\s*` in multiline mode, and `\s` matches newlines too, so removing a bullet took
 the blank line in front of it. The test that asks for paragraphs to survive is what
@@ -152,7 +160,9 @@ The checklist run before the offline build is considered ready:
 6. Place a full order, then cancel it and confirm the stock returns.
 7. Ask the assistant eight questions including two with typos and one nonsense
    string. Confirm none returns an empty answer. Do it once with no key, and once with
-   the key saved, where the subtitle should read "Built with Llama 3.3". Then turn the
+   the key saved, where the subtitle should read "Built with Llama 3.3". With the key,
+   also try "hi", "what is 5 + 5", a question about politics, and a meal under 400
+   calories: each should get a sensible answer rather than a refusal. Then turn the
    wifi off with the key still saved and ask again: the reply should say the AI could
    not be reached and answer anyway.
 8. Break things on purpose: `-5` into a stock field, a report start date after its end

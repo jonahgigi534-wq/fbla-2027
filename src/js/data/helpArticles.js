@@ -84,7 +84,7 @@ export const HELP_ARTICLES = [
     group: 'Using this program',
     title: 'What this program stores',
     keywords: ['privacy', 'data', 'card', 'payment', 'saved', 'security', 'ai', 'sent'],
-    body: 'Everything is saved on this device in your browser, because there is no server to keep it on. No payment is processed and no card number is kept: only the last four digits reach the saved order, so a receipt can identify which card was used. The one thing that ever leaves this device is a question to the assistant while AI answers are switched on. It goes to OpenRouter with a summary of the menu, stock, your cart, and your recent order numbers. Your name, phone, email, address, and card are never included. Some browsers block saving on a page opened directly from a file, and the program says so at the top if that happens.',
+    body: 'Everything is saved on this device in your browser, because there is no server to keep it on. No payment is processed and no card number is kept: only the last four digits reach the saved order, so a receipt can identify which card was used. The one thing that ever leaves this device is a question to the assistant while AI answers are switched on. It goes to OpenRouter with the menu, stock, your cart, your recent order numbers, and these help guides. Your name, phone, email, address, and card are never included. Some browsers block saving on a page opened directly from a file, and the program says so at the top if that happens.',
   },
   {
     id: 'staff',

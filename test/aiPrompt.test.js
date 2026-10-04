@@ -20,6 +20,7 @@ import {
 import { ALL_ITEMS, SECTIONS, findItem } from '../src/js/data/menu.js';
 import { DAY_NAMES, LOCATIONS } from '../src/js/data/locations.js';
 import { PROMOS } from '../src/js/data/promos.js';
+import { HELP_ARTICLES } from '../src/js/data/helpArticles.js';
 import { formatUSD } from '../src/js/domain/money.js';
 
 /**
@@ -50,6 +51,7 @@ function facts(overrides = {}) {
       deliveryMinimumCents: 1500,
       promos: PROMOS,
     },
+    howTo: HELP_ARTICLES,
     ...overrides,
   };
 }
@@ -85,7 +87,39 @@ test('the rules come first, and the gluten rule is always among them', () => {
   const prompt = buildSystemPrompt(facts());
   assert.match(prompt, /^You are the Pie Assistant/);
   assert.match(prompt, /Never call anything gluten free/);
-  assert.match(prompt, /Answer only from the facts below/);
+  assert.match(prompt, /Never invent an item, a price/);
+});
+
+test('each kind of question has a rule, so none of them gets a blanket refusal', () => {
+  const prompt = buildSystemPrompt(facts());
+  assert.match(prompt, /Never give a calorie count/, 'the menu has no calories to quote');
+  assert.match(prompt, /Never comment on the customer's weight/);
+  assert.match(prompt, /For a greeting or small talk/);
+  assert.match(prompt, /simple math/);
+  assert.match(prompt, /For politics, religion, news/);
+});
+
+test('the tone examples name no price, so none can be copied in place of the menu', () => {
+  const prompt = buildSystemPrompt(facts());
+  const examples = prompt.slice(
+    prompt.indexOf('EXAMPLES OF THE TONE WANTED'),
+    prompt.indexOf('It is now')
+  );
+  assert.ok(examples.includes('Customer: hi'), 'the examples should be there');
+  assert.ok(!examples.includes('$'), 'an example should never carry a price');
+});
+
+test('items carry their ingredients, so the model can say what is in them', () => {
+  const menu = describeMenu(SECTIONS, (item) => item.stock);
+  const omelette = menu.split('\n').find((entry) => entry.startsWith('- Texan Omelette |'));
+  assert.match(omelette, /Jalapeno, Onions, Cheddar Cheese/);
+});
+
+test('the help guides travel with every question, so directions match the program', () => {
+  const prompt = buildSystemPrompt(facts());
+  for (const article of HELP_ARTICLES) {
+    assert.ok(prompt.includes(article.body), `"${article.title}" is missing`);
+  }
 });
 
 test('the restaurant the customer picked is marked as theirs', () => {
