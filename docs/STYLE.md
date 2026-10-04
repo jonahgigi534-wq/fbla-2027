@@ -8,7 +8,7 @@ two mean here, and `npm run check` enforces what it can.
 
 **Every function carries a documentation block**, private helpers included, with `@param` for each
 argument and `@returns`. Checked by `scripts/check-jsdoc.mjs`, which fails the build
-if one is missing. 157 of 157 currently pass.
+if one is missing. 302 of 302 currently pass.
 
 **Every file opens with a block saying what it is for and who calls it.** A reader
 landing in the middle of the project should learn where they are without opening

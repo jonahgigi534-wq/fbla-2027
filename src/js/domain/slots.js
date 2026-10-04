@@ -138,13 +138,3 @@ export function buildSlots({ location, now, leadTimeHours = 0, orders = [] }) {
   }
   return slots;
 }
-
-/**
- * Finds the first slot that still has room.
- *
- * @param {object[]} slots Slots from buildSlots.
- * @returns {object|null} The first slot with room, or null when every one is full.
- */
-export function firstAvailableSlot(slots) {
-  return slots.find((slot) => !slot.isFull) ?? null;
-}

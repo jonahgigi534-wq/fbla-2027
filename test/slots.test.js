@@ -12,7 +12,6 @@ import {
   SLOT_CAPACITY,
   bookingsInSlot,
   buildSlots,
-  firstAvailableSlot,
   formatSlot,
   roundUpToSlot,
 } from '../src/js/domain/slots.js';
@@ -90,7 +89,7 @@ test('the next available slot skips the full one', () => {
     status: 'Received',
   }));
   const slots = buildSlots({ location: kirby, now, orders });
-  assert.equal(firstAvailableSlot(slots).label, '6:45 PM');
+  assert.equal(slots.find((slot) => !slot.isFull).label, '6:45 PM');
 });
 
 test('every offered slot falls inside opening hours', () => {

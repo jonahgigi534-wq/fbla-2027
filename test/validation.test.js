@@ -15,7 +15,6 @@ import {
   validateExpiryFormat,
   validateName,
   validatePhone,
-  validateQuantity,
   validateSecurityCode,
   validateStreet,
   validateZip,
@@ -103,14 +102,6 @@ test('a security code is three or four digits', () => {
   assert.equal(validateSecurityCode('1234').valid, true);
   assert.equal(validateSecurityCode('12').valid, false);
   assert.equal(validateSecurityCode('abc').valid, false);
-});
-
-test('a quantity is a whole number of at least one', () => {
-  assert.equal(validateQuantity('3').valid, true);
-  assert.equal(validateQuantity('0').valid, false);
-  assert.equal(validateQuantity('-5').valid, false);
-  assert.equal(validateQuantity('2.5').valid, false);
-  assert.equal(validateQuantity('abc').valid, false);
 });
 
 test('an AI key is accepted only in the shape OpenRouter issues', () => {

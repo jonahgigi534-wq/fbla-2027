@@ -16,7 +16,7 @@ import { showToast } from '../../components/toast.js';
 import { managerTabs, withManagerAccess } from './shell.js';
 import { getState, update } from '../../../app/store.js';
 import { ALL_ITEMS } from '../../../data/menu.js';
-import { LOW_STOCK_THRESHOLD, stockFor } from '../../../domain/inventory.js';
+import { LOW_STOCK_THRESHOLD, isLowStock, stockFor } from '../../../domain/inventory.js';
 import { formatUSD } from '../../../domain/money.js';
 
 /** How many rows to show before asking the manager to narrow the search. */
@@ -140,10 +140,7 @@ export function renderManagerInventory(container) {
       });
 
       const soldOut = ALL_ITEMS.filter((item) => stockFor(item, stockOverrides) === 0).length;
-      const low = ALL_ITEMS.filter((item) => {
-        const stock = stockFor(item, stockOverrides);
-        return stock > 0 && stock <= LOW_STOCK_THRESHOLD;
-      }).length;
+      const low = ALL_ITEMS.filter((item) => isLowStock(item, stockOverrides)).length;
 
       const searchField = el('input', {
         class: 'field__control',

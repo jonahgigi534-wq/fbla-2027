@@ -153,6 +153,7 @@ async function collectFacts() {
         /(\d+) of \d+,?\s*\n?\s*checked by/gi,
         /Functions documented\s*\|\s*(\d+) of \d+/gi,
         /Functions, all documented\s*\|\s*(\d+)/gi,
+        /(\d+) of \d+ currently pass/gi,
       ],
     },
     {

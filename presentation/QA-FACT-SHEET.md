@@ -14,8 +14,8 @@ any of this is up to you.
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
-| Tests                              | 287, 97% line coverage of the logic        |
-| Functions, all documented          | 304                                        |
+| Tests                              | 286, 97% line coverage of the logic        |
+| Functions, all documented          | 302                                        |
 | JavaScript modules                 | 78                                         |
 | Runtime dependencies               | none                                       |
 | Outside services                   | one, optional: Llama 3.3 via OpenRouter    |

@@ -11,10 +11,8 @@
 
 import { el } from '../dom.js';
 import { formatUSD } from '../../domain/money.js';
+import { LOW_STOCK_THRESHOLD } from '../../domain/inventory.js';
 import { foodPlaceholder } from './foodPlaceholder.js';
-
-/** At or below this many left, the tile warns the customer to order soon. */
-const LOW_STOCK_THRESHOLD = 5;
 
 /**
  * Builds the stock badge for an item, or nothing when stock is comfortable.

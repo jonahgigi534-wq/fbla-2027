@@ -218,27 +218,6 @@ export function validateSecurityCode(value) {
   return OK;
 }
 
-/**
- * Checks a quantity.
- *
- * Whether the restaurant has that many is semantic, and lives in
- * domain/inventory.js.
- *
- * @param {string|number} value Raw value from a quantity field.
- * @returns {{valid: boolean, message: string|null}} The verdict.
- */
-export function validateQuantity(value) {
-  const text = String(value).trim();
-  if (!/^\d+$/.test(text)) {
-    return fail('Quantity has to be a whole number.');
-  }
-  const quantity = Number(text);
-  if (quantity < 1) {
-    return fail('Quantity has to be at least 1.');
-  }
-  return OK;
-}
-
 /** Every OpenRouter key starts with this. */
 const OPENROUTER_KEY_PREFIX = 'sk-or-';
 
