@@ -82,7 +82,9 @@ export function render(container, content) {
 export function emptyState({ icon, title, body, action }) {
   return el('div', { class: 'empty-state' }, [
     el('div', { class: 'empty-state__icon', 'aria-hidden': 'true', text: icon }),
-    el('p', { class: 'empty-state__title', text: title }),
+    // A heading, because on a page like Not Found it is the only one there is, and a
+    // screen reader user jumping between headings would otherwise find nothing.
+    el('h2', { class: 'empty-state__title', text: title }),
     el('p', { class: 'empty-state__body', text: body }),
     action
       ? el('button', { class: 'button', type: 'button', onClick: action.onClick }, action.label)

@@ -281,10 +281,22 @@ function resultsBody(results) {
 export function renderMenu(container, params = {}) {
   if (params.categoryId) {
     const category = findCategory(params.categoryId);
-    if (category) {
-      view.categoryId = category.id;
-      view.sectionId = category.sectionId;
+    if (!category) {
+      // The same answer an unknown item gets, rather than quietly showing the whole
+      // menu and leaving the customer to wonder where the category went.
+      render(
+        container,
+        emptyState({
+          icon: '\u{1F50E}',
+          title: 'We could not find that part of the menu',
+          body: 'It may have been renamed. Every category is on the full menu.',
+          action: { label: 'Back to the menu', onClick: () => navigate('/menu') },
+        })
+      );
+      return;
     }
+    view.categoryId = category.id;
+    view.sectionId = category.sectionId;
   }
 
   const countLine = el('p', { class: 'result-count', role: 'status', 'aria-live': 'polite' });
