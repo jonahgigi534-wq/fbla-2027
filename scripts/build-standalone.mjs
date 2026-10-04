@@ -17,8 +17,10 @@
  *
  * What the build guarantees, and checks before writing:
  *   - no surviving import statements, which would fail on file://
- *   - no fetch calls, which would fail the same way
- *   - no http or https URL anywhere, so nothing can hang waiting for a network
+ *   - network calls in one file only, app/aiClient.js, which asks the AI model and
+ *     falls back to the built in assistant when there is no connection
+ *   - no http or https URL anywhere except that one AI address, so nothing else can
+ *     hang waiting for a network
  */
 
 import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
@@ -175,29 +177,45 @@ function rebaseAssetUrls(css) {
   return css.split('../../assets/').join('assets/');
 }
 
+/** The one module allowed to make a network call. */
+const NETWORK_MODULE = 'src/js/app/aiClient.js';
+
+/** The one remote address the program may contact: the AI model's endpoint. */
+const ALLOWED_REMOTE = ['https://openrouter.ai/api/v1/chat/completions'];
+
 /**
  * Refuses to write a build that cannot work offline.
  *
- * These three are not style preferences. An import or a fetch fails outright on a
- * file:// page, and a remote URL makes the page hang waiting for a network that will
- * not be there. Better to fail here than in front of judges.
+ * These are not style preferences. An import fails outright on a file:// page, and a
+ * remote URL makes the page hang waiting for a network that may not be there. Better
+ * to fail here than in front of judges.
+ *
+ * The AI assistant is the one deliberate exception, and it is held to a narrow shape:
+ * its address is the only remote one allowed, and its file is the only one allowed to
+ * call fetch. Everything else still has to work with no connection, and so does the
+ * assistant, which answers from this device when the call fails.
  *
  * @param {string} html The finished document.
+ * @param {Map<string, string>} modules Module id to rewritten source.
  * @returns {string[]} Everything wrong with it.
  */
-function findOfflineProblems(html) {
+function findOfflineProblems(html, modules) {
   const problems = [];
 
   const leftoverImports = html.match(/^\s*import\s+.*from\s+'/gm);
   if (leftoverImports) {
     problems.push(`${leftoverImports.length} import statement(s) survived bundling`);
   }
-  if (/\bfetch\s*\(/.test(html)) {
-    problems.push('a fetch call survived, which fails on a file:// page');
+  for (const [id, code] of modules) {
+    if (id !== NETWORK_MODULE && /\bfetch\s*\(/.test(code)) {
+      problems.push(`${id} calls fetch, and only ${NETWORK_MODULE} may use the network`);
+    }
   }
-  const remote = html.match(/https?:\/\/[^\s"'<>)]+/g);
+  const remote = html.match(/https?:\/\/[^\s"'<>)`]+/g);
   if (remote) {
-    const unique = [...new Set(remote)].filter((url) => !url.startsWith('http://www.w3.org/'));
+    const unique = [...new Set(remote)].filter(
+      (url) => !url.startsWith('http://www.w3.org/') && !ALLOWED_REMOTE.includes(url)
+    );
     if (unique.length > 0) {
       problems.push(`remote URL(s) found: ${unique.slice(0, 3).join(', ')}`);
     }
@@ -243,20 +261,32 @@ async function build() {
   const modules = await collectModules(ENTRY);
   const script = buildScript(modules, moduleId(ENTRY));
 
+  /*
+   * The styles and the script go in through functions, not strings. A replacement
+   * string treats $$, $&, and $' as instructions rather than text, and the code is
+   * full of dollar signs: formatUSD builds every price with `$${dollars}`, which a
+   * string replacement quietly turned into `${dollars}`. Every price in the offline
+   * build lost its dollar sign while the development copy kept it. A function's
+   * return value is inserted exactly as it is.
+   */
+  const styleBlock =
+    `  <style>\n${styles.join('\n')}\n  </style>\n` +
+    `  <style media="print">\n${printStyles.join('\n')}\n  </style>\n  </head>`;
+  const scriptBlock = `<script>\n${script}\n</script>`;
+
   const built = html
     .replace(/\s*<link rel="stylesheet"[^>]*>/g, '')
-    .replace(
-      '</head>',
-      `  <style>\n${styles.join('\n')}\n  </style>\n` +
-        `  <style media="print">\n${printStyles.join('\n')}\n  </style>\n  </head>`
-    )
-    .replace(/<script type="module" src="[^"]+"><\/script>/, `<script>\n${script}\n</script>`)
+    .replace('</head>', () => styleBlock)
+    .replace(/<script type="module" src="[^"]+"><\/script>/, () => scriptBlock)
     .replace(
       '<title>House of Pies Ordering</title>',
       '<title>House of Pies Ordering (offline build)</title>'
     );
 
-  const problems = findOfflineProblems(built);
+  const problems = findOfflineProblems(built, modules);
+  if (!built.includes(scriptBlock) || !built.includes(styleBlock)) {
+    problems.push('the script or styles changed on the way into the page');
+  }
   if (problems.length > 0) {
     console.error('Build refused. This file would not work offline:');
     for (const problem of problems) {
@@ -277,7 +307,7 @@ async function build() {
   const sizeKb = Math.round(Buffer.byteLength(built, 'utf8') / 1024);
   console.log(`Built dist/standalone.html`);
   console.log(`  ${modules.size} modules, ${stylesheetPaths.length} stylesheets, ${sizeKb} KB`);
-  console.log(`  no imports, no fetch, no remote URLs`);
+  console.log(`  no imports; one network call, the AI assistant, which falls back offline`);
   console.log(`  images load from assets/img next to the file, so keep them together`);
 }
 
