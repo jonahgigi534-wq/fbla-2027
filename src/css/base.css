@@ -103,6 +103,12 @@ textarea {
   border-radius: var(--radius-sm);
 }
 
+/* The page content takes focus on every screen change so screen readers start there.
+   It is not a control, and a ring around the whole page looked like a bug. */
+.app-main:focus {
+  outline: none;
+}
+
 /* Respect a reduced motion preference rather than animating regardless. */
 @media (prefers-reduced-motion: reduce) {
   *,
