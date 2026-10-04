@@ -18,6 +18,7 @@ import { testimonialsSection } from '../components/testimonials.js';
 import { POPULAR_ITEMS } from '../../data/menu.js';
 import { DAY_NAMES, LOCATIONS } from '../../data/locations.js';
 import { describeStatus } from '../../domain/hours.js';
+import { withLiveStock } from '../../domain/inventory.js';
 import { getState, update } from '../../app/store.js';
 import { navigate } from '../../app/router.js';
 
@@ -104,7 +105,9 @@ export function renderHome(container) {
       el(
         'div',
         { class: 'grid' },
-        POPULAR_ITEMS.map((item) => favoriteCard(item, (chosen) => navigate(`/item/${chosen.id}`)))
+        withLiveStock(POPULAR_ITEMS, state.stockOverrides).map((item) =>
+          favoriteCard(item, (chosen) => navigate(`/item/${chosen.id}`))
+        )
       ),
     ]),
 

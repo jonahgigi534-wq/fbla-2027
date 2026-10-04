@@ -32,6 +32,22 @@ export function stockFor(item, stockOverrides = {}) {
 }
 
 /**
+ * Returns the catalog with each item's stock as it stands now, staff changes included.
+ *
+ * Screens read item.stock directly, so without this a pie staff had just marked sold
+ * out still looked available on the menu until someone opened it.
+ *
+ * @param {object[]} items Catalog items.
+ * @param {Object<string, number>} stockOverrides Manager edits, keyed by item id.
+ * @returns {object[]} The items, with a new object for each one staff have changed.
+ */
+export function withLiveStock(items, stockOverrides = {}) {
+  return items.map((item) =>
+    stockOverrides[item.id] === undefined ? item : { ...item, stock: stockOverrides[item.id] }
+  );
+}
+
+/**
  * Counts how many of one item are already in the cart.
  *
  * An item can appear on more than one cart line, because two lines can carry

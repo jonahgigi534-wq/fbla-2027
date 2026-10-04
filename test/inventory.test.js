@@ -15,6 +15,7 @@ import {
   quantityInCart,
   remainingFor,
   stockFor,
+  withLiveStock,
 } from '../src/js/domain/inventory.js';
 
 const pie = {
@@ -122,4 +123,16 @@ test('never suggests something that is also sold out', () => {
     found.map((item) => item.id),
     ['whole']
   );
+});
+
+test('the catalog handed to screens carries staff stock changes, and is not changed', () => {
+  const catalog = [
+    { id: 'pecan', stock: 40 },
+    { id: 'apple', stock: 40 },
+  ];
+  const live = withLiveStock(catalog, { pecan: 0 });
+
+  assert.equal(live[0].stock, 0, 'staff marked it sold out');
+  assert.equal(live[1], catalog[1], 'an untouched item is passed through as it is');
+  assert.equal(catalog[0].stock, 40, 'the catalog itself is never edited');
 });

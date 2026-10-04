@@ -14,9 +14,10 @@ import { itemCard } from '../components/itemCard.js';
 import { foodPlaceholder } from '../components/foodPlaceholder.js';
 import { addToCartPanel } from '../components/addToCartPanel.js';
 import { getState } from '../../app/store.js';
-import { ALL_ITEMS, findCategory, findItem } from '../../data/menu.js';
+import { ALL_ITEMS, findCategory } from '../../data/menu.js';
 import { ALLERGEN_LABELS } from '../../data/dietaryRules.js';
 import { formatUSD } from '../../domain/money.js';
+import { withLiveStock } from '../../domain/inventory.js';
 import { navigate } from '../../app/router.js';
 
 /** How many other items from the same category to suggest underneath. */
@@ -58,7 +59,8 @@ function availabilityBanner(item) {
  * @returns {void}
  */
 export function renderItem(container, params) {
-  const item = findItem(params.itemId);
+  const catalog = withLiveStock(ALL_ITEMS, getState().stockOverrides);
+  const item = catalog.find((candidate) => candidate.id === params.itemId);
 
   if (!item) {
     render(
@@ -74,9 +76,11 @@ export function renderItem(container, params) {
   }
 
   const category = findCategory(item.categoryId);
-  const suggestions = ALL_ITEMS.filter(
-    (other) => other.categoryId === item.categoryId && other.id !== item.id && other.stock > 0
-  ).slice(0, SUGGESTION_COUNT);
+  const suggestions = catalog
+    .filter(
+      (other) => other.categoryId === item.categoryId && other.id !== item.id && other.stock > 0
+    )
+    .slice(0, SUGGESTION_COUNT);
 
   render(container, [
     el('nav', { class: 'breadcrumb', 'aria-label': 'Breadcrumb' }, [

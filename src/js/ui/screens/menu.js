@@ -13,6 +13,8 @@ import { itemCard } from '../components/itemCard.js';
 import { ALL_ITEMS, SECTIONS, findCategory } from '../../data/menu.js';
 import { DIETARY_TAGS } from '../../data/dietaryRules.js';
 import { SORT_OPTIONS, queryMenu } from '../../domain/search.js';
+import { withLiveStock } from '../../domain/inventory.js';
+import { getState } from '../../app/store.js';
 import { navigate } from '../../app/router.js';
 
 /**
@@ -228,7 +230,7 @@ function resultSummary(shown) {
  * @returns {object[]} Items to display, in order.
  */
 function currentResults() {
-  return queryMenu(ALL_ITEMS, {
+  return queryMenu(withLiveStock(ALL_ITEMS, getState().stockOverrides), {
     query: view.query,
     sortId: view.sortId,
     filters: {

@@ -16,7 +16,7 @@ import { INTENTS } from '../../data/assistantKnowledge.js';
 import { getState } from '../../app/store.js';
 import { ALL_ITEMS } from '../../data/menu.js';
 import { findLocation } from '../../data/locations.js';
-import { stockFor } from '../../domain/inventory.js';
+import { stockFor, withLiveStock } from '../../domain/inventory.js';
 import { calculateOrderTotals } from '../../domain/pricing.js';
 import { findPromo } from '../../data/promos.js';
 
@@ -34,7 +34,7 @@ function buildContext() {
   const totals = calculateOrderTotals(state.cart, { orderTypeId: state.orderTypeId, promo });
 
   return {
-    items: ALL_ITEMS,
+    items: withLiveStock(ALL_ITEMS, state.stockOverrides),
     state,
     cart: state.cart,
     cartTotalCents: totals.total,
