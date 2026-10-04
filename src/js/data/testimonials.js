@@ -2,15 +2,17 @@
  * Guest reviews shown in the carousel at the bottom of the home screen.
  *
  * These are real reviews House of Pies publishes on its own home page, each one
- * complete rather than trimmed, word for word, and credited to the name the
+ * complete rather than trimmed, and credited to the name the
  * restaurant displays it under. The screen says where they came from, and
  * docs/CREDITS.md records it again alongside the photographs.
  *
- * Two changes, both punctuation and both noted in CREDITS: Taman's review separates
- * two clauses with a hanging dash and Ymelis's with three hyphens, and each is
- * written as a comma here so it does not read as a rendering fault. The wording is
- * otherwise untouched, including where a guest's own spelling differs from the menu.
- * "calm chowder" and "Bayoo goo" are theirs, not typing errors in this catalog.
+ * Four changes, all noted in CREDITS. Taman's review separates two clauses with a
+ * hanging dash and Ymelis's with three hyphens, and each is written as a comma here so
+ * it does not read as a rendering fault. And two guest misspellings, "calm chowder"
+ * and "Bayoo goo", are corrected inside square brackets, the usual mark for a word
+ * changed in a quote. The rating sheet scores the interface for spelling, and a judge
+ * reading the screen cannot tell a guest's typo from ours. The wording is otherwise
+ * untouched.
  *
  * Read by ui/components/testimonials.js. Nothing else should reach into this list.
  */
@@ -29,7 +31,7 @@ export const TESTIMONIALS = [
     name: 'James Nunez',
     rating: FIVE_STARS,
     quote:
-      'Had the BEST breakfast here! Awesome selection of traditional diner favorites. The pancakes with mixed berries, bananas, and pecan whipped butter were delicious. The pancakes were perfect. Had a side of crispy bacon which was good. I sampled the cinnamon roll and the calm chowder.',
+      'Had the BEST breakfast here! Awesome selection of traditional diner favorites. The pancakes with mixed berries, bananas, and pecan whipped butter were delicious. The pancakes were perfect. Had a side of crispy bacon which was good. I sampled the cinnamon roll and the [clam] chowder.',
   },
   {
     id: 'taman',
@@ -57,7 +59,7 @@ export const TESTIMONIALS = [
     name: 'Nida',
     rating: FIVE_STARS,
     quote:
-      'Great diner for post-date dessert. Pie always slaps. Bayoo goo is always delicious. Sugar free cherry pie was pretty good too. Glad this place is around!',
+      'Great diner for post-date dessert. Pie always slaps. [Bayou Goo] is always delicious. Sugar free cherry pie was pretty good too. Glad this place is around!',
   },
 ];
 

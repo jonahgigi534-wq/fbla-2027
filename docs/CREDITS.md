@@ -86,13 +86,15 @@ files, so both sit beside them, unedited and named after the face they cover:
 the licenses travel with the offline build as well as with the repository.
 
 **Guest reviews.** The five reviews in the carousel are real reviews House of Pies
-publishes on its own home page, reproduced in full, word for word, and credited to the
+publishes on its own home page, reproduced in full and credited to the
 name the restaurant displays each one under.
 
-Two changes, both punctuation: Taman's review separates two clauses with a hanging
-dash and Ymelis's with three hyphens, and each is written as a comma so it does not
-read as a rendering fault. Nothing else is altered, including where a guest's spelling
-differs from the menu. "calm chowder" and "Bayoo goo" are as they wrote them.
+Four changes. Taman's review separates two clauses with a hanging dash and Ymelis's
+with three hyphens, and each is written as a comma so it does not read as a rendering
+fault. Two guests misspelled a dish, "calm chowder" and "Bayoo goo", and each is
+corrected inside square brackets, the usual mark for a word changed in a quote, since
+a judge reading the screen cannot tell a guest's typo from ours. Nothing else is
+altered.
 
 Copyright in the words remains with the people who wrote them. The screen says
 underneath where they came from, so nobody reads them as reviews of this program.
