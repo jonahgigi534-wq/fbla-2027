@@ -462,6 +462,18 @@
   color: var(--color-text-muted);
 }
 
+/* The folded control under the assistant that switches AI answers on */
+.ai-settings {
+  margin-top: var(--space-2);
+  text-align: center;
+}
+.ai-settings__panel {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  text-align: left;
+}
+
 .app-nav__assistant {
   background: var(--color-orange-soft);
   border: 0;

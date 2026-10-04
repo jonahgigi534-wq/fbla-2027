@@ -9,6 +9,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   passesLuhn,
+  validateApiKey,
   validateCardNumber,
   validateEmail,
   validateExpiryFormat,
@@ -110,4 +111,14 @@ test('a quantity is a whole number of at least one', () => {
   assert.equal(validateQuantity('-5').valid, false);
   assert.equal(validateQuantity('2.5').valid, false);
   assert.equal(validateQuantity('abc').valid, false);
+});
+
+test('an AI key is accepted only in the shape OpenRouter issues', () => {
+  assert.equal(validateApiKey('sk-or-v1-0000000000000000').valid, true);
+  assert.equal(validateApiKey('  sk-or-v1-0000000000000000  ').valid, true, 'edges are trimmed');
+
+  assert.equal(validateApiKey('').valid, false);
+  assert.equal(validateApiKey('sk-or-v1-0000 0000000000').valid, false, 'a space mid key');
+  assert.equal(validateApiKey('sk-proj-0000000000000000').valid, false, 'a key from elsewhere');
+  assert.equal(validateApiKey('sk-or-v1-00').valid, false, 'half a key');
 });

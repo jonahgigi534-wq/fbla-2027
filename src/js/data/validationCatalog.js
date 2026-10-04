@@ -97,4 +97,10 @@ export const VALIDATION_CATALOG = [
     syntactic: 'Four digits.',
     semantic: 'Five wrong attempts pauses the gate until the page is reloaded.',
   },
+  {
+    field: 'AI key, Pie Assistant',
+    syntactic: 'Starts with sk-or-, has no spaces, and is long enough to be a whole key.',
+    semantic:
+      'Checked by OpenRouter on the first question. A rejected key says so in the conversation and the built in answers take over.',
+  },
 ];

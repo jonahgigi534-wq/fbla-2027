@@ -238,3 +238,39 @@ export function validateQuantity(value) {
   }
   return OK;
 }
+
+/** Every OpenRouter key starts with this. */
+const OPENROUTER_KEY_PREFIX = 'sk-or-';
+
+/** Shorter than this and part of the key was left behind when it was copied. */
+const MIN_KEY_LENGTH = 20;
+
+/**
+ * Checks the shape of an OpenRouter key before it is saved.
+ *
+ * Only the shape. Whether OpenRouter accepts the key is the semantic half, and only
+ * OpenRouter can answer it: the first question asked finds out, and a rejected key
+ * says so in the conversation. What this catches is the pasting mistakes, a stray
+ * space, half a key, or a key from a different service altogether.
+ *
+ * @param {string} value Raw text from the key field.
+ * @returns {{valid: boolean, message: string|null}} The verdict.
+ */
+export function validateApiKey(value) {
+  const trimmed = value.trim();
+  if (trimmed === '') {
+    return fail('Paste the key from your OpenRouter account.');
+  }
+  if (/\s/.test(trimmed)) {
+    return fail('A key has no spaces in it. Copy it again.');
+  }
+  if (!trimmed.startsWith(OPENROUTER_KEY_PREFIX)) {
+    return fail(
+      `OpenRouter keys start with ${OPENROUTER_KEY_PREFIX}. Check this one came from OpenRouter.`
+    );
+  }
+  if (trimmed.length < MIN_KEY_LENGTH) {
+    return fail('That key looks too short. Copy the whole thing.');
+  }
+  return OK;
+}

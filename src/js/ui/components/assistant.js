@@ -1,30 +1,31 @@
 /**
  * The Pie Assistant panel.
  *
- * A slide over that any screen can open. It holds the conversation, the input, and a
- * row of suggested questions.
+ * A slide over that any screen can open. It holds the conversation, the input, a row
+ * of suggested questions, and the folded control that switches AI answers on.
+ *
+ * Two things can answer. With a key saved, questions go to Llama 3.3 through
+ * OpenRouter, told the live menu, stock, hours, and cart; app/aiConversation.js does
+ * that. Without a key, or whenever the model cannot answer for any reason, the built
+ * in matcher in domain/assistant.js answers from this device, and says so when it is
+ * standing in. The customer always gets an answer.
  *
  * The suggested questions are not decoration. They are what makes the feature
  * demonstrable: someone meeting the program for the first time has no idea what it
- * can be asked, and a blank box invites a question it cannot answer. One tap on a
- * chip produces a real answer built from real data.
+ * can be asked, and a blank box invites a question it cannot answer.
  *
- * Matching lives in domain/assistant.js and the knowledge in
- * data/assistantKnowledge.js. This file is only the conversation on screen.
+ * This file owns the panel and the conversation. What goes inside each message is
+ * built in ui/components/assistantReplies.js.
  */
 
 import { el, render } from '../dom.js';
-import { itemCard } from './itemCard.js';
-import { findAnswer } from '../../domain/assistant.js';
+import { aiSettings } from './aiSettings.js';
+import { aiReply, matcherReply, suggestionChips } from './assistantReplies.js';
 import { INTENTS } from '../../data/assistantKnowledge.js';
-import { getState } from '../../app/store.js';
 import { navigate, registerDialog, clearDialog } from '../../app/router.js';
+import { AI_MODEL_LABEL, describeFailure, hasApiKey } from '../../app/aiClient.js';
+import { answerWithAi, forgetConversation } from '../../app/aiConversation.js';
 import { trapFocus } from '../focusTrap.js';
-import { ALL_ITEMS } from '../../data/menu.js';
-import { findLocation } from '../../data/locations.js';
-import { stockFor } from '../../domain/inventory.js';
-import { calculateOrderTotals } from '../../domain/pricing.js';
-import { findPromo } from '../../data/promos.js';
 
 /** The panel element, built once and reused. */
 let panel = null;
@@ -32,142 +33,136 @@ let panel = null;
 /** Where the conversation is appended. */
 let transcript = null;
 
+/** The line under the title that says who is answering. */
+let subtitle = null;
+
+/** The question box, and the button that sends it. */
+let inputField = null;
+let askButton = null;
+
 /** Whether the panel is currently on screen. */
 let isOpen = false;
+
+/** Whether an AI answer is on its way, so a second question waits for it. */
+let isBusy = false;
 
 /** Releases the focus trap, set while the panel is open. */
 let releaseFocus = null;
 
 /**
- * Assembles everything the answer functions read.
+ * Says who is answering, so nobody mistakes the matcher for the model or the other
+ * way round.
  *
- * Built fresh on every question so an answer about stock or a cart total is never
- * one the customer already changed.
- *
- * @returns {object} The live context.
+ * @returns {string} The subtitle.
  */
-function buildContext() {
-  const state = getState();
-  const promo = state.promoCode ? findPromo(state.promoCode) : null;
-  const totals = calculateOrderTotals(state.cart, { orderTypeId: state.orderTypeId, promo });
-
-  return {
-    items: ALL_ITEMS,
-    state,
-    cart: state.cart,
-    cartTotalCents: totals.total,
-    orders: state.orders,
-    stockOverrides: state.stockOverrides,
-    stockFor,
-    budgetCapCents: state.budgetCapCents,
-    location: findLocation(state.locationId),
-    now: new Date(),
-  };
+function subtitleText() {
+  return hasApiKey()
+    ? `Built with ${AI_MODEL_LABEL}, through OpenRouter. It reads this menu and your cart.`
+    : `Answers from this device. Add a key under AI settings to use ${AI_MODEL_LABEL}.`;
 }
 
 /**
  * Adds one message to the conversation.
  *
  * @param {string} role 'you' or 'assistant'.
- * @param {Array<Node|string>} content What the message contains.
- * @returns {void}
+ * @param {Array<Node|string|null>} content What the message contains.
+ * @returns {HTMLElement} The message body, so a placeholder can be filled in later.
  */
 function addMessage(role, content) {
+  const body = el('div', { class: 'chat__body' }, content);
   transcript.append(
     el('div', { class: `chat chat--${role}` }, [
       el('p', { class: 'chat__who', text: role === 'you' ? 'You' : 'Pie Assistant' }),
-      el('div', { class: 'chat__body' }, content),
+      body,
     ])
   );
   transcript.scrollTop = transcript.scrollHeight;
+  return body;
 }
 
 /**
- * Answers one question and shows the result.
+ * Closes the panel and goes to a screen the conversation pointed at.
  *
- * @param {string} question Whatever the customer typed or tapped.
+ * @param {string} path Where to go.
  * @returns {void}
  */
-function ask(question) {
+function goTo(path) {
+  close();
+  navigate(path);
+}
+
+/**
+ * Locks the question box while an answer is on its way.
+ *
+ * @param {boolean} busy Whether an answer is pending.
+ * @returns {void}
+ */
+function setBusy(busy) {
+  isBusy = busy;
+  inputField.disabled = busy;
+  askButton.disabled = busy;
+  askButton.textContent = busy ? 'Asking' : 'Ask';
+  if (!busy && isOpen) {
+    inputField.focus();
+  }
+}
+
+/**
+ * Answers one question, from the model when a key is saved, otherwise from the
+ * matcher, and from the matcher anyway whenever the model cannot.
+ *
+ * @param {string} question Whatever the customer typed or tapped.
+ * @returns {Promise<void>} Resolves once the answer is on screen.
+ */
+async function ask(question) {
   const trimmed = question.trim();
-  if (trimmed === '') {
+  if (trimmed === '' || isBusy) {
     return;
   }
   addMessage('you', [el('p', { text: trimmed })]);
 
-  const result = findAnswer(INTENTS, trimmed);
-  const context = buildContext();
-
-  if (!result.matched) {
-    addMessage('assistant', [
-      el('p', { text: 'I did not follow that one. These are the closest things I can help with:' }),
-      suggestionChips(result.suggestions),
-    ]);
+  if (!hasApiKey()) {
+    addMessage('assistant', matcherReply(trimmed, { onAsk: ask, onGo: goTo }));
     return;
   }
 
-  const answer = result.intent.answer(context);
-  addMessage('assistant', [
-    el('p', { text: answer.text }),
-    answer.items.length > 0
-      ? el(
-          'div',
-          { class: 'chat__items' },
-          answer.items.map((item) =>
-            itemCard(item, (chosen) => {
-              close();
-              navigate(`/item/${chosen.id}`);
-            })
-          )
-        )
-      : null,
-    answer.links.length > 0
-      ? el(
-          'div',
-          { class: 'chat__links' },
-          answer.links.map((link) =>
-            el(
-              'button',
-              {
-                class: 'button button--secondary button--small',
-                type: 'button',
-                onClick: () => {
-                  close();
-                  navigate(link.path);
-                },
-              },
-              link.label
-            )
-          )
-        )
-      : null,
-    result.suggestions.length > 0
-      ? el('div', {}, [
-          el('p', { class: 'chat__followup', text: 'You could also ask:' }),
-          suggestionChips(result.suggestions),
-        ])
-      : null,
-  ]);
+  setBusy(true);
+  const pending = addMessage('assistant', [el('p', { class: 'muted', text: 'Thinking...' })]);
+  try {
+    const text = await answerWithAi(trimmed);
+    render(pending, aiReply(trimmed, text, goTo));
+  } catch (error) {
+    pending.parentElement.remove();
+    addMessage(
+      'assistant',
+      matcherReply(trimmed, { note: describeFailure(error), onAsk: ask, onGo: goTo })
+    );
+  } finally {
+    setBusy(false);
+    transcript.scrollTop = transcript.scrollHeight;
+  }
 }
 
 /**
- * Builds a row of question buttons.
+ * Reacts to AI answers being switched on or off.
  *
- * @param {object[]} intents Intents to offer.
- * @returns {HTMLElement} The chips.
+ * The conversation so far is forgotten, so the model never inherits turns the matcher
+ * answered, and the subtitle changes so it is always clear who is answering.
+ *
+ * @param {string} setting 'on' or 'off'.
+ * @returns {void}
  */
-function suggestionChips(intents) {
-  return el(
-    'div',
-    { class: 'chat__chips' },
-    intents.map((intent) =>
-      el(
-        'button',
-        { class: 'chip', type: 'button', onClick: () => ask(intent.label) },
-        intent.label
-      )
-    )
-  );
+function onAiChange(setting) {
+  forgetConversation();
+  subtitle.textContent = subtitleText();
+  addMessage('assistant', [
+    el('p', {
+      text:
+        setting === 'on'
+          ? `AI answers are on. Questions now go to ${AI_MODEL_LABEL}, along with this menu and your cart.`
+          : 'AI answers are off. I will answer from this device.',
+    }),
+  ]);
 }
 
 /**
@@ -188,14 +183,16 @@ export function close() {
 }
 
 /**
- * Builds the panel on first use.
+ * Builds the question box and the button that sends it.
  *
- * @returns {HTMLElement} The panel.
+ * @returns {void}
  */
-function buildPanel() {
-  transcript = el('div', { class: 'assistant__transcript', role: 'log', 'aria-live': 'polite' });
-
-  const input = el('input', {
+function buildInput() {
+  const send = () => {
+    ask(inputField.value);
+    inputField.value = '';
+  };
+  inputField = el('input', {
     class: 'field__control',
     id: 'assistant-input',
     type: 'text',
@@ -203,11 +200,22 @@ function buildPanel() {
     autocomplete: 'off',
     onKeyDown: (event) => {
       if (event.key === 'Enter') {
-        ask(input.value);
-        input.value = '';
+        send();
       }
     },
   });
+  askButton = el('button', { class: 'button button--block', type: 'button', onClick: send }, 'Ask');
+}
+
+/**
+ * Builds the panel on first use.
+ *
+ * @returns {HTMLElement} The panel.
+ */
+function buildPanel() {
+  transcript = el('div', { class: 'assistant__transcript', role: 'log', 'aria-live': 'polite' });
+  subtitle = el('p', { class: 'assistant__subtitle', text: subtitleText() });
+  buildInput();
 
   /*
    * A dialog rather than a bare aside. It covers the screen, takes focus when it
@@ -226,13 +234,7 @@ function buildPanel() {
     },
     [
       el('div', { class: 'assistant__head' }, [
-        el('div', {}, [
-          el('h2', { class: 'assistant__title', text: 'Pie Assistant' }),
-          el('p', {
-            class: 'assistant__subtitle',
-            text: 'Answers from this device. No internet needed.',
-          }),
-        ]),
+        el('div', {}, [el('h2', { class: 'assistant__title', text: 'Pie Assistant' }), subtitle]),
         el(
           'button',
           {
@@ -246,23 +248,16 @@ function buildPanel() {
       ]),
       transcript,
       el('div', { class: 'assistant__foot' }, [
-        suggestionChips(INTENTS.filter((intent) => intent.isSuggested)),
+        suggestionChips(
+          INTENTS.filter((intent) => intent.isSuggested),
+          ask
+        ),
         el('label', { class: 'field', for: 'assistant-input' }, [
           el('span', { class: 'visually-hidden', text: 'Ask a question' }),
-          input,
+          inputField,
         ]),
-        el(
-          'button',
-          {
-            class: 'button button--block',
-            type: 'button',
-            onClick: () => {
-              ask(input.value);
-              input.value = '';
-            },
-          },
-          'Ask'
-        ),
+        askButton,
+        aiSettings({ onChange: onAiChange }),
       ]),
     ]
   );
@@ -300,5 +295,5 @@ export function openAssistant() {
   registerDialog(close);
   // And Tab stays inside it, rather than walking out into the page underneath.
   releaseFocus = trapFocus(panel);
-  panel.querySelector('#assistant-input').focus();
+  inputField.focus();
 }
