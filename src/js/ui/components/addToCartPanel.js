@@ -1,12 +1,8 @@
 /**
  * The quantity stepper, instructions box, and Add button on the item screen.
  *
- * The stepper will not step past what the restaurant has left, and the button says
- * so rather than going dead: a disabled control with no explanation is the most
- * common way an ordering screen loses someone.
- *
- * For a sold out item the panel is replaced entirely by substitutes, because the one
- * thing a customer needs there is somewhere else to go.
+ * The stepper stops at what is left and says why. A sold out item shows substitutes
+ * instead.
  */
 
 import { el } from '../dom.js';

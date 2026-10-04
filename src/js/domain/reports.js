@@ -1,17 +1,9 @@
 /**
  * Sales reporting: filter a date range, group it, measure it, and compare it.
  *
- * The rating sheet asks for reports the user can customize and analyze, and those
- * are two different jobs. Customising is choosing the range, the grouping, and the
- * measure, which is what buildReport does. Analysing is knowing whether a number is
- * good, which needs something to compare against, which is what
- * compareWithPreviousPeriod adds.
- *
- * A figure on its own says nothing. Two thousand dollars of pie is only meaningful
- * next to what the same stretch of days did last time.
- *
- * Pure functions over an array of orders. The manager screen passes in whatever the
- * controls are set to and renders whatever comes back.
+ * buildReport lets a manager customize the view, and compareWithPreviousPeriod lets
+ * them judge it, because a figure means little without the same stretch of days before
+ * it.
  */
 
 import { CANCELED } from './orders.js';
@@ -48,8 +40,7 @@ function orderDate(order) {
 /**
  * Narrows a list of orders to the ones a report should count.
  *
- * Canceled orders are always excluded. They were never revenue, and counting them
- * would overstate every figure on the screen.
+ * Canceled orders never count, because they were never revenue.
  *
  * @param {object[]} orders Every order.
  * @param {object} filters What to keep.
@@ -80,9 +71,6 @@ export function filterOrders(orders, { startDate, endDate, locationId, orderType
 
 /**
  * Works out which bucket an order, or one line of it, belongs in.
- *
- * Most groupings are a property of the order. Category and item are properties of a
- * line, so those two return one key per line and the caller splits the order up.
  *
  * @param {string} groupBy One of the GROUP_BY_OPTIONS ids.
  * @param {object} order The order.
@@ -119,10 +107,8 @@ const LINE_LEVEL_GROUPINGS = ['category', 'item'];
 /**
  * Builds the report table.
  *
- * Revenue is taken from the order total for order level groupings and from the line
- * value for line level ones. That distinction matters: an order's tax and delivery
- * fee belong to the order, not to any one pie in it, so a report grouped by item
- * shows what the food sold for rather than inventing a share of the tax.
+ * Item and category groupings use line values, so they never take a share of tax or
+ * delivery.
  *
  * @param {object[]} orders Every order.
  * @param {object} options What the manager asked for.
@@ -210,9 +196,7 @@ export function sortRows(rows, metric, direction = 'desc') {
 /**
  * Finds the range of the same length immediately before the chosen one.
  *
- * Comparing June against May would be comparing 30 days against 31. This shifts the
- * window back by its own length instead, so the two stretches are the same size and
- * the percentage change means something.
+ * Shifts back by its own length, so both periods cover the same number of days.
  *
  * @param {string} startDate ISO date.
  * @param {string} endDate ISO date.
@@ -237,9 +221,7 @@ export function previousPeriod(startDate, endDate) {
 /**
  * Works out the percentage change between two figures.
  *
- * Growth from zero has no meaningful percentage, so it is reported as null and the
- * screen shows a dash. Printing "infinity percent up" would be worse than saying
- * nothing.
+ * Growth from zero has no percentage, so it returns null and the screen shows a dash.
  *
  * @param {number} current The figure now.
  * @param {number} previous The figure before.
@@ -255,17 +237,8 @@ export function percentChange(current, previous) {
 /**
  * Decides whether the history actually reaches back across a whole period.
  *
- * A percentage is only honest when both sides of it were measured over the same
- * amount of time. Ask for the last ninety days and the period before it is the ninety
- * days before that, which this history does not reach: it holds ninety days in total.
- * The comparison then puts ninety days of trading against whatever single day falls
- * inside the window, and reports the difference as an increase of thirty thousand
- * percent.
- *
- * That figure is arithmetically correct and completely useless, and a manager reading
- * it would be right to stop trusting the rest of the table. So the period is checked
- * for coverage first, and one the history does not span is reported as having no
- * baseline rather than a spectacular one.
+ * Without this, a period older than the history was compared against a single day and
+ * showed rises of thirty thousand percent.
  *
  * @param {object[]} orders Every order.
  * @param {string} startDate ISO date the period starts.

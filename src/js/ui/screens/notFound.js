@@ -1,10 +1,7 @@
 /**
  * The screen shown when an address matches no route.
  *
- * This exists because "no navigation errors" is something the judging sheet scores
- * directly. A mistyped fragment, a stale bookmark, or a Back press into a screen
- * that no longer exists all land here, and all of them get told what happened and
- * handed a way back rather than a blank page.
+ * Every bad address lands here with a way back.
  */
 
 import { el, emptyState, render } from '../dom.js';

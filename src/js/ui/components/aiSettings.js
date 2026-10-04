@@ -1,12 +1,7 @@
 /**
  * The control under the assistant that switches AI answers on and off.
  *
- * Folded away by default. A customer opening the assistant has no use for it, and on
- * competition day it is used once, during setup, to paste the key in.
- *
- * The key field is a password field so it is not shown on screen across a table of
- * judges, and the hint says plainly where the key goes, because someone careful will
- * want to know before typing one in.
+ * The key field is a password field, so the key never shows on screen.
  *
  * Used by ui/components/assistant.js.
  */

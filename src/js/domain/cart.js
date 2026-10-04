@@ -1,15 +1,8 @@
 /**
  * The cart: adding, changing, and removing lines.
  *
- * Every function returns a new array instead of changing the one it was given. The
- * store replaces state wholesale on each update, so a function that edited the
- * existing array would change what other screens are still holding and make a bug
- * appear somewhere far from its cause.
- *
- * A line copies the item's name and price rather than only its id. A cart becomes an
- * order, and an order is a record of what was actually charged. If the restaurant
- * raises the price of a pie next week, last week's receipt has to keep saying what
- * the customer paid.
+ * Every function returns a new array rather than changing the one it was given. Lines
+ * copy the name and price, so an old receipt keeps the price actually paid.
  */
 
 /**
@@ -36,10 +29,8 @@ export function createLine(item, quantity, note = '') {
 /**
  * Adds an item to the cart.
  *
- * An identical line, meaning the same item with the same instructions, has its
- * quantity raised rather than appearing twice. Two slices of the same pie with
- * different instructions do stay on separate lines, because the kitchen needs them
- * separate.
+ * The same item with the same instructions raises the quantity rather than adding a
+ * second line.
  *
  * @param {object[]} lines Current cart lines.
  * @param {object} item The catalog item being added.
@@ -62,8 +53,7 @@ export function addToCart(lines, item, quantity, note = '') {
 /**
  * Changes the quantity on one line.
  *
- * A quantity of zero or less removes the line rather than leaving an empty one in
- * the cart, which is what a customer means when they press minus on the last one.
+ * A quantity of zero or less removes the line.
  *
  * @param {object[]} lines Current cart lines.
  * @param {string} lineId The line to change.
@@ -101,9 +91,7 @@ export function countItems(lines) {
 /**
  * Finds the longest notice any line in the cart requires.
  *
- * A cart holding one catering tray cannot be collected in twenty minutes just
- * because everything else in it is a coffee, so checkout schedules against the
- * slowest thing in the order.
+ * Checkout schedules against the slowest item in the order.
  *
  * @param {object[]} lines Current cart lines.
  * @returns {number} Hours of notice needed, which is 0 for an everyday order.

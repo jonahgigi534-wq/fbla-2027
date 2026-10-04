@@ -1,11 +1,5 @@
 /**
  * The menu screen: search, filter, sort, and browse 426 items.
- *
- * A list this long is only usable if a customer can cut it down fast, so the
- * controls at the top are the screen. Section tabs narrow to Food or Bakery, chips
- * narrow to a dietary need, the search box takes free text, and the sort dropdown
- * orders what is left. Everything runs through domain/search.js, which is where the
- * ranking rules are tested.
  */
 
 import { el, emptyState, render } from '../dom.js';
@@ -19,10 +13,6 @@ import { navigate } from '../../app/router.js';
 
 /**
  * What the customer has asked for right now.
- *
- * Kept at module level rather than in app/store.js because it describes how this one
- * screen is being looked at, not anything about the order being built. It survives
- * moving to an item and back, which is the behavior a customer expects.
  */
 const view = {
   query: '',
@@ -267,13 +257,7 @@ function resultsBody(results) {
 /**
  * Renders the menu screen.
  *
- * Typing in the search box updates only the count line and the results grid. The
- * controls above them are left alone on purpose: rebuilding the whole screen on
- * every keystroke would destroy and recreate the input the customer is typing into,
- * which loses the caret after the first letter.
- *
- * Clicking a filter chip does redraw everything, because a chip changes which other
- * controls belong on screen and the customer is not mid keystroke when they click.
+ * Typing updates only the results, so the search box keeps its caret.
  *
  * @param {HTMLElement} container The main element to render into.
  * @param {object} [params] Route parameters.

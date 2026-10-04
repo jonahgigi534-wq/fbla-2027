@@ -1,13 +1,8 @@
 /**
  * The things a customer can do, expressed once.
  *
- * Screens call these rather than reaching into the store themselves. Adding an item
- * to the cart has to check stock first, and if each screen did that check on its own
- * they would drift, and one of them would eventually forget. Here it happens in one
- * place and every caller gets the same answer.
- *
- * Each function returns a result the screen can show, rather than throwing or
- * silently doing nothing, because every one of these can legitimately be refused.
+ * Stock is checked here, once, rather than by each screen, and every function returns a
+ * result the screen can show.
  */
 
 import { getState, update } from './store.js';
@@ -39,8 +34,7 @@ export function addItemToCart(item, quantity, note = '') {
 /**
  * Changes the quantity on a cart line, capped at what the restaurant has left.
  *
- * The cap is applied rather than the change refused, so pressing plus once too often
- * leaves the line at the maximum instead of doing nothing and looking broken.
+ * Pressing plus once too often stops at the maximum rather than doing nothing.
  *
  * @param {string} lineId The line to change.
  * @param {number} quantity The requested new quantity.
@@ -78,9 +72,8 @@ export function removeCartLine(lineId) {
 /**
  * Applies a promo code.
  *
- * The code is stored rather than the discount, so if the cart changes afterwards the
- * discount is recalculated against the new subtotal. Storing the amount would let a
- * customer earn a large order's discount and then empty the cart.
+ * The code is stored rather than the discount, so the discount is worked out again
+ * whenever the cart changes.
  *
  * @param {string} code Raw text from the promo field.
  * @returns {{ok: boolean, message: string}} Whether the code was accepted.

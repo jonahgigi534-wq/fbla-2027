@@ -1,14 +1,5 @@
 /**
  * The home screen: pick a restaurant, see what is open now, jump into the menu.
- *
- * The open now status is the reason this screen leads with locations. House of Pies
- * keeps six restaurants on three different schedules, and a customer at one in the
- * morning needs to know that Fuqua is serving and Kirby is not before they spend
- * five minutes building a cart.
- *
- * The featured dishes and the guest reviews below them follow the restaurant's own
- * front page, in that order, so a judge holding the two side by side sees the same
- * shape.
  */
 
 import { el, render } from '../dom.js';

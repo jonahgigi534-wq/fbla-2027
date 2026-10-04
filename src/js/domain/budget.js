@@ -1,17 +1,8 @@
 /**
  * The spending cap a customer can set on their own order.
  *
- * The assigned topic asks the program to account for customer budget constraints.
- * A warning alone would satisfy the letter of that, but not the situation: someone
- * ordering lunch for a table on a fixed amount does not want to be told they are
- * over, they want to know what to take off.
- *
- * So this module does three things. It reports where the order stands against the
- * cap, it warns before the cap is reached rather than after, and when the order is
- * over it works out the smallest set of lines to remove to get back under.
- *
- * The cap is checked against the order total including tax and fees, because that
- * is the number that leaves the customer's account.
+ * Going over names what to take off, not just that the order is over. The limit is
+ * checked against the total with tax, the figure that leaves the customer's account.
  */
 
 /** Warn once the order reaches this share of the cap, in basis points. */
@@ -66,14 +57,8 @@ export function evaluateBudget(totalCents, capCents) {
 /**
  * Works out which lines to drop to bring an order back under its cap.
  *
- * Prefers the cheapest single line that covers the shortfall. Someone two dollars
- * over should not be told to remove the twenty dollar steak, which is what a plain
- * most-expensive-first rule would say.
- *
- * When no single line is enough, it falls back to taking the largest lines first
- * until the gap is closed. That is not the mathematically optimal set, which would
- * be a knapsack problem, but it is the choice a person makes at a till and it
- * reaches an answer in one pass.
+ * Prefers the cheapest single line that closes the gap, so two dollars over never
+ * suggests removing the steak.
  *
  * @param {object[]} lines Current cart lines.
  * @param {number} overByCents How much the order exceeds the cap.

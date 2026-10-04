@@ -1,9 +1,5 @@
 /**
  * The reports control panel, and getting the numbers back out as CSV.
- *
- * Split from the screen itself so neither file has to be read in full to change the
- * other. The controls are the customizing half of what the rating sheet asks for:
- * a range, two filters, seven groupings, and four measures.
  */
 
 import { el, render } from '../../dom.js';
@@ -17,9 +13,7 @@ import { RANGE_PRESETS, isoDaysAgo, labelForKey, view } from './reportView.js';
 /**
  * Offers the current table as a CSV file.
  *
- * A blob download is tried first. Opening the offline build from a file:// address
- * can block that, so a failure falls back to putting the CSV in a text box the
- * manager can select and copy. Either way the numbers get out.
+ * If the browser blocks the download, the CSV is shown in a text box to copy instead.
  *
  * @param {object[]} rows The rows currently on screen.
  * @param {HTMLElement} fallbackHost Where to put the text box if the download fails.

@@ -1,16 +1,5 @@
 /**
  * What the restaurant actually has, and what to do when it runs out.
- *
- * The assigned topic asks the program to handle unavailable items and inventory
- * limits, and this is where both live. Two things make that more than a stock number:
- *
- *   - Stock is checked against what is already in the cart, not just the catalog.
- *     A customer holding the last four slices of key lime cannot add a fifth.
- *   - When something sells out, the customer is offered a substitute from the same
- *     category rather than a dead end.
- *
- * Pure functions. The live stock numbers arrive as arguments so the manager's
- * adjustments and the catalog defaults go through exactly the same rules.
  */
 
 /** At or below this many left, screens warn the customer to order soon. */
@@ -34,8 +23,8 @@ export function stockFor(item, stockOverrides = {}) {
 /**
  * Returns the catalog with each item's stock as it stands now, staff changes included.
  *
- * Screens read item.stock directly, so without this a pie staff had just marked sold
- * out still looked available on the menu until someone opened it.
+ * Screens read item.stock directly, so without this a pie staff marked sold out still
+ * looked available on the menu.
  *
  * @param {object[]} items Catalog items.
  * @param {Object<string, number>} stockOverrides Manager edits, keyed by item id.
@@ -49,9 +38,6 @@ export function withLiveStock(items, stockOverrides = {}) {
 
 /**
  * Counts how many of one item are already in the cart.
- *
- * An item can appear on more than one cart line, because two lines can carry
- * different special instructions, so this adds them up rather than finding one.
  *
  * @param {object[]} lines Cart lines.
  * @param {string} itemId The item to count.
@@ -79,8 +65,7 @@ export function remainingFor(item, lines, stockOverrides = {}) {
 /**
  * Decides whether a requested quantity can be added, and says why when it cannot.
  *
- * The message names the number left rather than saying the request failed, because
- * a customer who knows three are available can decide to take three.
+ * The message names how many are left, so the customer can take that many instead.
  *
  * @param {object} item A finished catalog item.
  * @param {number} requested How many the customer is trying to add.
@@ -127,9 +112,8 @@ export function isLowStock(item, stockOverrides = {}) {
 /**
  * Suggests replacements for something the restaurant has run out of.
  *
- * Candidates come from the same category, so a sold out key lime pie offers other
- * pies rather than an omelette, and are ordered by how close they are in price so
- * the first suggestion does not cost twice as much.
+ * Same category, closest in price first, so a sold out pie suggests another pie at a
+ * similar price.
  *
  * @param {object} item The unavailable item.
  * @param {object[]} catalog Every catalog item.

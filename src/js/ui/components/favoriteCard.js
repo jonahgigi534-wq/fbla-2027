@@ -1,14 +1,5 @@
 /**
  * The large tile the home screen shows a featured dish in.
- *
- * House of Pies presents these without card chrome: a rounded photograph, the dish
- * name, a sentence about it, and an order button. That last part is why this exists
- * instead of reusing itemCard, which wraps the whole tile in a button and so has
- * nowhere legal to put a second one inside it.
- *
- * There is exactly one control per tile. The photograph is not separately clickable,
- * which keeps a keyboard user from tabbing through six tiles twice to reach the same
- * six pages.
  */
 
 import { el } from '../dom.js';

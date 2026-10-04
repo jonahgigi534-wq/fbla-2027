@@ -2,13 +2,11 @@
  * The six real House of Pies restaurants, with the hours and delivery areas the
  * ordering system needs.
  *
+ * Hours are minutes past midnight, so open now checks are plain number comparisons.
+ * 1440 means midnight at the end of the day.
+ *
  * Read by the location picker, the open-now badge on the home screen, the pickup
  * slot builder in domain/slots.js, and the delivery ZIP check in domain/validation.js.
- *
- * Hours are stored as minutes past midnight rather than clock strings so the
- * open-now and pickup-time checks are plain number comparisons. A closing time of
- * 1440 means midnight at the end of that day. Fuqua never closes, so it opens at
- * minute 0; Katy runs around the clock on weekends only.
  */
 
 /** Minutes in a day. A closing time equal to this means midnight. */
@@ -59,14 +57,7 @@ function twentyFourHoursOnWeekends(weekdayOpenMinute) {
 /**
  * Every restaurant that can take an order.
  *
- * `tileLabel` is the caption the restaurant lays over each storefront photograph on
- * its own locations page, kept as its own field because it does not follow from the
- * name and the city: the Woodlands store is captioned "Woodlands, TX" while the Kirby
- * store is captioned "Kirby, Houston".
- *
- * `deliveryZips` is a fixed list per store rather than a distance calculation.
- * Real delivery areas are drawn by hand around road access, not by radius, and a
- * hardcoded list keeps the program free of any network lookup.
+ * Delivery areas are fixed ZIP lists, which need no network lookup.
  */
 export const LOCATIONS = [
   {

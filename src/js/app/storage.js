@@ -1,26 +1,14 @@
 /**
  * Saved state, with a fallback for when the browser refuses to save anything.
  *
- * The offline build of this program is opened straight off the disk with a file://
- * address. Browsers treat every file:// page as one shared, untrusted origin, and
- * several of them refuse localStorage there outright. A private window, cleared site
- * data, or a locked down school laptop can do the same thing.
- *
- * So every read and write here is wrapped, and when the browser says no the data
- * lives in a plain object for the rest of the session instead. The program keeps
- * working; it just forgets when the tab closes. That is the right trade for a demo
- * running on a machine nobody controls.
+ * Some browsers refuse to save on a page opened from a file. Every read and write is
+ * wrapped, and when saving is refused the data lives in memory until the tab closes.
  *
  * Used by app/store.js, which owns the shape of what gets saved.
  */
 
 /**
  * One key holds the whole saved state, so a save is a single write.
- *
- * No version in the name. It used to end in .v1, which stopped being true the moment
- * SCHEMA_VERSION went to 2 and left two things that both looked like the version
- * disagreeing with each other. The version lives in the saved object, where migrate()
- * can actually read it.
  */
 const STORAGE_KEY = 'houseofpies.ordering';
 
@@ -39,9 +27,6 @@ let isUsingMemoryFallback = false;
 /**
  * Tests whether this browser will actually let the page store anything.
  *
- * Writing and removing a probe key is the only reliable test. Some browsers expose
- * localStorage as an object and then throw on the first write.
- *
  * @returns {boolean} True when localStorage can be written and read.
  */
 function isLocalStorageWritable() {
@@ -58,9 +43,6 @@ function isLocalStorageWritable() {
 /**
  * Reports whether saved data will survive closing the tab.
  *
- * The UI uses this to warn the customer once, rather than letting them believe an
- * order history is being kept when it is not.
- *
  * @returns {boolean} True when the browser blocked storage and memory is being used.
  */
 export function isUsingTemporaryStorage() {
@@ -70,14 +52,7 @@ export function isUsingTemporaryStorage() {
 /**
  * Brings saved data forward to the current schema version.
  *
- * Anything older than the current version is discarded rather than guessed at, and
- * silently keeping data whose shape no longer matches is how a demo crashes in front
- * of a judge.
- *
- * Version 2 renamed the cancelled order status to Canceled. Orders saved under
- * version 1 still carry the old spelling, which no longer matches anything the status
- * machine or the reports know about, so they are dropped rather than converted. There
- * is nothing in them worth keeping: the seeded history rebuilds itself on load.
+ * Saved data from an older version is discarded rather than guessed at.
  *
  * @param {object} saved Parsed data straight out of storage.
  * @returns {object|null} Usable state, or null when it cannot be trusted.
@@ -135,8 +110,6 @@ export function save(state) {
 
 /**
  * Removes everything this program saved, so the next load starts fresh.
- *
- * Backs the Reset demo data button, which matters between judging rounds.
  *
  * @returns {void}
  */

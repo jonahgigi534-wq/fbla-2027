@@ -3,10 +3,6 @@
  *
  * Used by the home screen, the menu grid, and the assistant's suggestions, so an
  * item looks and behaves the same everywhere a customer meets it.
- *
- * A sold out item is still shown rather than hidden. Hiding it would leave a
- * customer searching for something they were told the restaurant sells; showing it
- * grayed out with a label answers the question.
  */
 
 import { el } from '../dom.js';

@@ -1,18 +1,8 @@
 /**
  * Pickup time slots, and the capacity limit on each one.
  *
- * A kitchen can only hand over so many orders at once. Letting forty customers all
- * choose 6:30pm is how a queue forms at the counter, so each fifteen minute slot
- * holds a fixed number of orders and a full one is offered as taken with the next
- * free time named.
- *
- * This is the part of the program that answers the topic's question about helping
- * the business operate more efficiently rather than just serving the customer:
- * spreading collection across the hour is worth more to the restaurant than any
- * feature on the ordering side.
- *
- * Pure functions. The current time arrives as an argument so the whole schedule is
- * testable at any hour of any day.
+ * Each fifteen minute slot holds a fixed number of orders, so collection spreads across
+ * the hour instead of queuing at the counter.
  */
 
 import { MINUTES_PER_DAY } from '../data/locations.js';
@@ -89,12 +79,8 @@ function slotKeyFor(day, minute) {
 /**
  * Builds the list of collection times to offer a customer.
  *
- * The earliest offered time respects two separate limits: the kitchen's standard
- * prep time, and the notice the slowest item in the cart needs. A cart with a
- * catering tray in it cannot be collected in twenty minutes.
- *
- * Slots outside the restaurant's hours are dropped rather than shown as unavailable,
- * because a list of thirty grayed out times is worse than a short list of real ones.
+ * The first slot allows for both kitchen prep time and the slowest item's notice. Times
+ * outside opening hours are left out rather than grayed.
  *
  * @param {object} options What is being scheduled.
  * @param {object} options.location The chosen restaurant.

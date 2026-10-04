@@ -1,13 +1,8 @@
 /**
  * Assembles the six catalog files into the one menu the rest of the app reads.
  *
- * Each raw item arrives from its catalog file knowing only its own name, price, and
- * description. This module gives it the two things it cannot know about itself,
- * which category and section it belongs to, then runs the description through
- * domain/dietary.js to work out allergens and dietary tags.
- *
- * Everything here runs once, when the module is first imported. Screens read the
- * finished arrays and the id lookups below rather than searching the catalog again.
+ * Gives each item its category and section, and works out allergens and dietary tags
+ * from its description, once at startup.
  */
 
 import { BREAKFAST_CATEGORIES } from './menu-breakfast.js';
@@ -31,10 +26,6 @@ const PRODUCT_TYPE = 'product';
 
 /**
  * Works out which picture an item should show.
- *
- * An item with its own photograph uses it. Otherwise it borrows the one for its
- * category, flagged so the detail screen can say that is what happened. Sides and
- * catering have no honest stand-in, so they get null and the screens draw a tile.
  *
  * @param {object} rawItem An item straight out of a catalog file.
  * @param {string} categoryId The category this item was listed under.

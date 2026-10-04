@@ -1,12 +1,7 @@
 /**
  * The shape of a single thing a customer can order, and the helper that builds one.
  *
- * Every catalog file (menu-food.js, menu-bakery.js, menu-drinks.js, menu-sides.js,
- * menu-catering.js) calls createItem so all items share one shape and one set of
- * defaults. menu.js then assembles those files into the finished catalog.
- *
- * Prices are whole cents. Nothing in this program stores money as a decimal, because
- * repeated tax and tip arithmetic on floating point produces totals like 24.310000000000002.
+ * Prices are whole cents.
  */
 
 /** Cost of one order that has no lead time, used when an item ships the same visit. */

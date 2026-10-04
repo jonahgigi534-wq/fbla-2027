@@ -1,21 +1,8 @@
 /**
  * The Pie Assistant panel.
  *
- * A slide over that any screen can open. It holds the conversation, the input, a row
- * of suggested questions, and the folded control that switches AI answers on.
- *
- * Two things can answer. With a key saved, questions go to Llama 3.3 through
- * OpenRouter, told the live menu, stock, hours, and cart; app/aiConversation.js does
- * that. Without a key, or whenever the model cannot answer for any reason, the built
- * in matcher in domain/assistant.js answers from this device, and says so when it is
- * standing in. The customer always gets an answer.
- *
- * The suggested questions are not decoration. They are what makes the feature
- * demonstrable: someone meeting the program for the first time has no idea what it
- * can be asked, and a blank box invites a question it cannot answer.
- *
- * This file owns the panel and the conversation. What goes inside each message is
- * built in ui/components/assistantReplies.js.
+ * With a key it answers through Llama 3.3; otherwise, or when that fails, the built in
+ * matcher answers. The subtitle always says which.
  */
 
 import { el, render } from '../dom.js';
@@ -145,9 +132,6 @@ async function ask(question) {
 
 /**
  * Reacts to AI answers being switched on or off.
- *
- * The conversation so far is forgotten, so the model never inherits turns the matcher
- * answered, and the subtitle changes so it is always clear who is answering.
  *
  * @param {string} setting 'on' or 'off'.
  * @returns {void}

@@ -1,14 +1,8 @@
 /**
  * Checks that every function carries a documentation block.
  *
- * The rating sheet scores comments that are logical, useful, and complete. Complete
- * is the word that is hard to argue about, so this turns it into a number rather
- * than an opinion: if a function is part of a module's public surface, the next
- * person to call it can read what it takes and what it gives back.
- *
- * It checks that a block exists and describes the parameters, not that the prose is
- * any good. No script can judge that. What it does catch is the function added in a
- * hurry with nothing above it, which is the one that actually happens.
+ * It checks that each block lists the parameters and return value, not that the prose
+ * is good.
  */
 
 import { readdir, readFile } from 'node:fs/promises';
@@ -19,13 +13,6 @@ const ROOT = join(import.meta.dirname, '..');
 
 /**
  * What to check, which is the whole source tree.
- *
- * It used to name the four layer folders individually, which quietly left out data/
- * on the grounds that it exports arrays rather than behavior, and left out main.js by
- * accident because it is a file rather than a folder. Between them that was twenty
- * four functions the documentation claimed were checked and were not. They all turned
- * out to be documented anyway, so pointing this at the root costs nothing and makes
- * the claim true.
  */
 const FOLDERS = ['src/js'];
 

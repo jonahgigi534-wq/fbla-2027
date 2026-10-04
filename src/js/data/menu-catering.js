@@ -1,15 +1,7 @@
 /**
  * Catering, which is the part of the menu that is a service rather than a product.
  *
- * Every item here needs 48 hours of notice, exactly as the restaurant states on its
- * own catering menu. That lead time is the reason this file exists as its own
- * category: the checkout rules in domain/validation.js have to refuse a pickup time
- * that does not clear an item's leadTimeHours, and catering is where that bites.
- *
- * The two custom inscription items at the end are special orders. The customer picks
- * the cake or pie, writes the message that goes on top, and chooses a pickup date.
- *
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
+ * Every item needs 48 hours notice, as on the restaurant's own catering menu.
  */
 
 import { createCategory, createItem } from './menuItem.js';

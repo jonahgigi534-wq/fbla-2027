@@ -1,13 +1,8 @@
 /**
  * Opening hours logic: whether a restaurant is open, and when it opens next.
  *
- * Pure functions that take the moment to test as an argument rather than reading the
- * clock themselves. That is what makes "is Katy open at 3am on a Tuesday" a unit test
- * instead of something you can only find out by waiting until Tuesday.
- *
- * The six House of Pies restaurants do not keep the same hours. Fuqua never closes,
- * Katy runs around the clock on weekends only, and the other four run 7:00 AM to
- * midnight. Every one of those cases goes through the same two functions below.
+ * The moment to check is passed in rather than read from the clock, so any hour of any
+ * day can be tested.
  *
  * Used by the open now badge on the home screen, the location picker, and the pickup
  * slot builder in domain/slots.js.
@@ -63,10 +58,7 @@ export function formatMinute(minute) {
 /**
  * Finds the next moment a closed restaurant will open.
  *
- * Looks at the rest of today first, then walks forward a day at a time. Seven days
- * is the limit because a weekly schedule cannot hide an opening longer than that,
- * and returning null instead of looping forever is the safe answer for a location
- * that somehow never opens.
+ * Looks at most a week ahead and returns null rather than looping forever.
  *
  * @param {object} location A location from data/locations.js.
  * @param {Date} moment The time to look forward from.
@@ -89,9 +81,7 @@ export function nextOpening(location, moment) {
 /**
  * Reports whether a restaurant runs around the clock on a given weekday.
  *
- * Katy is the reason this is per day rather than per location: it opens at midnight
- * and closes at midnight on Saturday and Sunday only, so a location-wide check would
- * describe a Saturday morning at Katy as closing soon when it never closes that day.
+ * Checked per day, because Katy is open all day on weekends only.
  *
  * @param {object} location A location from data/locations.js.
  * @param {number} dayIndex Weekday index, where Sunday is 0.

@@ -1,8 +1,5 @@
 /**
  * The searchable help center.
- *
- * Every guide in one list, filtered as you type. Typing redraws only the list rather
- * than the whole screen, so the search box keeps the caret and the focus it has.
  * */
 
 import { el, emptyState, render } from '../dom.js';
@@ -23,9 +20,6 @@ const view = { query: '' };
 export function renderHelp(container) {
   /**
    * Redraws the article list for the current search text.
-   *
-   * Typing calls this rather than the whole screen so the search box keeps the caret
-   * and the focus it already has.
    *
    * @returns {void}
    */

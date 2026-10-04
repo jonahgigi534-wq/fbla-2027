@@ -1,12 +1,7 @@
 /**
  * Development static file server.
  *
- * Exists because ES module imports are blocked by the browser's CORS policy when a
- * page is opened directly from file://. Running the app over http://localhost during
- * development keeps the source split across real modules instead of one bundled file.
- *
- * Uses only the Node standard library so the project has no runtime or server
- * dependencies to install. For the offline presentation build see build-standalone.mjs.
+ * Module imports are blocked on file:// pages, so development runs over localhost.
  */
 
 import { createServer } from 'node:http';

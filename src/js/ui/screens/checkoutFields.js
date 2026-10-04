@@ -1,15 +1,6 @@
 /**
  * The input fields the checkout screen asks for, and the shape rules on each one.
  *
- * Split out of checkout.js because building the fields and deciding whether an order
- * may be placed are two different jobs, and the screen only has to hold them together.
- * This half is the syntactic level: does what was typed look like a phone number, a
- * ZIP, a card. The semantic level lives in checkoutSubmit.js.
- *
- * Which fields exist depends on the order type. A pickup order is never asked for a
- * delivery address, because asking for something and then ignoring it is how a form
- * teaches people to distrust it.
- *
  * Used by ui/screens/checkout.js.
  */
 

@@ -1,10 +1,6 @@
 /**
  * Breakfast half of the House of Pies menu: the Texas Breakfast plates, the
  * favorites regulars order by name, the griddle, and the three egg omelettes.
- *
- * House of Pies serves breakfast all day, so these are not gated by time of day.
- * Names, descriptions, and prices follow the restaurant's own online menu.
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
  */
 
 import { createCategory, createItem } from './menuItem.js';

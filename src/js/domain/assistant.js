@@ -1,28 +1,9 @@
 /**
  * The matching engine behind the Pie Assistant.
  *
- * The rating sheet asks for an intelligent feature such as an interactive question
- * and answer. With a key saved, the Pie Assistant asks Llama 3.3, and what it is told
- * is in domain/aiPrompt.js. This is the other half: the part that answers with no key,
- * no credit, or no wifi, and whenever the AI fails. So there is no language model here
- * and no network call. What it has instead is a knowledge base of intents, a scorer
- * that decides which one a question is asking for, and answers built from the live
- * menu, stock, cart, and orders.
- *
- * Three decisions shape it:
- *
- *   1. Typing is forgiving. A word within one edit of a keyword still counts, so
- *      "vegitarian" and "delivary" match. Someone typing on a phone in front of an
- *      audience will make that mistake, and refusing to understand it looks worse
- *      than any wrong answer.
- *   2. There is always an answer. A question that matches nothing gets the closest
- *      topics offered back rather than a shrug. "I do not know" is the one response
- *      that teaches a person to stop asking.
- *   3. Answers read the program's real state, so what the assistant says about stock
- *      or hours is what the rest of the screens would say.
- *
- * Pure functions. test/assistant.test.js checks the ranking across real phrasings,
- * including misspelled ones.
+ * It answers whenever the AI cannot: no key, no credit, or no wifi. A word one typo
+ * away still matches, and a question that matches nothing is offered the nearest
+ * topics.
  */
 
 /** Words too common to tell intents apart. */
@@ -73,9 +54,8 @@ const EXACT_MATCH_SCORE = 10;
 /**
  * Score for a keyword matched through a single typo.
  *
- * This has to clear CONFIDENCE_FLOOR on its own. If one typo scored below the floor,
- * a question whose only signal was a misspelled keyword would fall through to the
- * fallback, which defeats the point of tolerating typos at all.
+ * High enough to clear CONFIDENCE_FLOOR alone, so a question whose only clue is a
+ * misspelled word still gets answered.
  */
 const FUZZY_MATCH_SCORE = 8;
 
@@ -117,13 +97,7 @@ export function tokenize(text) {
 /**
  * Reports whether two words are within one edit of each other.
  *
- * This is a bounded Levenshtein check rather than a full distance calculation. The
- * only question worth asking is "is this one typo away", and answering just that
- * lets the function bail out early instead of filling a matrix.
- *
- * Catches the three mistakes people actually make: a dropped letter, an extra
- * letter, and a wrong letter. Transposition, as in "veg" for "gev", is not covered
- * and does not need to be.
+ * Stops at the second difference, since one typo is the only question being asked.
  *
  * @param {string} first One word.
  * @param {string} second The other.
@@ -168,8 +142,7 @@ export function isWithinOneEdit(first, second) {
 /**
  * Scores how well one intent answers a question.
  *
- * A whole phrase counts for much more than a single keyword, so "how do I order"
- * beats an intent that merely mentions ordering.
+ * A whole phrase counts for more than a single keyword.
  *
  * @param {object} intent An intent from data/assistantKnowledge.js.
  * @param {string} normalizedQuestion The question, normalized.
@@ -222,9 +195,6 @@ function rankIntents(intents, question) {
 
 /**
  * Picks the best answer to a question, or offers the nearest topics instead.
- *
- * The return shape is the same either way, so the screen renders one thing rather
- * than branching on whether the assistant understood.
  *
  * @param {object[]} intents The knowledge base.
  * @param {string} question Whatever the customer typed.

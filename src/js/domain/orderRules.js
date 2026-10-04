@@ -1,18 +1,8 @@
 /**
  * Semantic validation: the value is well formed, but is it right for this order?
  *
- * domain/validation.js answers whether a customer typed a real ZIP code. This file
- * answers whether it is a ZIP the Kirby restaurant delivers to. Those are different
- * questions and they deserve different answers, which is the distinction the two
- * modules exist to keep straight.
- *
- * Every rule here needs context that a field on its own does not have: the chosen
- * restaurant, what is in the cart, what the order total came to, or what time it is.
- * The current moment always arrives as an argument rather than being read from the
- * clock, so every rule can be tested at a fixed date.
- *
- * The messages say why, not just no. "Pickup has to be at least 20 minutes out, the
- * kitchen needs time to cook" tells a customer something. "Invalid time" does not.
+ * validation.js checks that a ZIP is real; this checks that the chosen restaurant
+ * delivers to it. The time is passed in, so every rule can be tested at a fixed moment.
  */
 
 import { MINIMUM_PREP_MINUTES, SLOT_CAPACITY, bookingsInSlot } from './slots.js';
@@ -35,9 +25,7 @@ function fail(message) {
 /**
  * Checks that a ZIP code is one the chosen restaurant delivers to.
  *
- * Delivery areas are a fixed list per restaurant rather than a distance calculation.
- * Real areas are drawn around road access, not drawn with a compass, and a list
- * needs no network lookup, which matters for a program that has to run offline.
+ * A fixed list per restaurant, which needs no network lookup.
  *
  * @param {string} zip A five digit ZIP that has already passed validateZip.
  * @param {object} location The chosen restaurant.
@@ -72,9 +60,7 @@ export function meetsDeliveryMinimum(goodsCents, orderTypeId) {
 /**
  * Checks that a card has not already expired.
  *
- * A card expires at the end of its stated month, so an 04/29 card is good through
- * the last day of April 2029. Comparing against the first of the month would reject
- * a card that is still perfectly valid.
+ * A card is good through the last day of its expiry month.
  *
  * @param {string} expiry An MM/YY string that has already passed validateExpiryFormat.
  * @param {Date} now The current moment.
@@ -95,9 +81,8 @@ export function isCardStillValid(expiry, now) {
 /**
  * Checks that a chosen collection time actually works.
  *
- * Four separate things can be wrong with a time that is perfectly well formed: it
- * can be in the past, too soon for the kitchen, too soon for a catering item that
- * needs days of notice, or already full. Each gets its own message.
+ * A well formed time can still be in the past, too soon for the kitchen, too soon for a
+ * catering item, or full, and each gets its own message.
  *
  * @param {object} options What is being checked.
  * @param {object} options.slot The chosen slot from domain/slots.js.
@@ -148,9 +133,8 @@ export function isSlotUsable({ slot, location, now, leadTimeHours = 0, orders = 
 /**
  * Checks a budget cap the customer typed.
  *
- * A cap below what is already in the cart is refused rather than accepted and
- * immediately breached, because a cap that is broken the moment it is set teaches
- * the customer to ignore the warning.
+ * A limit below the current cart is refused, since it would be broken the moment it was
+ * set.
  *
  * @param {number|null} capCents The cap in cents, or null when clearing it.
  * @param {number} currentTotalCents What the order comes to right now.
@@ -173,9 +157,6 @@ export function isBudgetCapUsable(capCents, currentTotalCents) {
 
 /**
  * Checks a report date range.
- *
- * The manager reports screen is where a judge is most likely to type something
- * backwards, so the range is checked rather than silently returning no rows.
  *
  * @param {string} startDate An ISO date such as '2026-06-01'.
  * @param {string} endDate An ISO date such as '2026-06-30'.

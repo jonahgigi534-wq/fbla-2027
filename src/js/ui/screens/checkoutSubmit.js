@@ -1,15 +1,8 @@
 /**
  * What happens when someone presses Place order.
  *
- * The other half of the checkout split. checkoutFields.js decides whether each answer
- * looks right on its own; this decides whether the order as a whole is one the
- * restaurant can actually take, using domain/orderRules.js.
- *
- * The sequence matters more than any single rule in it. Field shapes are checked
- * first, then the rules that need the whole order, because a customer should never be
- * told their ZIP is outside the delivery area when the real problem is that they typed
- * four digits. Each failure stops the run and says where its message belongs: beside a
- * field, under the time picker, or in a toast when it belongs to no single control.
+ * Field shapes are checked before whole order rules, so a mistyped ZIP is never
+ * reported as outside the delivery area.
  *
  * Used by ui/screens/checkout.js.
  */

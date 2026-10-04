@@ -1,21 +1,9 @@
 /**
  * The one network call in the program: asking the AI model a question.
  *
- * Questions go to OpenRouter, which passes them to Meta's Llama 3.3 70B. OpenRouter is
- * a single address in front of many models and many companies that host them. Asking
- * it to sort by throughput sends each request to whichever host is answering fastest
- * at that moment, which for this model is usually Groq. If that host is down or slow,
- * the next one takes the request with nothing here changing.
- *
- * Everything else in the program still works with no connection, and so does the
- * assistant: if this call fails for any reason, the panel answers from the built in
- * matcher instead. That is why every failure below is turned into a reason the panel
- * can explain, rather than an error it has to survive.
- *
- * The key is never in the code. The program has no server to keep a secret on, so
- * anything written into these files could be read by anyone who opened them, and they
- * are published to a public repository. Instead the key is pasted into the assistant's
- * settings and kept in this browser only.
+ * OpenRouter is asked for the fastest host, usually Groq. Any failure becomes a reason
+ * the panel can explain, and the built in assistant answers instead. The key is never
+ * in the code; it is pasted into AI settings and kept in this browser.
  */
 
 /** Where questions are sent. The build allows this address and no other. */
@@ -59,8 +47,7 @@ export class AiError extends Error {
 /**
  * Reads the saved key.
  *
- * Kept apart from app/storage.js and the rest of the saved state, so that Reset demo
- * data between judging rounds clears the orders without also clearing the key.
+ * Kept apart from the saved orders, so Reset all data does not clear it.
  *
  * @returns {string|null} The key, or null when none has been saved.
  */

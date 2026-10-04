@@ -1,12 +1,5 @@
 /**
  * A la carte sides: potatoes, breads, fruit, vegetables, and extra meat.
- *
- * These are the same sides the plates above include one of, sold on their own.
- * The restaurant lists close to ninety of them; this catalog carries the ones a
- * customer actually adds to a digital order, which keeps the side list scannable
- * on a phone instead of burying the useful choices.
- *
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
  */
 
 import { createCategory, createItem } from './menuItem.js';

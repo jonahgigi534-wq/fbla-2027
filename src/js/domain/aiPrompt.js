@@ -1,19 +1,8 @@
 /**
  * What the Pie Assistant's AI model is told before every question.
  *
- * The model knows nothing about this restaurant on its own. Left to itself it answers
- * a question about the menu by inventing one, with confident prices for pies House of
- * Pies has never made. So every request carries the facts it is allowed to use: the
- * menu with its ingredients and today's stock, the six restaurants and their hours,
- * the customer's cart, the help guides, and rules about what it must not guess at.
- *
- * Everything here is a pure function of what it is handed, so the tests can read
- * exactly what the model would be told with no network and no browser. Sending it is
- * app/aiClient.js's job, and gathering the live state is app/aiConversation.js's.
- *
- * Nothing personal goes in. The customer's name, phone, email, address, and card never
- * reach this file. They are no help with a question about pie, and they are not ours
- * to send to someone else's server.
+ * Every request carries the facts the model may use, so it answers about this menu
+ * instead of inventing one. Nothing personal is ever included.
  */
 
 import { formatUSD } from './money.js';
@@ -31,10 +20,8 @@ const ORDERS_DESCRIBED = 5;
 /**
  * The rules the model answers under. They come before the data on purpose.
  *
- * An earlier version said to answer only from the facts and otherwise say "I do not
- * know". The model followed it to the letter: "hi" got a list of screen names, and
- * "what is 5 + 5" got the same refusal as a question about politics. So the rules now
- * sort questions into kinds, and only facts about the restaurant are held to the facts.
+ * Each kind of question gets its own rule. A single "answer only from the facts" rule
+ * made it refuse even a hello.
  */
 const RULES = [
   'You are the Pie Assistant on an ordering site for House of Pies, a family owned Houston restaurant and bakery trading since 1967. Talk like a friendly diner server: warm, quick, and specific. If someone asks whether House of Pies runs this site, say honestly that it is an independent ordering site, not the restaurant itself.',
@@ -70,10 +57,8 @@ const EXAMPLES = [
 /**
  * Describes one menu item on a single line.
  *
- * The description is the restaurant's ingredient list. It nearly doubles the size of
- * every request, and it is worth it: without it the model knows a Texan Omelette costs
- * $14.95 but not what is in one, so "what is in it", "anything spicy", and "something
- * lighter" all got guesses or refusals.
+ * Ingredients are included so the model can say what is in a dish or suggest something
+ * lighter.
  *
  * @param {object} item A catalog item.
  * @param {number} stock How many are left right now.
@@ -220,9 +205,6 @@ function describePolicies({ deliveryFeeCents, freeDeliveryCents, deliveryMinimum
 /**
  * Describes how to use the program, from the guides in the help center.
  *
- * The same text a customer reads under Help, so the model's directions cannot drift
- * from the program's own.
- *
  * @param {Array<{title: string, body: string}>} articles Help articles.
  * @returns {string} One line per article.
  */
@@ -270,8 +252,8 @@ export function buildSystemPrompt(input) {
 /**
  * Puts the system message, recent conversation, and new question in order.
  *
- * Only the last few turns travel with each question. Enough for "how much is that
- * one?" to know what "that one" was, without the request growing all session.
+ * Only the last few turns are sent, enough for "that one" to make sense without the
+ * request growing all session.
  *
  * @param {object} input The pieces of the request.
  * @param {string} input.systemPrompt From buildSystemPrompt.
@@ -292,8 +274,8 @@ export function buildMessages({ systemPrompt, history, question }) {
 /**
  * Strips the formatting a model sometimes adds despite being asked not to.
  *
- * Answers are shown as plain text, never as HTML, so markdown would appear as literal
- * asterisks. This removes the common marks and nothing else.
+ * Answers are shown as plain text, so markdown would otherwise appear as literal
+ * asterisks.
  *
  * @param {string} text The model's answer.
  * @returns {string} The same answer without markdown emphasis, bullets, or headings.

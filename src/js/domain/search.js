@@ -1,12 +1,5 @@
 /**
  * Searching, filtering, and sorting the menu.
- *
- * With 426 items across 34 categories, a customer who wants the key lime pie is not
- * going to scroll for it. This module is what turns a search box, a row of filter
- * chips, and a sort dropdown into the list of items a screen renders.
- *
- * Pure functions over plain arrays. Nothing here reads the DOM or app state, which
- * is what lets test/search.test.js check the ranking rules directly.
  */
 
 /** Every way the results can be ordered, with the label the dropdown shows. */
@@ -46,9 +39,7 @@ export function normalize(text) {
 /**
  * Reports whether a phrase appears in text starting at a word boundary.
  *
- * A plain includes would let the query "key" match "turkey sandwich", which is how
- * a search for key lime pie ends up offering deli meat. Anchoring to a word start
- * keeps "key lime" matching "fresh key lime pie" while rejecting the turkey.
+ * So "key" finds key lime pie but not a turkey sandwich.
  *
  * @param {string} text Normalized text to search.
  * @param {string} phrase Normalized phrase to look for.
@@ -61,9 +52,8 @@ function containsAtWordStart(text, phrase) {
 /**
  * Scores how well one item answers a search query.
  *
- * A name match beats a description match, and a name that starts with the query
- * beats one that merely contains it, so searching "pecan" puts Texas Pecan Pie above
- * a burger whose description happens to mention pecans.
+ * A name match beats a description match, and a name that starts with the query beats
+ * one that only contains it.
  *
  * @param {object} item A finished catalog item from data/menu.js.
  * @param {string} query Normalized query text.
@@ -97,9 +87,6 @@ export function scoreItem(item, query) {
 /**
  * Keeps only the items that pass every active filter.
  *
- * Filters combine with AND, which is what a customer expects: picking Vegetarian and
- * setting a maximum price should leave only items that satisfy both.
- *
  * @param {object[]} items Catalog items to narrow.
  * @param {object} filters Active filters.
  * @param {string} [filters.sectionId] Keep only this section.
@@ -131,11 +118,7 @@ export function filterItems(items, filters = {}) {
 /**
  * Orders items by one of the SORT_OPTIONS.
  *
- * Returns a new array rather than sorting in place, because the caller's array is
- * the shared catalog and reordering it would change every other screen.
- *
- * Relevance ordering only means anything when a query was typed, so with no query it
- * falls back to name order to keep the list stable instead of arbitrary.
+ * Returns a new array, because the caller's array is the shared catalog.
  *
  * @param {object[]} items Items to order.
  * @param {string} sortId One of the SORT_OPTIONS ids.
@@ -160,9 +143,6 @@ export function sortItems(items, sortId, scores) {
 
 /**
  * Runs a full menu query: filter, then search, then sort.
- *
- * This is the single entry point the menu screen calls. Keeping the three steps in
- * one place means the screen never has to remember the order they belong in.
  *
  * @param {object[]} items The full catalog.
  * @param {object} request What the customer is asking for.

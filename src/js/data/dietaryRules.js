@@ -2,20 +2,16 @@
  * Keyword tables used to read allergens and dietary tags out of an item's
  * ingredient description.
  *
+ * Allergens follow the ingredient text, so they stay right when a description changes.
+ * It is not a substitute for asking the restaurant.
+ *
  * Read by domain/dietary.js, which does the matching. They live here as data rather
  * than inside that module so the rules can be reviewed and corrected by anyone
  * without touching logic, and so the matching function stays small enough to test.
- *
- * Deriving allergens from ingredients instead of hand tagging four hundred items
- * keeps the catalog honest: when a description changes, the allergen list follows.
- * It is not a substitute for asking the restaurant, which the UI says plainly.
  */
 
 /**
  * Allergen name mapped to the ingredient words that imply it.
- *
- * Words are matched whole, case insensitively, against the item name and
- * description together. Order does not matter; every rule is checked.
  */
 export const ALLERGEN_KEYWORDS = {
   egg: [
@@ -102,9 +98,6 @@ export const ALLERGEN_KEYWORDS = {
 
 /**
  * Words that mean an item contains meat or seafood.
- *
- * Used to withhold the vegetarian tag from anything whose description mentions one,
- * which is safer than assuming an item is meat free because nobody said otherwise.
  */
 export const MEAT_KEYWORDS = [
   'bacon',
@@ -145,9 +138,6 @@ export const MEAT_KEYWORDS = [
 
 /**
  * Every dietary tag the filter bar can show, with the label a customer reads.
- *
- * `vegetarian` and `vegan` come from the catalog and the meat keyword check.
- * `sugar-free` and `seasonal` are set by hand in the catalog files.
  */
 export const DIETARY_TAGS = [
   { id: 'vegetarian', label: 'Vegetarian' },

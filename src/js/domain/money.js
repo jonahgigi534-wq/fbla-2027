@@ -1,15 +1,8 @@
 /**
  * Money arithmetic, in whole cents.
  *
- * Every price, subtotal, tax figure, and total in this program is an integer number
- * of cents. Nothing is stored as a decimal. An order that applies a promo code, then
- * 8.25 percent tax, then a tip percentage does three multiplications in a row, and
- * on floating point that reliably produces totals like 24.310000000000002. Working
- * in cents means the arithmetic is exact and the rounding happens once, on purpose,
- * where this module says it does.
- *
- * Pure functions with no imports, so test/money.test.js can exercise the rounding
- * edges directly.
+ * Every amount is whole cents, never a decimal, so a promo, tax, and tip in a row
+ * cannot produce totals like 24.310000000000002.
  */
 
 /** Cents in one dollar. */
@@ -21,9 +14,8 @@ export const BASIS_POINTS_PER_WHOLE = 10000;
 /**
  * Rounds to the nearest whole cent, with exact halves going up.
  *
- * Half up is the rule US retail receipts use, and it is the reason this is not
- * Math.round: Math.round sends negative halves the wrong way, and refunds are
- * negative.
+ * Rounds halves up, as US receipts do. Math.round would send negative halves, such as
+ * refunds, the wrong way.
  *
  * @param {number} value A possibly fractional number of cents.
  * @returns {number} A whole number of cents.
@@ -35,8 +27,7 @@ export function roundCents(value) {
 /**
  * Applies a percentage expressed in basis points and rounds to whole cents.
  *
- * Rates are basis points rather than decimals so the rate itself is exact. Houston's
- * 8.25 percent sales tax is 825 basis points, which no float can misrepresent.
+ * Rates are basis points, so 8.25 percent tax is exactly 825.
  *
  * @param {number} cents The amount to take a percentage of.
  * @param {number} basisPoints The rate, where 10000 is 100 percent.
@@ -63,8 +54,7 @@ export function sumCents(amounts) {
 /**
  * Clamps an amount so it never falls below zero.
  *
- * A discount larger than the subtotal must not turn into money owed to the customer,
- * which is what a bare subtraction would do.
+ * So a discount bigger than the subtotal never becomes money owed to the customer.
  *
  * @param {number} cents Any whole cent amount.
  * @returns {number} The amount, or 0 when it was negative.
@@ -75,9 +65,6 @@ export function clampToZero(cents) {
 
 /**
  * Formats cents as US dollars for display.
- *
- * This is the only place a cent amount becomes a string, which is what keeps the
- * arithmetic above from ever seeing a decimal.
  *
  * @param {number} cents A whole number of cents.
  * @returns {string} A string such as '$14.95' or '-$2.00'.
@@ -93,9 +80,6 @@ export function formatUSD(cents) {
 
 /**
  * Parses a dollar amount a customer typed into whole cents.
- *
- * Accepts '20', '20.5', '$20.50', and ' 20.50 '. Returns null for anything else,
- * which lets the caller show a validation message instead of guessing.
  *
  * @param {string} text Raw text from an input field.
  * @returns {number|null} Whole cents, or null when the text is not a dollar amount.

@@ -1,12 +1,8 @@
 /**
  * Promo codes the restaurant is running.
  *
- * Codes are matched case insensitively, so a customer typing PIE10 on a phone
- * keyboard gets the same answer as one typing pie10.
- *
- * Each code carries its own rules rather than the discount logic having a special
- * case per code: a kind, an amount or a rate, an optional minimum spend, and an
- * optional cap. domain/pricing.js applies all of them the same way.
+ * Codes match in any case, and each carries its own rules, so pricing.js applies them
+ * all the same way.
  */
 
 /** Every code, in the order the help center lists them. */

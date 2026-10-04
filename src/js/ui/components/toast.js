@@ -1,12 +1,8 @@
 /**
  * The short message that appears after an action.
  *
- * Adding something to a cart on another screen is invisible otherwise: the customer
- * presses a button and nothing they can see changes. The toast is the confirmation,
- * and for a refusal it is where the reason goes.
- *
- * Messages are announced to screen readers through a live region, so someone not
- * looking at the corner of the screen still hears that the item went in.
+ * Messages are announced through a live region, so a screen reader user hears that the
+ * item went in.
  */
 
 import { el } from '../dom.js';
@@ -79,10 +75,6 @@ export function showResult(result) {
 
 /**
  * Clears every message on screen.
- *
- * Called on navigation. An error about a checkout field is meaningless once the
- * customer has moved to another screen, and leaving it there makes the program look
- * like it is still complaining about something that is no longer in front of them.
  *
  * @returns {void}
  */

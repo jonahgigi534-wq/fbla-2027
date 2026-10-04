@@ -1,9 +1,6 @@
 /**
  * Savory half of the House of Pies menu: appetizers, soups and salads, the kids
  * menu, dinner plates, fusion specials, burgers, and sandwiches.
- *
- * Names, descriptions, and prices follow the restaurant's own online menu.
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
  */
 
 import { createCategory, createItem } from './menuItem.js';

@@ -1,13 +1,5 @@
 /**
  * The drawn tile shown for an item with no photograph.
- *
- * Sides and catering trays have no picture on the restaurant's menu and none in the
- * photo set, so rather than leave a gray box or borrow a photo of something else,
- * those tiles get a drawn one: the brand colors, a glyph chosen from the item's own
- * words, and the item name.
- *
- * The SVG is written inline rather than loaded from a file because the offline build
- * has to work from a file:// address, where fetching a separate asset is unreliable.
  */
 
 import { el } from '../dom.js';
@@ -15,8 +7,8 @@ import { el } from '../dom.js';
 /**
  * Glyphs keyed by a word that appears in the item name.
  *
- * Checked in order, so more specific words are listed first. 'toast' has to beat
- * 'bread', and 'fries' has to beat 'potato'.
+ * Checked in order, so specific words come first: toast before bread, fries before
+ * potato.
  */
 const GLYPH_BY_KEYWORD = [
   ['coffee', '☕'],

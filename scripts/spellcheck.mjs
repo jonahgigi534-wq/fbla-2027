@@ -1,18 +1,8 @@
 /**
  * Checks the spelling of every word the program puts on screen.
  *
- * "Interface contains no spelling errors" is scored directly on the rating sheet, so
- * this is not a nicety. Reading the screens by eye does not scale to 426 menu items,
- * 15 validation messages, and a help center.
- *
- * It pulls the strings out of the source rather than the rendered page, which means
- * it also covers the text nobody looks at: aria-labels, alt text, placeholders,
- * validation messages that only appear when something goes wrong, and the toast that
- * fires once in fifty runs.
- *
- * The dictionary is committed alongside it. A checker whose word list depends on the
- * machine it runs on is not a check, and half the vocabulary here is proper nouns
- * the restaurant chose.
+ * It reads strings from the source, so it also covers labels, placeholders, and
+ * messages that rarely appear. The word list is committed.
  */
 
 import { readdir, readFile } from 'node:fs/promises';
@@ -56,10 +46,6 @@ async function listJsFiles(folder) {
 /**
  * Pulls the quoted strings out of a source file.
  *
- * Anything that looks like code rather than prose is dropped: import paths, class
- * names, ids, and single tokens with no spaces. What is left is the text a person
- * would actually read.
- *
  * @param {string} source A JavaScript or HTML file's contents.
  * @returns {string[]} The strings worth checking.
  */
@@ -96,9 +82,6 @@ export function extractStrings(source) {
 /**
  * Pulls the readable prose out of a markdown document.
  *
- * Fenced code blocks, inline code, link targets, and table pipes are dropped, since
- * none of those are words anyone reads for meaning. What is left is the sentences.
- *
  * @param {string} source A markdown file's contents.
  * @returns {string[]} Lines of prose worth checking.
  */
@@ -115,9 +98,6 @@ export function extractProse(source) {
 
 /**
  * Splits display text into words to check.
- *
- * Possessives and hyphenated pairs are broken apart so 'restaurant’s' is checked
- * as 'restaurant', and numbers and prices are dropped entirely.
  *
  * @param {string} text A display string.
  * @returns {string[]} Lowercase words worth checking.

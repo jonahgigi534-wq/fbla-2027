@@ -1,8 +1,5 @@
 /**
  * Drinks: the espresso bar, tea and fountain sodas, and the juice and milk case.
- *
- * Names, descriptions, and prices follow the restaurant's own online menu.
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
  */
 
 import { createCategory, createItem } from './menuItem.js';

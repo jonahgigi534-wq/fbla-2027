@@ -1,16 +1,8 @@
 /**
  * What the Pie Assistant knows how to answer.
  *
- * Every intent carries the words that mean it and a function that builds the answer.
- * The answer functions receive the program's live state, so what the assistant says
- * about stock, hours, or an order is read from the same data the screens render.
- * Nothing here is a canned reply that can drift out of date.
- *
- * Matching is done by domain/assistant.js. This file is only the knowledge.
- *
- * `isSuggested` marks the intents offered as buttons under the input, which is what
- * makes the feature demonstrable: a judge who does not know what to ask can click
- * something that is guaranteed to work.
+ * Answers are built from the live state, so what the assistant says matches the
+ * screens. Matching is done by domain/assistant.js.
  */
 
 import { formatUSD } from '../domain/money.js';

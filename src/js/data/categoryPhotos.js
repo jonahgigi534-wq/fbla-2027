@@ -1,18 +1,8 @@
 /**
  * A representative photo for each menu category.
  *
- * House of Pies publishes a photo for some menu items but not most of them, and a
- * grid where one tile in twenty has a picture looks broken rather than sparse. So an
- * item without its own photo falls back to one for its category.
- *
- * The item detail screen labels a category photo as such. Showing a picture of a
- * different pie without saying so would be a small lie told four hundred times.
- *
- * Sides and catering have no entry on purpose: nothing in the photo set represents
- * a side of toast or a catering tray honestly, so those fall through to the drawn
- * placeholder in ui/components/foodPlaceholder.js instead.
- *
- * Keys are category ids from data/menu.js. Values are filenames in assets/img.
+ * An item without its own photo borrows its category's, and the item screen says so.
+ * Sides and catering get a drawn tile instead.
  */
 export const CATEGORY_PHOTOS = {
   // Food

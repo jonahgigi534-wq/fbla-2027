@@ -1,14 +1,7 @@
 /**
  * The customer's own spending, summarized.
  *
- * The assigned topic asks the program to let customers review their order
- * information, and a list of receipts only half answers that. This screen answers
- * the questions a regular actually has: what have I spent here, how often do I come,
- * and what do I keep ordering.
- *
- * It runs on the same engine as the manager reports in domain/reports.js, narrowed
- * to this customer's orders. One tested aggregation serving both sides is better
- * than two that can disagree.
+ * Runs on the same report engine as the staff reports, narrowed to this customer.
  */
 
 import { el, emptyState, render } from '../dom.js';
@@ -116,9 +109,6 @@ function favouritesTable(favorites) {
 export function renderSpending(container) {
   /**
    * Redraws the summary for the chosen time range.
-   *
-   * The range buttons call this rather than the whole screen, so the button that was
-   * just pressed keeps focus.
    *
    * @returns {void}
    */

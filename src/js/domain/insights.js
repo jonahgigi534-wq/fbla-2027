@@ -1,16 +1,8 @@
 /**
  * Turns a report into sentences a manager can act on.
  *
- * A table answers "what happened". This answers "so what". The rating sheet asks for
- * reports that let the user analyze the information, and a grid of numbers only does
- * that if the reader already knows what to look for. These sentences say which line
- * mattered, which direction it moved, and what is about to run out.
- *
- * Every sentence is derived from the same figures shown in the table, so nothing here
- * can claim something the table contradicts. Nothing is invented and nothing is
- * rounded in a flattering direction.
- *
- * Pure functions. The manager screen passes in the report it already built.
+ * Each sentence is worked out from the same figures as the table, so it can never
+ * contradict it.
  */
 
 import { formatUSD } from './money.js';
@@ -75,8 +67,7 @@ export function peakHourInsight(hourRows) {
 /**
  * Builds a sentence naming what is about to run out.
  *
- * This is the one insight that is about the future rather than the past, and it is
- * the one a manager can act on this morning.
+ * The one insight about what happens next, and the one a manager can act on today.
  *
  * @param {object[]} catalog Every catalog item.
  * @param {Object<string, number>} stockOverrides Live stock, keyed by item id.

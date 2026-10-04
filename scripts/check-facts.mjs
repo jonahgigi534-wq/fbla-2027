@@ -1,22 +1,8 @@
 /**
  * Checks that the figures the documentation quotes are still true.
  *
- * This exists because twice they were not. At one point the repository claimed 225
- * tests in the testing notes, 234 in the rating sheet map, and 237 in the readme,
- * none of which was the real number. A judge reading the fact sheet and then watching
- * `npm run check` print a different figure on screen is a worse outcome than any of
- * the drift itself.
- *
- * Correcting them by hand did not hold either. A later pass found "40 phrasings" in
- * three files for a list holding 32 entries, missed the first time because the hand
- * search had been looking for different words.
- *
- * So the numbers are derived here and compared against every place that states one.
- * Anything cheap to count is counted. The test total is not, because counting it means
- * running the suite, which `npm run check` does immediately before this anyway.
- *
- * Adding a fact means adding one entry to collectFacts below. Each says how to work
- * the number out and which wordings in the documentation are quoting it.
+ * Every count quoted in the docs is worked out from the code and compared, because hand
+ * checked numbers drifted twice.
  */
 
 import { readdir, readFile } from 'node:fs/promises';
@@ -54,10 +40,6 @@ async function listFiles(target) {
 /**
  * Counts the lines in a file, the way anyone checking would count them.
  *
- * The final newline is dropped first. Splitting on it without doing so leaves an
- * empty string on the end and reports one line more than an editor or `wc -l` does,
- * which would make this check fail over a file that is fine.
- *
  * @param {string} relativePath Path from the project root.
  * @returns {Promise<number>} How many lines it has.
  */
@@ -68,9 +50,6 @@ async function lineCount(relativePath) {
 
 /**
  * Counts the entries in a named array literal inside a file.
- *
- * Entries are counted by their opening bracket at one level of indentation, which is
- * what Prettier guarantees for the arrays this is pointed at.
  *
  * @param {string} relativePath Path from the project root.
  * @param {string} name The array's variable name.
@@ -99,9 +78,6 @@ async function moduleCount() {
 /**
  * Counts the function declarations under src/js.
  *
- * Deliberately the same shape check-jsdoc.mjs looks for, so the figure quoted in the
- * documentation is the one that check reports rather than a second opinion.
- *
  * @returns {Promise<number>} How many there are.
  */
 async function functionCount() {
@@ -116,9 +92,6 @@ async function functionCount() {
 
 /**
  * Every derived figure, and the wordings that quote it.
- *
- * A pattern has one capturing group holding the number. Every match anywhere in the
- * checked prose has to equal the derived value.
  *
  * @returns {Promise<Array<{name: string, value: number, patterns: RegExp[]}>>} The facts.
  */

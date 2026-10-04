@@ -1,16 +1,6 @@
 /**
  * The storefront tile a restaurant is shown as.
  *
- * Copies the way House of Pies presents its own locations: the photograph of the
- * building with the place name laid over it. What sits under the photograph is this
- * program's addition, because a customer picking somewhere to order from needs to
- * know whether it is open before they know what it looks like.
- *
- * The name is not drawn here. The restaurant publishes these photographs with the
- * label already part of the picture, so writing it over the top printed every one of
- * them twice. It travels in the alt text instead, which is what a screen reader and a
- * broken image both need anyway.
- *
  * Used by the home screen and the locations screen. The locations screen asks for the
  * detailed form, which adds the hours and the phone number.
  */

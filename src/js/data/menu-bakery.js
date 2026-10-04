@@ -2,11 +2,8 @@
  * The bakery case: pie and cake by the slice, whole pies and cakes to take home,
  * sundaes and shakes, and the cookies and muffins by the piece or the dozen.
  *
- * The `soldOut` flags are not invented. They mirror the items House of Pies had
- * marked out of stock when this catalog was captured, which gives the inventory
- * rules real cases to handle instead of made up ones.
- *
- * Assembled into the full catalog by menu.js. Sourcing is recorded in docs/CREDITS.md.
+ * The sold out flags mirror what the restaurant had out of stock when the menu was
+ * copied.
  */
 
 import { createCategory, createItem } from './menuItem.js';

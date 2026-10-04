@@ -1,8 +1,5 @@
 /**
  * Every order placed on this device, newest first.
- *
- * The topic asks the program to let customers review order information, and this is
- * the list that does it. Each row links to the full receipt.
  */
 
 import { el, emptyState, render } from '../dom.js';

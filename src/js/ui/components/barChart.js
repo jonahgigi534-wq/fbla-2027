@@ -1,16 +1,8 @@
 /**
  * A bar chart, drawn as SVG by hand.
  *
- * No charting library. Every library worth using would have to be fetched from a CDN
- * or installed, and this program has to run with the wifi off, from a file on a disk.
- * A bar chart is a handful of rectangles and some text, so it is drawn here.
- *
- * SVG rather than canvas because it scales to any screen without going soft, prints
- * cleanly, and each bar can carry a title a screen reader will read out.
- *
- * The chart is decorative in the strict sense. Every number in it also appears in the
- * table underneath, and the chart is marked so assistive technology skips straight to
- * that table rather than reading out coordinates.
+ * SVG rectangles rather than a library, so it works offline. Every number also appears
+ * in the table below it.
  */
 
 import { el } from '../dom.js';

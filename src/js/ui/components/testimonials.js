@@ -1,12 +1,5 @@
 /**
  * The guest review carousel that closes the home screen.
- *
- * Slides a whole page of cards at a time, the way the restaurant's own site does.
- * How many cards make a page is decided by the stylesheet rather than by this file:
- * brand.css sets --per-view at each breakpoint and this reads it back, so there is
- * one place that knows the layout and it is the place doing the layout.
- *
- * The arithmetic lives in domain/carousel.js where it can be tested without a browser.
  */
 
 import { el } from '../dom.js';
@@ -33,9 +26,6 @@ function readPerView(track) {
 
 /**
  * Builds the star row for one review.
- *
- * The stars are one image to a screen reader rather than five stray characters, so
- * the rating is announced as a rating instead of as punctuation.
  *
  * @param {number} rating How many stars the guest left.
  * @returns {HTMLElement} The star row.

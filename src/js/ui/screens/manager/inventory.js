@@ -1,14 +1,7 @@
 /**
  * Stock levels, and the screen that edits them.
  *
- * This is where the customer side gets its unavailable items from. Setting something
- * to zero here is what makes it show as sold out on the menu, refuse to go into a
- * cart, and start offering substitutes, which is the whole inventory story running
- * from one number.
- *
- * The stock field is validated. Typing a negative number or a word into it is the
- * first thing anyone tries, and the answer has to be a message rather than a broken
- * menu.
+ * Setting a number to zero here is what makes an item show as sold out to customers.
  */
 
 import { el, render } from '../../dom.js';
@@ -119,9 +112,6 @@ export function renderManagerInventory(container) {
   withManagerAccess(container, '/manager/inventory', () => {
     /**
      * Redraws the stock table for the current search text and stock levels.
-     *
-     * Called again after every stock edit so a corrected number and the low stock
-     * warnings that depend on it appear together.
      *
      * @returns {void}
      */

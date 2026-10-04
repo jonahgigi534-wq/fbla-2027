@@ -1,18 +1,8 @@
 /**
  * The five step tour a first time visitor gets.
  *
- * Someone meeting this program has no idea it holds a staff side, a spending report,
- * or an assistant that answers questions offline. The help center explains all of it,
- * but only to someone who already thought to open the help center. This points at the
- * five things once, in the order they matter, and then gets out of the way.
- *
- * Every step is anchored to something in the header rather than to content inside a
- * screen. The header is on every page, so no step can point at an element that is not
- * there, and the tour never has to navigate anywhere to keep working.
- *
- * It runs once. app/store.js carries hasSeenWelcome, which is set when the tour is
- * finished or skipped, so a judge who has already seen it is not shown it again on a
- * second run. The help center can start it again on demand.
+ * Runs once, on the first visit, and can be started again from Help. Each step points
+ * at the header, which is on every page.
  */
 
 import { el } from '../dom.js';
@@ -91,9 +81,6 @@ function closeTour() {
 /**
  * Moves the spotlight and the bubble onto one step's target.
  *
- * The target is looked up fresh every time rather than held onto, because the header
- * is redrawn whenever the screen or the cart changes and the old node would be stale.
- *
  * @param {object} step The step being shown.
  * @param {HTMLElement} spotlight The ring drawn around the target.
  * @param {HTMLElement} bubble The card holding the text.
@@ -160,9 +147,6 @@ function buildBubble({ counter, title, body, backButton, nextButton }) {
 
 /**
  * Starts the tour at the first step.
- *
- * Safe to call while one is already running: the old overlay is taken down first, so
- * pressing the help center button twice restarts rather than stacking overlays.
  *
  * @returns {void}
  */

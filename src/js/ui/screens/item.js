@@ -1,12 +1,7 @@
 /**
  * One item, in full: photo, price, ingredients, allergens, and availability.
  *
- * The allergen list is derived from the ingredient text by domain/dietary.js, so
- * this screen says plainly where it comes from. Telling a customer with a nut
- * allergy that a pie is safe when nobody checked would be worse than saying nothing.
- *
- * Adding to a cart arrives in the next phase. For now this screen is where a
- * customer confirms an item is the one they wanted.
+ * Allergens are read from the ingredients, and the screen says so.
  */
 
 import { el, banner, emptyState, render } from '../dom.js';
@@ -49,9 +44,6 @@ function availabilityBanner(item) {
 
 /**
  * Renders one item, or a not found message when the id is unknown.
- *
- * A bad item id reaches here whenever someone edits the address bar or follows a
- * stale link, so it gets a real screen with a way back rather than a blank page.
  *
  * @param {HTMLElement} container The main element to render into.
  * @param {object} params Route parameters.

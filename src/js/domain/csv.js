@@ -1,20 +1,12 @@
 /**
  * Turning report rows into CSV text.
- *
- * A manager who wants to do something the reports screen does not do needs the
- * numbers out, and CSV is what a spreadsheet opens.
- *
- * Pure string building, so test/csv.test.js can check the escaping without a browser.
- * Downloading it is the screen's job, because that part needs the DOM.
  */
 
 /**
  * Escapes one value for CSV.
  *
- * A field containing a comma, a quote, or a newline has to be wrapped in quotes with
- * its own quotes doubled. Menu items like "Kids Mac 'N Cheese & Fruit Cup" and any
- * special instruction a customer typed will hit this, and getting it wrong shifts
- * every later column in the row.
+ * Commas, quotes, and line breaks are quoted, or every later column in the row would
+ * shift.
  *
  * @param {*} value Anything to put in a cell.
  * @returns {string} The value, quoted and escaped if it needs to be.
@@ -30,8 +22,7 @@ export function escapeCell(value) {
 /**
  * Builds a CSV document from headers and rows.
  *
- * Lines end with a carriage return and newline, which is what the CSV convention
- * asks for and what keeps Excel on Windows happy.
+ * Lines end in CRLF, which Excel on Windows expects.
  *
  * @param {string[]} headers Column headings.
  * @param {Array<Array>} rows Row values, in the same order as the headings.

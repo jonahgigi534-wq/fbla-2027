@@ -1,18 +1,8 @@
 /**
  * Syntactic validation: is this value even the right shape?
  *
- * These functions ask one question only, whether the characters a customer typed
- * form a well formed phone number, email address, ZIP code, or card number. They
- * know nothing about this restaurant, this order, or the time of day.
- *
- * The questions that need that context, such as whether a ZIP is one this location
- * delivers to or whether a pickup time is inside opening hours, are semantic and
- * live in domain/orderRules.js. Keeping the two apart is deliberate: a field can be
- * perfectly well formed and still be wrong for the order, and a customer is owed a
- * different message in each case.
- *
- * Every function returns the same shape, { valid, message }, so a form can loop over
- * its fields and treat them all alike.
+ * Whether a ZIP is one this restaurant delivers to is a different question, answered in
+ * orderRules.js, and each gets its own message.
  */
 
 /** A result meaning the value is fine. */
@@ -30,8 +20,6 @@ function fail(message) {
 
 /**
  * Checks a person's name.
- *
- * Apostrophes and hyphens are allowed because plenty of real names contain them.
  *
  * @param {string} value Raw text from the field.
  * @returns {{valid: boolean, message: string|null}} The verdict.
@@ -53,9 +41,7 @@ export function validateName(value) {
 /**
  * Checks a US phone number.
  *
- * Formatting characters are stripped first, so (713) 528-3816 and 7135283816 are
- * both accepted. Refusing a number because of the brackets around the area code
- * would be the program being fussy about something it can fix itself.
+ * Formatting is stripped first, so (713) 528-3816 and 7135283816 both pass.
  *
  * @param {string} value Raw text from the field.
  * @returns {{valid: boolean, message: string|null}} The verdict.
@@ -77,8 +63,7 @@ export function validatePhone(value) {
 /**
  * Checks an email address.
  *
- * The pattern is deliberately loose. The only way to know an address works is to
- * send to it, and a strict pattern rejects valid addresses more often than it
+ * Deliberately loose, since a strict pattern rejects real addresses more often than it
  * catches typos.
  *
  * @param {string} value Raw text from the field.
@@ -97,9 +82,6 @@ export function validateEmail(value) {
 
 /**
  * Checks a five digit ZIP code.
- *
- * Whether we deliver to it is a separate, semantic question, answered by
- * isZipInDeliveryArea in domain/orderRules.js.
  *
  * @param {string} value Raw text from the field.
  * @returns {{valid: boolean, message: string|null}} The verdict.
@@ -135,10 +117,8 @@ export function validateStreet(value) {
 /**
  * Runs the Luhn checksum over a card number.
  *
- * Luhn catches single digit typos and most transposed pairs, which is the whole
- * point here. This program never contacts a payment processor and never stores a
- * card number, so the checksum is the only check that can be made, and it is worth
- * making because it catches the mistake a customer actually makes.
+ * Catches single digit typos and most swapped pairs, the only card check possible
+ * without a payment processor.
  *
  * @param {string} digits The card number with all formatting removed.
  * @returns {boolean} True when the checksum passes.
@@ -187,9 +167,6 @@ export function validateCardNumber(value) {
 /**
  * Checks a card expiry in MM/YY form.
  *
- * Whether the date is still in the future is semantic, and lives in
- * domain/orderRules.js so it can be tested against a fixed clock.
- *
  * @param {string} value Raw text from the field.
  * @returns {{valid: boolean, message: string|null}} The verdict.
  */
@@ -227,10 +204,8 @@ const MIN_KEY_LENGTH = 20;
 /**
  * Checks the shape of an OpenRouter key before it is saved.
  *
- * Only the shape. Whether OpenRouter accepts the key is the semantic half, and only
- * OpenRouter can answer it: the first question asked finds out, and a rejected key
- * says so in the conversation. What this catches is the pasting mistakes, a stray
- * space, half a key, or a key from a different service altogether.
+ * Only the shape. Whether OpenRouter accepts the key is found out by the first
+ * question.
  *
  * @param {string} value Raw text from the key field.
  * @returns {{valid: boolean, message: string|null}} The verdict.

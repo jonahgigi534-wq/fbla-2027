@@ -1,18 +1,8 @@
 /**
  * Guest reviews shown in the carousel at the bottom of the home screen.
  *
- * These are real reviews House of Pies publishes on its own home page, each one
- * complete rather than trimmed, and credited to the name the
- * restaurant displays it under. The screen says where they came from, and
- * docs/CREDITS.md records it again alongside the photographs.
- *
- * Four changes, all noted in CREDITS. Taman's review separates two clauses with a
- * hanging dash and Ymelis's with three hyphens, and each is written as a comma here so
- * it does not read as a rendering fault. And two guest misspellings, "calm chowder"
- * and "Bayoo goo", are corrected inside square brackets, the usual mark for a word
- * changed in a quote. The rating sheet scores the interface for spelling, and a judge
- * reading the screen cannot tell a guest's typo from ours. The wording is otherwise
- * untouched.
+ * Two punctuation fixes and two bracketed spelling corrections are noted in
+ * docs/CREDITS.md.
  *
  * Read by ui/components/testimonials.js. Nothing else should reach into this list.
  */

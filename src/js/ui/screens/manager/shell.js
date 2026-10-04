@@ -1,15 +1,8 @@
 /**
  * The manager side: a simple gate, and the tabs behind it.
  *
- * The PIN is printed on the screen that asks for it. That looks odd until you
- * remember what this is: a demonstration where anyone, including a judge who wanders
- * into it, has to be able to get through. A hidden PIN would turn the whole manager
- * side into a dead end for the person being shown the program.
- *
- * It is not security and does not pretend to be. It keeps the customer side and the
- * staff side apart so neither screen has to carry both jobs, and the gate says so.
- * Real access control belongs on a server, which a program with no server does not
- * have. That is an honest answer, and a better one than a PIN hidden in a file.
+ * The PIN keeps the staff side apart from the customer side. It is not security, which
+ * would need a server.
  */
 
 import { el, render } from '../../dom.js';
@@ -158,8 +151,6 @@ export function managerTabs(activePath) {
 
 /**
  * Runs a manager screen, showing the gate first when the area is still locked.
- *
- * Every manager screen goes through here, so none of them can forget the check.
  *
  * @param {HTMLElement} container The main element to render into.
  * @param {string} path The route being shown, used by the tabs.

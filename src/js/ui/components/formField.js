@@ -1,16 +1,8 @@
 /**
  * One labeled input with its own error message.
  *
- * Each field knows how to check itself, so the checkout form does not carry a
- * separate list of which validator belongs to which input. That pairing is the thing
- * that goes stale when a form grows.
- *
- * A field checks itself when the customer leaves it, not while they are typing.
- * Telling someone their email is invalid after they have typed two characters is
- * technically true and completely unhelpful.
- *
- * Errors are tied to the input with aria-describedby and marked aria-invalid, so a
- * screen reader announces the reason rather than just the label.
+ * Each field checks itself when the customer leaves it, not while typing, and its error
+ * is linked to the input for screen readers.
  */
 
 import { el } from '../dom.js';
@@ -77,10 +69,6 @@ export function formField({
 
   /**
    * Shows an error the field could not have worked out on its own.
-   *
-   * Used for the semantic rules in domain/orderRules.js, which need the whole order
-   * to reach a verdict. A ZIP code is well formed on its own; whether this location
-   * delivers to it is something only the form knows.
    *
    * @param {string} message What is wrong.
    * @returns {void}

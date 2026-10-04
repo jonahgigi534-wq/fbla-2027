@@ -1,9 +1,7 @@
 /**
  * The live order queue: what the kitchen is working on, newest first.
  *
- * Orders the seeded history generated are hidden here. Ninety days of completed
- * tickets are what the reports are for; a queue showing two thousand finished orders
- * would be useless to the person actually working the counter.
+ * Generated past orders are hidden, so the queue shows only live ones.
  */
 
 import { el, emptyState, render } from '../../dom.js';

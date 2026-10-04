@@ -1,20 +1,8 @@
 /**
  * Sales reports.
  *
- * The rating sheet asks for reports the user can customize and analyze, and this
- * screen is built around both halves of that.
- *
- * Customize is the control panel in reportControls.js: a date range, filters for
- * restaurant and order type, seven ways to group the rows, four measures, and
- * sortable columns.
- *
- * Analyze is what sits above the table: the same window measured against the
- * preceding window of equal length, a percentage change on every row, and sentences
- * from domain/insights.js naming what moved. Numbers alone do not tell a manager
- * whether a week was good.
- *
- * This file only assembles those pieces. The figures come from domain/reports.js,
- * which is tested on its own.
+ * Customize: a date range, filters, a grouping, and a measure. Analyze: the window
+ * before it, a change on every row, and sentences naming what moved.
  */
 
 import { el, render } from '../../dom.js';
@@ -39,10 +27,6 @@ import { formatMetric, labelForKey, view } from './reportView.js';
 
 /**
  * Builds the sentences generated from the report.
- *
- * A manager reading a table of numbers still has to work out what changed. These say
- * it outright, which is the difference between a report that can be analyzed and one
- * that merely can be read.
  *
  * @param {string[]} insights Sentences from domain/insights.js.
  * @returns {HTMLElement} The section.
@@ -114,9 +98,6 @@ export function renderManagerReports(container) {
   withManagerAccess(container, '/manager/reports', () => {
     /**
      * Rebuilds the report for whatever the controls currently say.
-     *
-     * Every control calls this, so the filters, the grouping, the metric, the chart,
-     * the insights, and the table can never disagree about which report is on screen.
      *
      * @returns {void}
      */

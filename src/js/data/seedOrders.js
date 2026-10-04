@@ -1,17 +1,8 @@
 /**
  * Ninety days of past orders, generated rather than stored.
  *
- * The reports screen is the part of this program that has to prove itself, and it
- * cannot do that against an empty table. Shipping a few thousand rows of JSON would
- * bloat the repository and the offline build, so the history is generated at startup
- * from a seeded random number generator instead.
- *
- * Seeded matters. The same seed produces the same ninety days every time the program
- * runs, on any machine, so a number quoted in a presentation is still true when the
- * judges run it themselves, and a bug found in the data can be reproduced.
- *
- * The shape produced here matches exactly what app/orderActions.js writes for a real
- * order, so reports never need to know which kind they are looking at.
+ * Generated from a fixed seed, so the same ninety days appear on every machine and any
+ * figure quoted from the reports stays true.
  */
 
 import { ALL_ITEMS } from './menu.js';
@@ -33,11 +24,6 @@ const WEEKEND_MULTIPLIER = 1.8;
 
 /**
  * Chance that a generated order belongs to the person using the demo.
- *
- * The customer spending report has nothing to show on a fresh install, because a
- * first time visitor has no history. Marking a slice of the generated orders as
- * theirs gives that screen something real to summarize. The screen says plainly
- * that the history is demonstration data.
  */
 const DEMO_CUSTOMER_SHARE = 0.03;
 
@@ -46,10 +32,6 @@ const CATERING_CHANCE_PER_DAY = 0.13;
 
 /**
  * Share of past orders that were canceled rather than collected.
- *
- * Ninety days of trading with not one cancellation in it is not ninety days of real
- * trading, and it left the rule that canceled orders never count as revenue as
- * something only the tests could show. Now the reports have some to leave out.
  */
 const CANCELED_SHARE = 0.04;
 
@@ -59,9 +41,7 @@ const MAX_LINES_PER_ORDER = 3;
 /**
  * A small, fast, seeded pseudorandom number generator.
  *
- * Math.random cannot be seeded, so it would give different history on every reload
- * and make any figure quoted from the reports unrepeatable. This is mulberry32,
- * which is a few lines long and good enough for choosing menu items.
+ * Math.random cannot be seeded, so this is mulberry32, which is a few lines long.
  *
  * @param {number} seed Any integer.
  * @returns {Function} A function returning a number from 0 up to but not including 1.
@@ -103,9 +83,7 @@ function pickBetween(random, low, high) {
 /**
  * Builds the pool that orders are drawn from, weighted towards the bakery.
  *
- * A plain uniform pick would sell as many gallons of catering tea as slices of pie,
- * which would make the reports meaningless. House of Pies is a pie shop, so bakery
- * items go into the pool several times over and catering goes in rarely.
+ * Bakery items are weighted up and catering down, since this is a pie shop.
  *
  * @returns {object[]} Items to draw from, with popular ones repeated.
  */
@@ -206,10 +184,6 @@ function buildOrder({ random, pool, location, placedAt, orderNumber }) {
 
 /**
  * Generates the whole ninety day history.
- *
- * Order numbers count up as time moves forward, so the oldest order has the lowest
- * number, which is what a real till would produce. The live order counter starts
- * above whatever this generates so a new order never collides with a seeded one.
  *
  * @param {Date} [today] The day to count back from. Passed in so tests can fix it.
  * @returns {object[]} Orders, newest first.

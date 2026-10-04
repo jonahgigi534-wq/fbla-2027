@@ -1,20 +1,14 @@
 /**
  * Small helpers for building DOM nodes.
  *
- * Screens build their markup by calling el() rather than assigning innerHTML with a
- * template string. The difference matters: text passed here becomes a text node, so
- * a menu item named with an ampersand, or anything a customer types into a special
- * instructions box, is displayed as written and can never be parsed as markup.
+ * Text always becomes a text node, never HTML, so nothing a customer types can turn
+ * into markup.
  *
  * Used by every screen and component.
  */
 
 /**
  * Builds an element.
- *
- * Attribute names are passed through as written, so 'aria-label' and 'data-id' work
- * without special handling. A 'class' entry sets className, and an 'onClick' style
- * key attaches a listener.
  *
  * @param {string} tag Tag name, such as 'div' or 'button'.
  * @param {object} [attributes] Attributes, listeners, and class.
@@ -52,8 +46,7 @@ export function el(tag, attributes = {}, children = []) {
 /**
  * Replaces everything inside a container with new content.
  *
- * Null and undefined children are dropped rather than rendered, so a screen can
- * write a conditional child inline without guarding every one of them.
+ * Null children are dropped, so a screen can write a conditional child inline.
  *
  * @param {HTMLElement} container The element to empty.
  * @param {Array<Node>|Node} content What to put in it.
@@ -68,9 +61,6 @@ export function render(container, content) {
 
 /**
  * Builds the empty state shown when a list has nothing in it.
- *
- * Every list screen uses this, so a customer who filters everything away always gets
- * the same shape of answer: what happened, and one button that fixes it.
  *
  * @param {object} options Content for the empty state.
  * @param {string} options.icon A single emoji shown above the title.

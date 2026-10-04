@@ -1,10 +1,7 @@
 /**
  * The how-to articles in the help center.
  *
- * The rating sheet asks for an interactive help menu, and interactive means
- * searchable and navigable rather than a wall of text. Each article is short enough
- * to read standing up, and the search box in the help center matches on title, body,
- * and keywords so a customer can find one without knowing what it is called.
+ * The help center search matches title, body, and keywords.
  */
 
 /** Every article, grouped by the part of the program it covers. */

@@ -1,26 +1,9 @@
 /**
  * Builds dist/standalone.html: the whole program in one file, no server needed.
  *
- * This is the copy that gets presented. The competition provides no electricity and
- * warns that the venue wifi may not work, so the demonstration cannot depend on a
- * dev server, an internet connection, or anything being installed. Opening this file
- * by double clicking it has to work on a laptop that has been in a bag all morning.
- *
- * The problem it solves is narrow. Browsers refuse ES module imports on a page opened
- * from a file:// address, so the source, which is split across fifty modules on
- * purpose, cannot run that way as it stands. This script inlines those modules into
- * one script while keeping them in separate scopes.
- *
- * Images stay as separate files next to the HTML. Unlike modules, images load fine
- * from file://, and inlining four megabytes of photographs as base64 would triple
- * the file size for no gain.
- *
- * What the build guarantees, and checks before writing:
- *   - no surviving import statements, which would fail on file://
- *   - network calls in one file only, app/aiClient.js, which asks the AI model and
- *     falls back to the built in assistant when there is no connection
- *   - no http or https URL anywhere except that one AI address, so nothing else can
- *     hang waiting for a network
+ * Browsers refuse module imports on a file:// page, so this inlines every module into
+ * one script. It refuses to write the file if an import or an unexpected network
+ * address survives. Images stay as files beside it.
  */
 
 import { readFile, writeFile, mkdir, cp } from 'node:fs/promises';
@@ -53,12 +36,6 @@ function moduleId(absolutePath) {
 
 /**
  * Rewrites one module so it can live in the bundle.
- *
- * Imports become lookups in the registry and exports become assignments onto an
- * exports object. Each module keeps its own scope, which matters because several of
- * them independently define helpers with the same names: two modules export
- * normalize, two export describeStatus, and several declare a local fail. Flattening
- * them into one scope would silently pick a winner.
  *
  * @param {string} source The module's source.
  * @param {string} absolutePath Where it came from, for resolving its imports.
@@ -115,10 +92,6 @@ async function collectModules(entryPath) {
 /**
  * Wraps the collected modules in a registry and starts the entry module.
  *
- * Each module keeps a banner naming the file it came from. Someone reading the built
- * file should still be able to see that the program is fifty separate modules rather
- * than one long script, because that structure is the point.
- *
  * @param {Map<string, string>} modules Module id to rewritten source.
  * @param {string} entryId The module to run.
  * @returns {string} The bundled script.
@@ -165,11 +138,6 @@ __require(${JSON.stringify(entryId)});
 /**
  * Rewrites stylesheet asset paths so they still resolve once the CSS is inlined.
  *
- * A url() in src/css is written relative to src/css, so it climbs two folders to
- * reach assets. Inlined into dist/standalone.html those two steps land outside dist
- * entirely, and the font silently never loads. The built file sits beside its own
- * copy of assets, so the climb is dropped here.
- *
  * @param {string} css One stylesheet, as read off disk.
  * @returns {string} The same stylesheet with asset paths relative to the built file.
  */
@@ -186,14 +154,7 @@ const ALLOWED_REMOTE = ['https://openrouter.ai/api/v1/chat/completions'];
 /**
  * Refuses to write a build that cannot work offline.
  *
- * These are not style preferences. An import fails outright on a file:// page, and a
- * remote URL makes the page hang waiting for a network that may not be there. Better
- * to fail here than in front of judges.
- *
- * The AI assistant is the one deliberate exception, and it is held to a narrow shape:
- * its address is the only remote one allowed, and its file is the only one allowed to
- * call fetch. Everything else still has to work with no connection, and so does the
- * assistant, which answers from this device when the call fails.
+ * Only app/aiClient.js may call fetch, and only to OpenRouter.
  *
  * @param {string} html The finished document.
  * @param {Map<string, string>} modules Module id to rewritten source.

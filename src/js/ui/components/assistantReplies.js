@@ -1,12 +1,6 @@
 /**
  * What goes inside an assistant message: the built in matcher's answers, the buttons
  * under an AI answer, and the rows of suggested questions.
- *
- * Kept apart from ui/components/assistant.js, which owns the panel and the
- * conversation. Nothing here appends to the screen or decides who answers. Each
- * function builds the contents of one message and hands it back, and anything that
- * has to act on the panel, asking a question or leaving for another screen, arrives
- * as a function passed in.
  */
 
 import { el } from '../dom.js';
@@ -22,9 +16,6 @@ import { findPromo } from '../../data/promos.js';
 
 /**
  * Assembles everything the matcher's answer functions read.
- *
- * Built fresh on every question so an answer about stock or a cart total is never
- * one the customer already changed.
  *
  * @returns {object} The live context.
  */
@@ -142,10 +133,8 @@ export function matcherReply(question, { note = null, onAsk, onGo }) {
 /**
  * Builds an AI answer, with buttons to the screens it relates to.
  *
- * The model writes the answer, and the matcher, which knows where everything lives,
- * supplies the buttons that go there. Nothing is offered when the matcher is unsure
- * what the question was about. The answer is set as text, never as HTML, so nothing
- * the model returns can run as code.
+ * The model writes the text, and the buttons under it come from the matcher. The text
+ * is set as text, never HTML.
  *
  * @param {string} question The question, already trimmed.
  * @param {string} text The model's answer.

@@ -1,19 +1,8 @@
 /**
  * The order summary that sits beside the checkout form.
  *
- * Every line in the cart, then the totals in the order they are worked out, then the
- * two buttons. It is kept apart from the form because it is the one part of checkout
- * that asks the customer for nothing, it only shows them what they are about to agree
- * to, and mixing that in with the validation made the screen hard to follow.
- *
- * The totals are never worked out here. domain/pricing.js is asked for them and this
- * displays what it was handed, so the number on screen and the number saved to the
- * order can never drift apart. Choosing a tip asks pricing again rather than adding
- * anything to the figure already on screen.
- *
- * The tip is held in this file rather than in the store because every state update
- * redraws the whole screen, and redrawing checkout while someone is halfway through
- * typing their phone number would empty the form under them.
+ * Totals always come from domain/pricing.js, so the screen and the saved order never
+ * disagree.
  *
  * Used by ui/screens/checkout.js.
  */
@@ -50,9 +39,6 @@ function tipLabel(basisPoints) {
 /**
  * Builds the rows of the totals block, in the order the money moves through them.
  *
- * Discount, delivery, and tip each appear only when they are not zero. A row reading
- * 'Tip $0.00' invites the question of whether the tip failed to apply.
- *
  * @param {object} totals Totals from domain/pricing.js.
  * @returns {Array<HTMLElement|null>} The rows.
  */
@@ -69,9 +55,6 @@ function totalRows(totals) {
 
 /**
  * Builds the row of tip buttons, marking the one in force.
- *
- * aria-pressed rather than a class, so the choice is announced to a screen reader
- * rather than only being visible.
  *
  * @param {number} selected The rate currently chosen.
  * @param {Function} onChoose Called with the rate the customer picked.

@@ -1,9 +1,5 @@
 /**
  * The reports results table.
- *
- * Each measure heading is a button that sorts by it, which is what anyone who has
- * used a spreadsheet already expects. The last column carries the same figure from
- * the preceding period, because a number on its own says nothing.
  */
 
 import { el } from '../../dom.js';
@@ -12,9 +8,6 @@ import { formatMetric, labelForKey, view } from './reportView.js';
 
 /**
  * Builds the results table.
- *
- * The header for the chosen measure is a button that flips the sort, which is the
- * behavior anyone who has used a spreadsheet already expects.
  *
  * @param {object[]} rows Rows to show, already sorted.
  * @param {Function} onChange Called when the sort direction flips.

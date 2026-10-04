@@ -1,13 +1,8 @@
 /**
  * The life of an order after it is placed.
  *
- * An order moves through a fixed sequence, and what a customer is allowed to do
- * depends on where it has got to. Canceling is fine while the ticket is still
- * sitting in the queue, and not fine once the kitchen has started cooking, because
- * by then the ingredients are gone whatever the customer decides.
- *
- * Keeping that rule here rather than in the screens means the customer view, the
- * manager queue, and the reports all agree about what state an order is in.
+ * Kept in one place so the customer view, the staff queue, and the reports agree on
+ * what state an order is in.
  */
 
 /** The stages an order passes through, in order. */
@@ -33,7 +28,7 @@ export function nextStatus(status) {
 /**
  * Reports whether an order can still be canceled.
  *
- * Only while it is Received. Once the kitchen has started, the food exists.
+ * Only while it is Received. Once the kitchen starts, the food exists.
  *
  * @param {object} order An order.
  * @returns {boolean} True when canceling is still allowed.
@@ -44,8 +39,6 @@ export function canCancel(order) {
 
 /**
  * Reports whether an order can still be changed.
- *
- * Same window as canceling, for the same reason.
  *
  * @param {object} order An order.
  * @returns {boolean} True when the lines can still be edited.

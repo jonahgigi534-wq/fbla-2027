@@ -1,11 +1,8 @@
 /**
  * Turning a cart into an order, and what happens to it afterwards.
  *
- * Placing an order does four things that have to happen together: it records the
- * order, it takes the stock off the shelf, it empties the cart, and it moves the
- * order number on. Doing them in one update means no screen can ever catch the
- * program half way through, holding an order that was never paid for or stock that
- * was sold twice.
+ * Placing an order records it, takes the stock, empties the cart, and moves the order
+ * number on in one update, so no screen sees it half done.
  */
 
 import { getState, update } from './store.js';
@@ -67,9 +64,8 @@ export function placeOrder({ customer, cardLastFour, slot, totals }) {
 /**
  * Cancels an order and puts its stock back on the shelf.
  *
- * Returning the stock matters: an order canceled before the kitchen started is food
- * that was never made, and leaving it deducted would slowly show the restaurant as
- * sold out of things it still has.
+ * The stock goes back on the shelf, since food that was never made should not show as
+ * sold.
  *
  * @param {number} orderNumber The order to cancel.
  * @returns {{ok: boolean, message: string}} Whether it was canceled, and why not.
@@ -135,8 +131,7 @@ export function advanceOrder(orderNumber) {
 /**
  * Puts a past order's items back in the cart.
  *
- * Lines the restaurant no longer sells are skipped rather than silently added at a
- * price that no longer exists, and the customer is told how many were dropped.
+ * Items no longer on the menu are skipped, and the customer is told how many.
  *
  * @param {number} orderNumber The order to repeat.
  * @returns {{ok: boolean, message: string}} What ended up in the cart.
@@ -166,13 +161,7 @@ export function reorder(orderNumber) {
 /**
  * Changes the quantity of one line on an order that has not started cooking.
  *
- * The topic asks the program to let customers manage their orders, and canceling
- * is not managing. Someone who ordered three pies and wants two should not have to
- * cancel the whole thing and start again.
- *
- * Stock moves by the difference rather than being recalculated from scratch, and the
- * order total is rebuilt from the new lines so the receipt never disagrees with what
- * is on it.
+ * Stock moves by the difference, and the totals are rebuilt from the new lines.
  *
  * @param {number} orderNumber The order to change.
  * @param {string} lineId The line to change.

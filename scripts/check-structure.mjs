@@ -1,23 +1,8 @@
 /**
  * Checks that the four layers stay in their lanes and that files stay readable.
  *
- * Three rules, all mechanical so none of them depends on anyone remembering them.
- *
- * The first is the direction of dependency. Nothing in domain may import from ui or
- * app. That is the rule that keeps the business logic callable from a test with no
- * browser, and it is the single thing most likely to be broken by accident when a
- * screen needs one more helper.
- *
- * The second is file length. Data files are exempt: a catalog of 426 menu items is
- * long because the menu is long, and splitting it further would not make it easier
- * to read. Everything else has a ceiling.
- *
- * The third is function length, and it is deliberately two different numbers. A
- * function in domain or app is branching logic, and long branching logic is where the
- * bugs live, so it is held short. A function in ui is usually one declarative tree of
- * elements, which reads like a list rather than like logic and does not get clearer
- * for being cut in half. The layer rule above is what stops real logic hiding inside
- * one of those trees, which is what makes the looser ceiling safe to allow.
+ * Nothing in domain may import from ui or app, no file passes 400 lines, and functions
+ * stay under 80 lines in logic or 130 in ui.
  */
 
 import { readdir, readFile } from 'node:fs/promises';
@@ -40,9 +25,6 @@ const MAX_VIEW_FUNCTION_LINES = 130;
 
 /**
  * Finds functions that have grown past the ceiling for their layer.
- *
- * A function ends at the first line holding nothing but a closing brace at the same
- * indent as its declaration, which is what Prettier guarantees for this codebase.
  *
  * @param {string} source The file's source.
  * @param {number} ceiling Longest a function in this file may be.

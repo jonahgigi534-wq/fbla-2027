@@ -1,10 +1,6 @@
 /**
  * Program entry point: registers the routes, wires the header, and draws whichever
  * screen the address bar is asking for.
- *
- * Every screen is a function that takes the main element and fills it. This module
- * is the only thing that knows the full list, which is what keeps the screens from
- * having to know about each other.
  */
 
 import { addRoute, currentPath, navigate, start } from './app/router.js';
@@ -131,9 +127,8 @@ let activeScreen = { name: 'home', params: {} };
 /**
  * Draws one screen into the main element and moves focus to it.
  *
- * Moving focus is what makes this usable from a keyboard: without it, activating a
- * link would leave the caret back in the header and force a customer to tab through
- * the whole navigation again to reach the content that just appeared.
+ * Focus moves to the new content, so a keyboard user does not have to tab through the
+ * header again.
  *
  * @param {string} name Screen name from the route table.
  * @param {object} params Route parameters.
@@ -152,9 +147,7 @@ function showScreen(name, params) {
 /**
  * Warns once, in the page, when the browser refused to save anything.
  *
- * Opening the offline build straight off the disk is exactly when this happens, so
- * the customer is told their order history will not survive closing the tab rather
- * than finding out afterwards.
+ * So the customer knows before closing the tab that nothing will be kept.
  *
  * @returns {void}
  */

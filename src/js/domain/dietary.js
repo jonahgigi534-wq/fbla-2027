@@ -1,18 +1,11 @@
 /**
  * Reads allergens and dietary tags out of an item's own words.
- *
- * Pure functions. No DOM, no storage, no imports at all, which is what lets
- * test/dietary.test.js exercise every rule directly.
- *
- * Called once per item by data/menu.js while the catalog is being assembled, so the
- * cost is paid at startup and every screen afterwards reads a plain array.
  */
 
 /**
  * Splits text into lowercase words, dropping punctuation.
  *
- * Matching whole words rather than substrings matters here: a substring search for
- * "ham" would flag every item containing the word "graham".
+ * Whole words only, so "graham" is never read as "ham".
  *
  * @param {string} text Any item name or description.
  * @returns {string[]} Lowercase words with punctuation removed.
@@ -58,9 +51,8 @@ export function containsMeat(words, meatKeywords) {
 /**
  * Builds the final dietary tag list for one item.
  *
- * A tag written in the catalog file always wins unless the description mentions
- * meat, because a wrong vegetarian badge is the one error here that actually
- * matters to a customer.
+ * Meat in the description always removes the vegetarian tag, because a wrong vegetarian
+ * badge is the mistake that matters.
  *
  * @param {string[]} words Output of toWords for the item's name plus description.
  * @param {string[]} explicitTags Tags set by hand in the catalog file.

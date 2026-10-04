@@ -1,18 +1,9 @@
 /**
  * Hash based routing.
  *
- * Routes live in the fragment ('#/menu/bakery') rather than the path ('/menu/bakery')
- * for one concrete reason: the offline build of this program is opened from a file://
- * address, where there is no server to answer a path and history.pushState cannot
- * produce a URL the browser will reload. A fragment works identically over http and
- * off a USB stick.
- *
- * What this module guarantees, because a judge will try all four:
- *   - Back and Forward move between screens instead of leaving the program.
- *   - Refreshing returns to the same screen, not the home page.
- *   - Back closes an open dialog rather than navigating away behind it.
- *   - An address that matches nothing lands on a real Not Found screen with a way
- *     home, never a blank page.
+ * Routes live after the # because the offline build opens from a file:// address, where
+ * a normal path cannot be reloaded. Back, Forward, and refresh all work, and an unknown
+ * address shows Not Found.
  */
 
 /** Where an empty or bare '#' address goes. */
@@ -27,20 +18,12 @@ let onNavigate = null;
 /**
  * Set while a dialog is open, so Back can close it instead of navigating.
  *
- * The path is kept beside the close function because a hash route cannot add a history
- * entry for a dialog: opening one does not change the address, so there is nothing for
- * Back to pop. Back therefore leaves for the previous screen first, and the router has
- * to close the dialog and put the address back afterwards.
- *
  * @type {{close: Function, path: string}|null}
  */
 let openDialog = null;
 
 /**
  * Registers one route.
- *
- * A pattern segment beginning with ':' captures that part of the path, so
- * '/menu/:categoryId' matches '/menu/burgers' and yields { categoryId: 'burgers' }.
  *
  * @param {string} pattern Path pattern, always starting with '/'.
  * @param {string} name Screen name passed back to the navigation handler.
@@ -62,8 +45,6 @@ export function currentPath() {
 
 /**
  * Matches a path against the registered routes.
- *
- * Exported because test/router.test.js checks the matching rules without a browser.
  *
  * @param {string} path A path such as '/menu/burgers'.
  * @param {object[]} routeTable Routes to test, defaulting to the registered ones.
@@ -112,9 +93,6 @@ export function navigate(path) {
 /**
  * Replaces the current history entry instead of adding one.
  *
- * Used when a screen corrects its own address, so Back does not bounce the customer
- * between the address they typed and the one the program chose.
- *
  * @param {string} path A path such as '/home'.
  * @returns {void}
  */
@@ -126,9 +104,7 @@ export function replace(path) {
 /**
  * Registers a dialog so the next Back press closes it instead of navigating.
  *
- * Without this, someone who opens the assistant on the menu and then presses Back to
- * dismiss it, which is what a phone teaches you to do, leaves the menu entirely and
- * has to find their place again.
+ * So pressing Back to close the assistant leaves you on the screen you were on.
  *
  * @param {Function} close Called to dismiss the dialog.
  * @returns {void}
@@ -149,9 +125,6 @@ export function clearDialog() {
 /**
  * Closes whatever dialog is open, if one is.
  *
- * Cleared before the close function runs rather than after, because every dialog here
- * calls clearDialog on its way out and would otherwise re-enter this.
- *
  * @returns {{path: string}|null} Where the dialog was opened from, or null if none was.
  */
 function dismissDialog() {
@@ -166,10 +139,6 @@ function dismissDialog() {
 
 /**
  * Resolves the current address and hands the result to the navigation handler.
- *
- * An address matching no route resolves to the 'not-found' screen rather than
- * leaving the page as it was, which is what turns a mistyped link into something a
- * customer can recover from.
  *
  * @returns {void}
  */
@@ -205,9 +174,7 @@ function handleLocationChange() {
 /**
  * Starts routing and resolves whatever address the page was loaded with.
  *
- * Resolving on start is what makes a refresh return to the same screen: the address
- * bar still holds the fragment, so the program reads it back rather than assuming
- * the customer wants the home page.
+ * Reading the address on start is what makes a refresh return to the same screen.
  *
  * @param {Function} handler Called with (screenName, params, path) on every navigation.
  * @returns {void}

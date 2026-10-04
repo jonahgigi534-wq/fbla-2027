@@ -1,12 +1,5 @@
 /**
  * The cart: what has been chosen, what it costs, and what is standing in the way.
- *
- * This screen carries three of the situations the assigned topic asks the program to
- * handle, so each one is shown here rather than saved for an error at checkout:
- *
- *   - inventory limits, as a stepper that stops at what is left
- *   - customer budget constraints, as a cap with a warning and a suggestion
- *   - invalid entries, as a promo field that says why a code was refused
  */
 
 import { el, banner, emptyState, render } from '../dom.js';

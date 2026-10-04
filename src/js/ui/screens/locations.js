@@ -1,11 +1,6 @@
 /**
  * The locations screen: every restaurant as a storefront photograph, laid out the way
  * House of Pies lays out its own locations page.
- *
- * The home screen shows the same tiles so a customer can pick somewhere without
- * leaving the front page. This screen adds what will not fit there, which is the full
- * opening hours and the phone number for each restaurant, and it is where the Locations
- * link in the header goes.
  */
 
 import { el, render } from '../dom.js';

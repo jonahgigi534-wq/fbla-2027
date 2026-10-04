@@ -1,18 +1,7 @@
 /**
  * Checkout: the details the restaurant needs, and every rule they have to satisfy.
  *
- * This screen is where the two levels of validation meet, but it performs neither of
- * them itself. checkoutFields.js builds the fields and the shape rules on each one.
- * checkoutSubmit.js runs the rules that need the whole order. checkoutSummary.js shows
- * what is being agreed to. What is left here is the job the screen actually has:
- * gather the state, work out which pickup times exist, and lay the three out.
- *
- * Which fields appear depends on the order type. A pickup order is not asked for a
- * delivery address, because asking for something and then ignoring it is how a form
- * teaches people to distrust it.
- *
- * No real card data is kept. Only the last four digits reach the saved order, and the
- * payment section says so on screen.
+ * A pickup order is never asked for a delivery address.
  */
 
 import { el, banner, render } from '../dom.js';
@@ -122,10 +111,6 @@ export function renderCheckout(container) {
 
   /**
    * Works out the totals for one tip choice.
-   *
-   * Passed to the summary rather than a finished set of totals, because the customer
-   * can change the tip after the screen is drawn and the arithmetic belongs to
-   * domain/pricing.js either way.
    *
    * @param {number} tipBasisPoints Tip rate, where 10000 is 100 percent.
    * @returns {object} Totals from domain/pricing.js.

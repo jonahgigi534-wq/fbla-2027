@@ -1,12 +1,8 @@
 /**
  * One order: its receipt, where it has got to, and what can still be done to it.
  *
- * This is both the confirmation shown straight after checkout and the screen reached
- * later from order history, because they need to say the same things. Splitting them
- * would mean two receipts that could disagree.
- *
- * The receipt is the part that has to print. src/css/print.css strips the navigation
- * and buttons so a browser print preview shows the document a customer would keep.
+ * The same screen is the confirmation and the receipt from order history, so the two
+ * can never disagree.
  */
 
 import { el, banner, emptyState, render } from '../dom.js';
@@ -78,11 +74,6 @@ function receiptRow(label, cents, isTotal = false) {
 
 /**
  * Builds the printed receipt for one order.
- *
- * This is the half of the screen that goes on paper. print.css strips the navigation
- * and the buttons away and leaves this section standing on its own, which is why every
- * fact someone would need to query the order later sits inside it rather than in the
- * page heading above it.
  *
  * @param {object} order The order being shown.
  * @param {object} location The restaurant it was placed with.
@@ -200,9 +191,7 @@ function receiptCard(order, location, placed, isPickup) {
 /**
  * Builds the panel of things that can still be done to an order.
  *
- * What is offered depends on how far the order has got. Canceling and editing show
- * only while the ticket is still in the queue, because once the kitchen starts the
- * food exists. Reordering and printing are always available.
+ * Cancel and edit appear only while the order is Received.
  *
  * @param {object} order The order being shown.
  * @returns {HTMLElement} The panel.

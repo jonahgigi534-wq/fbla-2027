@@ -1,13 +1,6 @@
 /**
  * What the reports screen is currently set to, and the small helpers every part of
  * it needs to read that.
- *
- * The settings live at module level rather than in app/store.js because they
- * describe how one screen is being looked at, not anything about the restaurant.
- * They survive leaving the screen and coming back, which is the behavior a manager
- * checking two ranges in a row expects.
- *
- * Shared by reports.js, reportControls.js, and reportTable.js.
  */
 
 import { ORDER_TYPES } from '../../../app/store.js';
@@ -48,9 +41,6 @@ export const view = {
 
 /**
  * Turns a row key into something readable.
- *
- * Keys are ids for items, categories, and restaurants, and already readable for the
- * date and hour groupings.
  *
  * @param {string} key The row key.
  * @returns {string} A name a person would recognize.
