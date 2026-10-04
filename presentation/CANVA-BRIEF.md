@@ -44,9 +44,9 @@ Seven minutes in total, then questions from the judges.
 
 | Part                          | Time       | Who does it                      |
 | ----------------------------- | ---------- | -------------------------------- |
-| Slides 1 and 2                | 0:30       | Slides                           |
+| Slides 1 to 4                 | about 1:00 | Slides                           |
 | Live demonstration of the app | about 2:30 | The team, in the app, not slides |
-| Slides 4 to 13                | about 4:00 | Slides                           |
+| Slides 6 to 16                | about 3:30 | Slides                           |
 
 Judges never see the code or the repository before the event, so the slides are the only
 place they see the code, the structure, and the documentation. Every rubric item below
@@ -56,23 +56,36 @@ that is not shown in the live demo has to be on a slide.
 
 | Rubric item                                          | Earned in           |
 | ---------------------------------------------------- | ------------------- |
-| Code: comments, naming, formatting                   | Slide 6             |
-| Code: modular structure                              | Slide 5             |
-| Intuitive interface and clear instructions           | Live demo, slide 11 |
-| Interactive help menu                                | Slide 11            |
-| No spelling errors, no navigation errors             | Slide 10            |
-| An intelligent feature                               | Live demo, slide 8  |
-| Input validation, syntactic and semantic             | Live demo, slide 7  |
-| Addresses every part of the topic, correlation shown | Slide 4             |
-| A report the user can customize and analyze          | Live demo, slide 9  |
-| Data storage                                         | Slide 9             |
-| Documentation: readme, libraries, credits            | Slide 12            |
+| Code: comments, naming, formatting                   | Slide 9             |
+| Code: modular structure                              | Slide 8             |
+| Intuitive interface and clear instructions           | Live demo, slide 14 |
+| Interactive help menu                                | Slide 14            |
+| No spelling errors, no navigation errors             | Slide 13            |
+| An intelligent feature                               | Live demo, slide 11 |
+| Input validation, syntactic and semantic             | Live demo, slide 10 |
+| Addresses every part of the topic, correlation shown | Slide 6             |
+| A report the user can customize and analyze          | Live demo, slide 12 |
+| Data storage                                         | Slide 12            |
+| Documentation: readme, libraries, credits            | Slide 15            |
 
 ## Slide plan
 
 Each slide lists what goes on it, which image to use, and what the speaker says. Keep the
 words on the slide short. The speaker notes carry the detail and belong in Canva's notes
 field, not on the slide.
+
+The deck has six sections. Every slide after the table of contents shows its section
+number and name small in a top corner, for example "05 How We Built It". There are no
+separate divider slides; they would cost time the talk does not have.
+
+| #   | Section                   | Slides  |
+| --- | ------------------------- | ------- |
+| 01  | Our Goal                  | 3       |
+| 02  | Community Impact          | 4       |
+| 03  | Live Demo                 | 5       |
+| 04  | Meeting the Topic         | 6       |
+| 05  | How We Built It           | 7 to 14 |
+| 06  | Documentation and Credits | 15      |
 
 ### 1. Title
 
@@ -81,18 +94,36 @@ field, not on the slide.
 - Image: `app-02-home.png` as a large background or side image.
 - Speaker: who we are and what we built, in one sentence.
 
-### 2. The business
+### 2. Table of contents
 
-- On the slide: six Houston area restaurants since 1967. Customers order ahead; staff run
-  the counter. Our topic: a digital ordering system for a local business.
+- On the slide: the six sections above, numbered 01 to 06, in two rows of three.
+- Speaker: one sentence on the order: what it does, then proof it works, then how it is
+  built.
+
+### 3. Our Goal (01)
+
+- On the slide: an online ordering system for House of Pies, six Houston area restaurants
+  since 1967. Customers order ahead; staff run the counter. Our topic: a digital ordering
+  system for a local business.
 - Image: `app-12-locations-hours.png`.
 - Speaker: why a real local business, and who uses each side of the program.
 
-### 3. Live demo
+### 4. Community Impact (02)
+
+- On the slide: for customers, order ahead instead of waiting in line, see the allergens
+  in every item, and set a spending limit. For the restaurant, pickup slots are capped so
+  the counter does not back up, and staff see stock and sales in one place. It runs on
+  any laptop with nothing to install, even offline.
+- Image: `app-06-over-spending-limit.png`.
+- Speaker: a family business since 1967 gets the kind of ordering tools big chains have.
+- Use only the facts table on this slide. If the team adds an outside statistic, its
+  source has to be written on the slide.
+
+### 5. Live Demo (03)
 
 - On the slide: "Live demo" and nothing else. The team switches to the app here.
 
-### 4. How we covered the topic
+### 6. Meeting the Topic (04)
 
 - On the slide: this table, built as a Canva table rather than an image.
 
@@ -111,7 +142,16 @@ field, not on the slide.
 - Speaker: walk down the left column quickly; this is the slide that shows every part of
   the topic is answered.
 
-### 5. How the code is organized
+### 7. Tools we used (05)
+
+- On the slide: HTML, CSS, and JavaScript, with no frameworks. Node.js to run the tests,
+  the checks, and the offline build. Git and GitHub. Prettier for formatting. Llama 3.3
+  through OpenRouter for the optional AI. Canva for this deck. [The code editor the team
+  used].
+- Speaker: nothing is loaded from a library when the program runs; the router, the
+  charts, the search, and the assistant's matcher were all written for this project.
+
+### 8. How the code is organized (05)
 
 - On the slide: four folders, one job each. The logic never imports from the screens, and
   a script checks it. 78 JavaScript files, none over 400 lines.
@@ -119,7 +159,7 @@ field, not on the slide.
 - Speaker: data holds the menu and locations, domain is the logic, app is routing and
   saving, ui is the screens. Keeping the logic apart is why all of it can be tested.
 
-### 6. Comments and naming
+### 9. Comments and naming (05)
 
 - On the slide: comments explain why, not what. Each step is its own named variable.
 - Images: `code-01-pricing-steps.png` and `code-02-pricing-function.png`.
@@ -128,7 +168,7 @@ field, not on the slide.
   overcharge the customer. Names like subtotal, discount, goods, and tax make the math
   readable top to bottom. All code is formatted the same way by Prettier.
 
-### 7. Two levels of validation
+### 10. Two levels of validation (05)
 
 - On the slide: same ZIP code, two checks. Shape: is it five digits? Meaning: does this
   restaurant deliver there?
@@ -139,7 +179,7 @@ field, not on the slide.
   stock, spending limit (`app-05-limit-below-cart-refused.png` shows a limit refused
   because the cart already costs more), stock edits, and report dates.
 
-### 8. The Pie Assistant (intelligent feature)
+### 11. The Pie Assistant, our intelligent feature (05)
 
 - On the slide: ask in plain English. With internet it uses Llama 3.3, given the live
   menu, stock, and cart. Without internet it answers from the device and still copes with
@@ -150,7 +190,7 @@ field, not on the slide.
   base of 17 intents and treats a word one typo away as a match.
 - Team placeholder: a screenshot of an AI answer from a laptop with the key saved.
 
-### 9. Data and reports
+### 12. Data and reports (05)
 
 - On the slide: data storage and reports.
   - 426 menu items held as a list of objects; orders and carts as lists.
@@ -162,7 +202,7 @@ field, not on the slide.
 - Speaker: why cents (floating point gives totals like 24.310000000000002), and why the
   report compares with the previous period (a number means little on its own).
 
-### 10. Quality checks
+### 13. Quality checks (05)
 
 - On the slide: one command checks everything.
 - Image: `code-10-npm-run-check.png`. Optional small inset: `app-11-not-found.png`.
@@ -170,15 +210,15 @@ field, not on the slide.
   checked, the folder rule enforced, and the numbers in our docs checked against the
   code. Unknown addresses land on a real Not Found page, so there are no dead ends.
 
-### 11. Help and instructions
+### 14. Help and instructions (05)
 
 - On the slide: a quick tour on the first visit, a searchable help center, and an
   instruction on every empty screen.
 - Images: `app-01-welcome-tour.png` and `app-10-help-center.png`.
 - Speaker: a new user is shown around in five steps, and can search the guides any time.
-- If time is short, merge this slide into slide 10.
+- If time is short, merge this slide into slide 13.
 
-### 12. Documentation and credits
+### 15. Documentation and Credits (06)
 
 - On the slide:
   - Readme with how to run it, plus guides: user guide, architecture, testing, code style.
@@ -190,7 +230,7 @@ field, not on the slide.
 - Images: team placeholder for a screenshot of the readme on GitHub. `docs/images/home.png`
   is the screenshot the readme itself shows, if needed.
 
-### 13. Thank you
+### 16. Thank you
 
 - On the slide: Thank you. Questions?
 - Image: the House of Pies logo, `assets/img/logo.webp`, or `app-02-home.png`.
@@ -286,6 +326,7 @@ or a GitHub login:
 ## When the deck is done
 
 - [ ] Every rubric row in the table above has its slide
+- [ ] The table of contents matches the section label on every slide
 - [ ] Every number on a slide appears in the facts table
 - [ ] Team placeholders are filled in by the team
 - [ ] The deck is downloaded as a PDF as a backup, in case the venue internet fails
