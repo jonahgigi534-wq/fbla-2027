@@ -3,17 +3,13 @@
  *
  * Every guide in one list, filtered as you type. Typing redraws only the list rather
  * than the whole screen, so the search box keeps the caret and the focus it has.
- *
- * The four reference pages behind the other tabs live in helpPages.js, and the tabs
- * and heading they all share live in helpShell.js.
- */
+ * */
 
 import { el, emptyState, render } from '../dom.js';
 import { navigate } from '../../app/router.js';
 import { openAssistant } from '../components/assistant.js';
 import { startTour } from '../components/tour.js';
 import { HELP_ARTICLES } from '../../data/helpArticles.js';
-import { head, sectionTabs } from './helpShell.js';
 
 /** What the article search is filtered to. */
 const view = { query: '' };
@@ -61,8 +57,13 @@ export function renderHelp(container) {
     });
 
     render(container, [
-      head('Guides to every part of the program, plus how it answers the assigned topic.'),
-      sectionTabs('articles'),
+      el('div', { class: 'page-head' }, [
+        el('h1', { text: 'Help center' }),
+        el('p', {
+          class: 'page-head__lede',
+          text: 'Short guides to ordering, the Pie Assistant, and the staff area.',
+        }),
+      ]),
 
       el('div', { class: 'menu-controls' }, [
         el('div', { class: 'menu-controls__search' }, [
@@ -70,7 +71,7 @@ export function renderHelp(container) {
           searchField,
         ]),
         el('div', { class: 'help-ask' }, [
-          el('p', { class: 'field__hint', text: 'Would rather just ask, or be shown around?' }),
+          el('p', { class: 'field__hint', text: 'Would you rather just ask, or be shown around?' }),
           el(
             'button',
             { class: 'button button--secondary', type: 'button', onClick: openAssistant },

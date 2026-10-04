@@ -191,8 +191,10 @@ function buildOrder({ random, pool, location, placedAt, orderNumber }) {
     orderTypeId,
     status: random() < CANCELED_SHARE ? CANCELED : 'Complete',
     lines,
-    customer: { name: 'Past customer', phone: '', email: '', street: null, zip: null },
-    cardLastFour: '0000',
+    customer: { name: 'Guest', phone: '', email: '', street: null, zip: null },
+    // From the order number rather than the generator, so adding it left every other
+    // generated figure where it was.
+    cardLastFour: String(1000 + ((orderNumber * 7919) % 9000)),
     slotKey: `${placedAt.toISOString().slice(0, 10)}:${placedAt.getHours() * 60}`,
     slotLabel: 'Collected',
     promoCode: null,

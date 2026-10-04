@@ -58,7 +58,7 @@ const STEPS = [
   {
     target: 'a[href="#/manager"]',
     title: 'See the other side of the counter',
-    body: 'Staff holds the order queue, stock levels, and sales reports you can filter, group, and export. The PIN is printed on the screen that asks for it.',
+    body: 'Staff holds the order queue, stock levels, and sales reports you can filter, group, and export. The staff PIN is shown under the field that asks for it.',
   },
 ];
 

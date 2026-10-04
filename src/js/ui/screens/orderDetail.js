@@ -121,7 +121,7 @@ function receiptCard(order, location, placed, isPickup) {
           : null,
         el('div', {}, [
           el('strong', { text: 'Paid with' }),
-          el('div', { text: `Card ending ${order.cardLastFour} (demo, not charged)` }),
+          el('div', { text: `Card ending ${order.cardLastFour}` }),
         ]),
       ]),
 

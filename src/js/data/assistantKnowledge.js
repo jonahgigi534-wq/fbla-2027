@@ -75,7 +75,7 @@ export const INTENTS = [
         .filter((item) => item.priceCents <= 1000 && item.stock > 0)
         .sort((a, b) => a.priceCents - b.priceCents);
       return reply(
-        `${affordable.length} items are ${formatUSD(1000)} or less. You can also set a spending limit in your cart and the program will warn you before you go over it.`,
+        `${affordable.length} items are ${formatUSD(1000)} or less. You can also set a spending limit in your cart and you will be warned before you go over it.`,
         {
           items: affordable.slice(0, MAX_LISTED),
           links: [{ label: 'Set a spending limit', path: '/cart' }],
@@ -112,7 +112,7 @@ export const INTENTS = [
         .join(', ');
       const rest = gone.length - Math.min(gone.length, MAX_LISTED);
       return reply(
-        `${gone.length} items are sold out today: ${names}${rest > 0 ? `, and ${rest} more` : ''}. Open any of them and the program suggests something similar that is still available.`,
+        `${gone.length} items are sold out today: ${names}${rest > 0 ? `, and ${rest} more` : ''}. Open any of them for something similar that is still available.`,
         { items: gone.slice(0, 3) }
       );
     },
@@ -344,7 +344,7 @@ export const INTENTS = [
     answer: ({ budgetCapCents }) =>
       reply(
         budgetCapCents === null
-          ? 'Yes. Set an amount in your cart and the program warns you as you approach it, blocks checkout if you go over, and names which item to remove to get back under.'
+          ? 'Yes. Set an amount in your cart and you are warned as you approach it, checkout stops if you go over, and you are told which item to remove to get back under.'
           : `Your limit is set to ${formatUSD(budgetCapCents)}. The cart shows how much of it is left.`,
         { links: [{ label: 'Set a limit', path: '/cart' }] }
       ),

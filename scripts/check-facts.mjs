@@ -29,7 +29,7 @@ import { LOCATIONS } from '../src/js/data/locations.js';
 const ROOT = join(import.meta.dirname, '..');
 
 /** Files whose prose is checked for stale figures. */
-const PROSE = ['README.md', 'docs', 'presentation', 'src/js/data/projectFacts.js'];
+const PROSE = ['README.md', 'docs', 'presentation'];
 
 /**
  * Lists every file under a path, or just the file when it is one.

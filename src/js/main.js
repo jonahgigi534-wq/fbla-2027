@@ -26,12 +26,6 @@ import { renderOrderDetail } from './ui/screens/orderDetail.js';
 import { renderMyOrders } from './ui/screens/myOrders.js';
 import { renderSpending } from './ui/screens/spending.js';
 import { renderHelp } from './ui/screens/help.js';
-import {
-  renderHelpAbout,
-  renderHelpConcepts,
-  renderHelpTopic,
-  renderHelpValidation,
-} from './ui/screens/helpPages.js';
 import { renderManagerQueue } from './ui/screens/manager/queue.js';
 import { renderManagerInventory } from './ui/screens/manager/inventory.js';
 import { renderManagerReports } from './ui/screens/manager/reports.js';
@@ -50,10 +44,6 @@ const SCREENS = {
   orders: renderMyOrders,
   spending: renderSpending,
   help: renderHelp,
-  'help-topic': renderHelpTopic,
-  'help-concepts': renderHelpConcepts,
-  'help-validation': renderHelpValidation,
-  'help-about': renderHelpAbout,
   'manager-queue': renderManagerQueue,
   'manager-inventory': renderManagerInventory,
   'manager-reports': renderManagerReports,
@@ -80,10 +70,6 @@ addRoute('/checkout', 'checkout');
 addRoute('/orders', 'orders');
 addRoute('/spending', 'spending');
 addRoute('/help', 'help');
-addRoute('/help/topic', 'help-topic');
-addRoute('/help/concepts', 'help-concepts');
-addRoute('/help/validation', 'help-validation');
-addRoute('/help/about', 'help-about');
 addRoute('/order/:orderNumber', 'order-detail');
 addRoute('/manager', 'manager-queue');
 addRoute('/manager/queue', 'manager-queue');

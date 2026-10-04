@@ -82,7 +82,7 @@ export function buildCheckoutFields({ location, isDelivery }) {
     label: 'Card number',
     validate: validateCardNumber,
     placeholder: '4111 1111 1111 1111',
-    hint: 'Demo only. Nothing is charged and only the last four digits are kept.',
+    hint: 'Your card is not charged here, and only the last four digits are saved.',
   });
   fields.expiry = formField({
     id: 'co-expiry',

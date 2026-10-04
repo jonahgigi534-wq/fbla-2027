@@ -170,7 +170,7 @@ export function passesLuhn(digits) {
 export function validateCardNumber(value) {
   const digits = String(value).replace(/[\s-]/g, '');
   if (digits === '') {
-    return fail('Please enter a card number. This demo never sends it anywhere.');
+    return fail('Please enter a card number.');
   }
   if (!/^\d+$/.test(digits)) {
     return fail('A card number is digits only, with spaces or dashes if you like.');

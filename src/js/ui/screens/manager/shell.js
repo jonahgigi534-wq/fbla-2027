@@ -12,12 +12,12 @@
  * have. That is an honest answer, and a better one than a PIN hidden in a file.
  */
 
-import { el, banner, render } from '../../dom.js';
+import { el, render } from '../../dom.js';
 import { getState, resetToDefaults, update } from '../../../app/store.js';
 import { navigate } from '../../../app/router.js';
 
 /** The demo PIN, shown on the gate so nobody is locked out of the demonstration. */
-const DEMO_PIN = '1967';
+const STAFF_PIN = '1967';
 
 /** Wrong attempts before the gate pauses, so it behaves like a real one would. */
 const MAX_ATTEMPTS = 5;
@@ -60,7 +60,7 @@ function renderGate(container, returnPath) {
       error.textContent = 'Too many attempts. Reload the page to try again.';
       return;
     }
-    if (pinField.value.trim() !== DEMO_PIN) {
+    if (pinField.value.trim() !== STAFF_PIN) {
       failedAttempts += 1;
       const left = MAX_ATTEMPTS - failedAttempts;
       error.textContent = `That is not the PIN. ${left} attempt${left === 1 ? '' : 's'} left. It is printed above.`;
@@ -80,14 +80,10 @@ function renderGate(container, returnPath) {
       }),
     ]),
     el('div', { class: 'gate' }, [
-      banner(
-        'info',
-        `Demo PIN is ${DEMO_PIN}`,
-        'Printed here on purpose. This is a demonstration, and a hidden PIN would just lock you out of it. Real access control needs a server, which this program does not have.'
-      ),
       el('label', { class: 'field', for: 'manager-pin' }, [
         el('span', { class: 'field__label', text: 'Enter the four digit PIN' }),
         pinField,
+        el('span', { class: 'field__hint', text: `Staff PIN: ${STAFF_PIN}` }),
         error,
       ]),
       el(
@@ -147,7 +143,7 @@ export function managerTabs(activePath) {
         type: 'button',
         onClick: () => {
           const confirmed = window.confirm(
-            'Reset everything to a fresh install? This clears the cart, every order you placed, and any stock you changed. The ninety days of sample history are rebuilt.'
+            'Reset everything? This clears the cart, every order placed on this device, and any stock changes, and restores the starting order history.'
           );
           if (confirmed) {
             resetToDefaults();
@@ -155,7 +151,7 @@ export function managerTabs(activePath) {
           }
         },
       },
-      'Reset demo data'
+      'Reset all data'
     ),
   ]);
 }

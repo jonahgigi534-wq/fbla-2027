@@ -11,11 +11,11 @@
  * than two that can disagree.
  */
 
-import { el, banner, emptyState, render } from '../dom.js';
+import { el, emptyState, render } from '../dom.js';
 import { getState } from '../../app/store.js';
 import { navigate } from '../../app/router.js';
 import { findItem } from '../../data/menu.js';
-import { buildReport, filterOrders, sortRows } from '../../domain/reports.js';
+import { buildReport, sortRows } from '../../domain/reports.js';
 import { formatUSD } from '../../domain/money.js';
 
 /** How many favorites to name. */
@@ -126,7 +126,7 @@ export function renderSpending(container) {
     const state = getState();
     // This customer's orders: the ones placed here, plus the slice of generated
     // history marked as theirs so the screen has something to summarize on a
-    // fresh install. The banner below says that plainly.
+    // fresh install.
     const mine = state.orders.filter((order) => !order.isSeeded || order.isDemoCustomer);
 
     if (mine.length === 0) {
@@ -147,13 +147,6 @@ export function renderSpending(container) {
     const byItem = buildReport(mine, { ...options, groupBy: 'item' });
     const totals = buildReport(mine, { ...options, groupBy: 'day' }).totals;
     const favorites = sortRows(byItem.rows, 'units').slice(0, FAVOURITES_SHOWN);
-    /*
-     * Counted from the same narrowed set the tiles above are built from, not from
-     * every order this customer has ever had. Counting the wider set put "64 of these
-     * are sample orders" under a tile reading 59 orders, because the wider set
-     * ignores both the chosen range and the canceled orders a report leaves out.
-     */
-    const seededCount = filterOrders(mine, options).filter((order) => order.isSeeded).length;
 
     render(container, [
       el('div', { class: 'page-head' }, [
@@ -163,14 +156,6 @@ export function renderSpending(container) {
           text: 'What you have ordered, and what you keep coming back for.',
         }),
       ]),
-
-      seededCount > 0
-        ? banner(
-            'info',
-            'Includes demonstration history',
-            `${seededCount} of these are sample orders, so this screen has something to show on a fresh install. Orders you place yourself are counted the same way.`
-          )
-        : null,
 
       el(
         'div',

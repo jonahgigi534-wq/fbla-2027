@@ -194,11 +194,6 @@ export function renderCheckout(container) {
         el('section', { class: 'card' }, [
           el('div', { class: 'card__body' }, [
             el('h2', { text: 'Payment' }),
-            banner(
-              'warning',
-              'Demo only',
-              'This is a school project. No payment is processed, nothing is sent anywhere, and only the last four digits are saved.'
-            ),
             fields.card.node,
             el('div', { class: 'checkout-form__pair' }, [fields.expiry.node, fields.security.node]),
           ]),
