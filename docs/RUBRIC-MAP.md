@@ -56,7 +56,7 @@ are earned in the room rather than in the code.
   pins what it is told, including that nothing personal is sent. Without a key, or when
   the model cannot be reached, a built in matcher answers from this device: it scores
   keyword matches against a knowledge base and tolerates typos through bounded edit
-  distance. 33 phrasings and 8 misspellings are pinned in `test/assistant.test.js`.
+  distance. 38 phrasings and 8 misspellings are pinned in `test/assistant.test.js`.
   Either way the customer gets an answer, and the panel says which one gave it.
 
 **Input validation on both syntactical and semantic levels**

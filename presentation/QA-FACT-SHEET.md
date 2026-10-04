@@ -14,7 +14,7 @@ any of this is up to you.
 | Items genuinely sold out           | 11, copied from the restaurant's real menu |
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
-| Tests                              | 279, 97% line coverage of the logic        |
+| Tests                              | 287, 97% line coverage of the logic        |
 | Functions, all documented          | 310                                        |
 | JavaScript modules                 | 84                                         |
 | Runtime dependencies               | none                                       |
@@ -64,9 +64,9 @@ restaurant comes only from those facts, never invent a price, never call anythin
 gluten free. The tests check exactly what it is told.
 
 Without a key, or whenever the AI cannot answer, a built in matcher answers from the
-device. It scores a question against a knowledge base of 15 intents. Keywords score,
+device. It scores a question against a knowledge base of 17 intents. Keywords score,
 whole phrases score more, and a word within one edit of a keyword still counts, which
-is how it handles "vegitarian" and "delivary". 33 phrasings and 8 misspellings are
+is how it handles "vegitarian" and "delivary". 38 phrasings and 8 misspellings are
 pinned in the tests.
 
 **Why Llama through OpenRouter?**
@@ -77,9 +77,9 @@ model is one line in `src/js/app/aiClient.js` if it ever needs changing.
 
 **Where is the API key? Is it exposed?**
 Not in the code. Everything in the code ends up in the one file the browser opens,
-where anyone can read it with View Source, and there is no server to keep a secret on. The key is pasted into AI
-settings and kept in that browser only. It is a password field, so it never shows on
-screen.
+where anyone can read it with View Source, and there is no server to keep a secret on.
+The key is pasted into AI settings and kept in that browser only. It is a password
+field, so it never shows on screen.
 
 **What happens if someone asks it something off topic?**
 Each kind of question has its own rule. A greeting gets a greeting, simple math gets

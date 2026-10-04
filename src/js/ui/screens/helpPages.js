@@ -160,7 +160,7 @@ export function renderHelpValidation(container) {
 /**
  * Renders the about page: what was borrowed, and what was built rather than installed.
  *
- * This exists because the competition provides no internet and judges have no Markdown
+ * This exists because the venue may have no internet and judges have no Markdown
  * reader. The attribution and the library list are the two documents most likely to be
  * asked about, so they are readable inside the program rather than only in the repository.
  *

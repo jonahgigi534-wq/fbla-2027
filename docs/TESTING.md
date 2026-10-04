@@ -13,7 +13,7 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 279, all passing         |
+| Tests                            | 287, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 93%                      |
 | Functions documented             | 310 of 310               |
@@ -60,7 +60,7 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `orders`     | The window in which an order can still be changed                                                                                       |
 | `reports`    | That canceled orders never count, and that periods compare like for like                                                                |
 | `insights`   | That the generated sentences match the figures under them                                                                               |
-| `assistant`  | 33 real phrasings, 8 of them misspelled, plus nonsense                                                                                  |
+| `assistant`  | 38 real phrasings, 8 of them misspelled, plus nonsense                                                                                  |
 | `search`     | Ranking, and that word matching does not match inside words                                                                             |
 | `dietary`    | That graham cracker is not read as ham                                                                                                  |
 | `csv`        | Escaping commas, quotes, and line breaks                                                                                                |
@@ -133,6 +133,14 @@ the same refusal. Found by asking it things a judge might, not things a customer
 would. The rules now sort questions into kinds, so a greeting gets a greeting, simple
 math gets an answer, politics gets a polite no, and a calorie question gets the truth
 that the menu lists none, with lighter dishes picked from their ingredients.
+
+**The built in answers offered a ribeye for a 400 calorie meal.** The question ended
+"what should i get", which is one of the recommendation phrases, so the matcher
+answered with the restaurant's favorites, steak and burger included. Nothing in it
+knew about calories. It now has a calorie topic that says the menu lists none and
+offers salads, grilled dishes, oats, and fruit, and the test asks that exact question.
+The same pass found that "hi" was thrown away as a filler word before matching, so a
+greeting got "I did not follow that one".
 
 **Cleaning up the AI's answers merged its paragraphs.** Stripping a markdown bullet
 used `^\s*` in multiline mode, and `\s` matches newlines too, so removing a bullet took

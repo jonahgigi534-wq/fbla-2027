@@ -150,13 +150,13 @@ thing running is more convincing.
 
 Know these by name, so any of them opens in a couple of seconds with Ctrl+P in VS Code:
 
-| If the question is about | Open                                                                 |
-| ------------------------ | -------------------------------------------------------------------- |
-| Totals, tax, money       | `domain/pricing.js`                                                  |
-| Validation               | `domain/validation.js` for shape, `domain/orderRules.js` for meaning |
-| The Pie Assistant        | `domain/assistant.js`                                                |
-| Reports                  | `domain/reports.js`                                                  |
-| How it is organized      | the `src/js` folder                                                  |
+| If the question is about | Open                                                                            |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| Totals, tax, money       | `domain/pricing.js`                                                             |
+| Validation               | `domain/validation.js` for shape, `domain/orderRules.js` for meaning            |
+| The Pie Assistant        | `domain/aiPrompt.js` for the AI, `domain/assistant.js` for the built in answers |
+| Reports                  | `domain/reports.js`                                                             |
+| How it is organized      | the `src/js` folder                                                             |
 
 **Expect "did you write all this?"** It is a fair question at an introductory event,
 about a program this size. The answer that lands is opening a file and explaining it

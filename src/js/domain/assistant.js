@@ -2,10 +2,12 @@
  * The matching engine behind the Pie Assistant.
  *
  * The rating sheet asks for an intelligent feature such as an interactive question
- * and answer, and this is it. There is no language model behind it and no network
- * call, because the program has to work with the wifi switched off. What it has
- * instead is a knowledge base of intents, a scorer that decides which one a question
- * is asking for, and answers built from the live menu, stock, cart, and orders.
+ * and answer. With a key saved, the Pie Assistant asks Llama 3.3, and what it is told
+ * is in domain/aiPrompt.js. This is the other half: the part that answers with no key,
+ * no credit, or no wifi, and whenever the AI fails. So there is no language model here
+ * and no network call. What it has instead is a knowledge base of intents, a scorer
+ * that decides which one a question is asking for, and answers built from the live
+ * menu, stock, cart, and orders.
  *
  * Three decisions shape it:
  *
@@ -63,9 +65,6 @@ const STOP_WORDS = new Set([
   'whats',
   'please',
   'thanks',
-  'hi',
-  'hello',
-  'hey',
 ]);
 
 /** Score for an exact keyword match. */
@@ -241,10 +240,13 @@ export function findAnswer(intents, question) {
   const best = ranked[0];
 
   if (best && best.score >= CONFIDENCE_FLOOR) {
+    // A greeting is worth answering but not worth offering: "Hello" as a follow up
+    // to a delivery question is a button that goes nowhere useful.
+    const followUps = ranked.slice(1).filter((ranking) => ranking.intent.isFollowUp !== false);
     return {
       matched: true,
       intent: best.intent,
-      suggestions: ranked.slice(1, 4).map((ranking) => ranking.intent),
+      suggestions: followUps.slice(0, 3).map((ranking) => ranking.intent),
     };
   }
 

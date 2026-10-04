@@ -1,7 +1,7 @@
 /**
  * The project's own documentation, readable inside the program.
  *
- * Judges have no internet at the competition and no Markdown reader. Eight .md files
+ * The venue may have no internet, and judges have no Markdown reader. Eight .md files
  * opened in Notepad is not "clearly labeled and professionally presented", which is
  * what the Documentation row asks for. So the parts that matter most, the attribution
  * and the library list, are also here as a screen.
@@ -14,7 +14,7 @@ export const PROJECT_STATS = [
   { label: 'Menu items', value: '426', note: 'across 34 categories' },
   { label: 'Restaurants', value: '6', note: 'on three different schedules' },
   { label: 'Runtime dependencies', value: 'None', note: 'no framework, no libraries' },
-  { label: 'Tests', value: '279', note: '97% of the logic they cover' },
+  { label: 'Tests', value: '287', note: '97% of the logic they cover' },
 ];
 
 /** What was borrowed, and from whom. */
@@ -76,7 +76,7 @@ export const ATTRIBUTION = [
 
 /** Things that would normally be a library, and what replaced them. */
 export const INSTEAD_OF_LIBRARIES = [
-  { usually: 'A UI framework', instead: 'src/js/ui/dom.js, 107 lines' },
+  { usually: 'A UI framework', instead: 'src/js/ui/dom.js, 109 lines' },
   { usually: 'A router', instead: 'src/js/app/router.js, hash based' },
   { usually: 'A state store', instead: 'src/js/app/store.js, one object and a subscribe list' },
   { usually: 'A charting library', instead: 'src/js/ui/components/barChart.js, SVG rectangles' },

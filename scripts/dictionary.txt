@@ -400,6 +400,7 @@ citystatezip
 claim
 claimed
 claiming
+clam
 class
 classes
 classic
@@ -510,6 +511,7 @@ corned
 corner
 corporate
 correct
+corrected
 correctly
 correlation
 corrupt
@@ -735,6 +737,7 @@ emoji
 empties
 empty
 end
+ended
 endorsed
 ends
 enforced
@@ -757,6 +760,7 @@ espresso
 estimate
 evaluatebudget
 even
+evening
 event
 events
 ever
@@ -814,6 +818,7 @@ false
 family
 far
 fastest
+fat
 fault
 favorite
 favorites
@@ -838,6 +843,7 @@ figures
 file
 files
 filled
+filler
 fillet
 filling
 fillings
@@ -990,6 +996,7 @@ guarantees
 guessed
 guessing
 guest
+guests
 guide
 guidelines
 guides
@@ -1192,6 +1199,7 @@ kindly
 kinds
 kirby
 kitchen
+knew
 knives
 know
 knowing
@@ -1285,6 +1293,7 @@ looking
 looks
 loop
 loops
+lose
 lost
 love
 lovely
@@ -1517,6 +1526,7 @@ organized
 other
 otherwise
 ounces
+ours
 out
 outright
 outside
@@ -2083,6 +2093,7 @@ splitting
 sponsored
 sprinkles
 sprite
+square
 src
 stack
 staff
@@ -2259,6 +2270,7 @@ threshold
 throttles
 through
 throughout
+thrown
 thursday
 ticket
 tie
@@ -2374,6 +2386,7 @@ useful
 user
 uses
 using
+usual
 usually
 utensils
 valid

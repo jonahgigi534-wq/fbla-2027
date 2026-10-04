@@ -48,6 +48,11 @@ const PHRASINGS = [
   ['where are you located', 'locations'],
   ['how many locations', 'locations'],
   ['can i set a spending limit', 'budget'],
+  ['any low calorie options', 'calories'],
+  ['something healthy', 'calories'],
+  ['hi', 'greeting'],
+  ['hello there', 'greeting'],
+  ['good morning', 'greeting'],
 ];
 
 /** The same questions, misspelled the way a phone keyboard produces. */
@@ -127,6 +132,36 @@ test('a gluten question is never answered with vegetarian counts', () => {
     const answer = result.intent.answer({ items: ALL_ITEMS });
     assert.ok(!/vegetarian|vegan/i.test(answer.text), 'a gluten answer must not talk about diet');
     assert.match(answer.text, /not marked for gluten/);
+  }
+});
+
+test('a calorie question gets lighter dishes, never the steak', () => {
+  // Asked during a rehearsal. It used to match "what should i get" and recommend
+  // the ribeye and the burger for a meal under 400 calories.
+  const question = 'If i weigh 200 lbs and i want a meal under 400 calorie what should i get';
+  const result = findAnswer(INTENTS, question);
+  assert.equal(result.intent.id, 'calories');
+
+  const answer = result.intent.answer({ items: ALL_ITEMS });
+  assert.match(answer.text, /does not list calories/);
+  assert.ok(answer.items.length > 0, 'it should offer something to try');
+  assert.ok(answer.items.every((item) => !/steak|burger/i.test(item.name)));
+});
+
+test('a greeting gives way to a real question asked in the same breath', () => {
+  const delivery = findAnswer(INTENTS, 'hi, do you deliver?');
+  assert.equal(delivery.intent.id, 'delivery');
+  assert.ok(
+    delivery.suggestions.every((intent) => intent.id !== 'greeting'),
+    'Hello is not a useful follow up'
+  );
+  assert.equal(findAnswer(INTENTS, 'hello what is vegetarian').intent.id, 'diet');
+});
+
+test('words one typo from a calorie keyword do not reach it', () => {
+  for (const question of ['do you take cards', 'can i order eight slices']) {
+    const result = findAnswer(INTENTS, question);
+    assert.ok(result.intent?.id !== 'calories', `"${question}" was read as a calorie question`);
   }
 });
 

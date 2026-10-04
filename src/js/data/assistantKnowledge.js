@@ -21,6 +21,16 @@ import { PROMOS } from './promos.js';
 /** How many items to name before summarising the rest. */
 const MAX_LISTED = 6;
 
+/** Dishes offered for a calorie question, chosen by ingredients since none are listed. */
+const LIGHTER_PICKS = [
+  'dinner-salad',
+  'hot-grilled-chicken-salad',
+  'grilled-shrimp-salad',
+  'fruit-salad',
+  'overnight-oats-yogurt',
+  'side-fruit-cup',
+];
+
 /**
  * Builds an answer.
  *
@@ -78,16 +88,7 @@ export const INTENTS = [
     label: 'What do you recommend?',
     isSuggested: true,
     phrases: ['what is good', 'whats good', 'best seller', 'most popular', 'what should i get'],
-    keywords: [
-      'recommend',
-      'popular',
-      'favorite',
-      'favorite',
-      'best',
-      'famous',
-      'known',
-      'signature',
-    ],
+    keywords: ['recommend', 'popular', 'favorite', 'best', 'famous', 'known', 'signature'],
     answer: ({ items }) =>
       reply(
         'These are the dishes House of Pies features on its own front page. The Bayou Goo pie is the one people come back for.',
@@ -346,6 +347,38 @@ export const INTENTS = [
           ? 'Yes. Set an amount in your cart and the program warns you as you approach it, blocks checkout if you go over, and names which item to remove to get back under.'
           : `Your limit is set to ${formatUSD(budgetCapCents)}. The cart shows how much of it is left.`,
         { links: [{ label: 'Set a limit', path: '/cart' }] }
+      ),
+  },
+  {
+    // A calorie question used to land on the recommendations, because "what should
+    // I get" is one of their phrases, and answered a 400 calorie meal with a ribeye.
+    id: 'calories',
+    label: 'Anything lighter?',
+    isSuggested: false,
+    phrases: ['calorie', 'lose weight', 'on a diet', 'low fat', 'nutrition'],
+    // No 'light', 'weight', or 'carbs': one typo away from eight and cards.
+    keywords: ['calorie', 'calories', 'healthy', 'lighter', 'protein'],
+    answer: ({ items }) =>
+      reply(
+        'The menu does not list calories, so I cannot promise any dish is under a number. Going by their ingredients, salads, grilled dishes, oats, and fruit are the lighter places to start.',
+        {
+          items: items.filter((item) => LIGHTER_PICKS.includes(item.id) && item.stock > 0),
+          links: [{ label: 'See the salads', path: '/menu/soups-salads' }],
+        }
+      ),
+  },
+  {
+    // Last on purpose. Ties go to whichever intent comes first, so "hi, do you
+    // deliver?" is answered about delivery rather than with a hello.
+    id: 'greeting',
+    label: 'Hello',
+    isSuggested: false,
+    isFollowUp: false,
+    phrases: ['good morning', 'good afternoon', 'good evening', 'how are you'],
+    keywords: ['hi', 'hello', 'hey', 'howdy'],
+    answer: () =>
+      reply(
+        'Hi there! Ask me what is vegetarian, what is sold out, when a restaurant is open, or where your order has got to.'
       ),
   },
 ];
