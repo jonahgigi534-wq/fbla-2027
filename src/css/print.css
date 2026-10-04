@@ -13,7 +13,11 @@
 .app-notice,
 .button,
 .chip,
-.menu-controls {
+.menu-controls,
+/* Overlays sit on top of the page, so left in they print over the receipt. */
+.assistant,
+.tour,
+.toast-host {
   display: none !important;
 }
 
