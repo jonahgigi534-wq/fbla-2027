@@ -20,9 +20,11 @@
 #
 # Lines starting with # are ignored.
 
+able
 about
 above
 acapulco
+accent
 accept
 accepted
 access
@@ -158,6 +160,7 @@ backwards
 bacon
 bad
 badge
+badly
 bagel
 baked
 bakery
@@ -252,6 +255,7 @@ breaking
 breaks
 breast
 brewed
+brief
 brien
 brightness
 bring
@@ -311,6 +315,7 @@ canceled
 canceling
 cannot
 cantaloupe
+canva
 cap
 capacity
 capped
@@ -351,6 +356,7 @@ change
 changed
 changes
 changing
+chapter
 characters
 charged
 charset
@@ -406,6 +412,7 @@ class
 classes
 classic
 classics
+claude
 clause
 clauses
 clean
@@ -434,6 +441,7 @@ coconut
 code
 codebase
 codes
+coding
 coffee
 coke
 cola
@@ -451,6 +459,7 @@ comfort
 comfortably
 coming
 comma
+command
 commas
 comment
 comments
@@ -462,9 +471,11 @@ companies
 company
 compare
 compared
+compares
 comparewithpreviousperiod
 competition
 complete
+computer
 concatenated
 concentrated
 concept
@@ -478,6 +489,8 @@ confirm
 confirmed
 connected
 connection
+connector
+connectors
 considered
 consistently
 constants
@@ -530,6 +543,7 @@ cover
 coverage
 covered
 covers
+cowork
 cozy
 cracker
 crafted
@@ -581,6 +595,7 @@ date
 dates
 day
 days
+dead
 deal
 decade
 decaf
@@ -589,6 +604,7 @@ decides
 decimal
 decision
 decisions
+deck
 declarative
 declare
 declares
@@ -620,12 +636,14 @@ dependencies
 dependency
 depends
 deployment
+describes
 describestatus
 describing
 description
 descriptions
 design
 designer
+desktop
 dessert
 desserts
 detail
@@ -697,6 +715,7 @@ down
 download
 downloaded
 dozen
+drag
 dream
 dress
 dressing
@@ -721,6 +740,7 @@ edit
 edited
 editing
 editor
+edits
 effect
 efficiency
 efficiently
@@ -833,6 +853,7 @@ featured
 features
 fee
 feed
+feel
 fetch
 fetched
 few
@@ -887,6 +908,7 @@ folded
 folder
 folders
 follow
+followed
 following
 follows
 font
@@ -901,6 +923,7 @@ form
 formal
 formatmetric
 formats
+formatted
 formatting
 formatusd
 formed
@@ -955,6 +978,7 @@ get
 gets
 getstate
 getting
+github
 give
 given
 gives
@@ -1128,6 +1152,7 @@ inputs
 inscribed
 insensitively
 inserted
+inset
 inside
 insights
 inspection
@@ -1258,6 +1283,7 @@ library
 license
 licenses
 lid
+light
 lighter
 lightly
 like
@@ -1276,6 +1302,7 @@ list
 listed
 listener
 lists
+little
 live
 lives
 llama
@@ -1291,10 +1318,12 @@ lock
 locked
 logic
 logical
+login
 logo
 logos
 long
 longer
+longest
 look
 looking
 looks
@@ -1363,6 +1392,7 @@ melon
 melt
 melted
 melts
+member
 memory
 mention
 menu
@@ -1511,6 +1541,7 @@ onion
 onions
 online
 only
+onto
 open
 opened
 opening
@@ -1527,6 +1558,7 @@ orange
 order
 ordered
 ordering
+orderrules
 orders
 ordertypeid
 organization
@@ -1542,6 +1574,7 @@ outright
 outside
 oven
 over
+overcharge
 overcharges
 overdone
 overlays
@@ -1588,6 +1621,7 @@ patties
 patty
 pauses
 payment
+pdf
 peach
 peaches
 peanuts
@@ -1605,6 +1639,7 @@ perfectly
 period
 periods
 permits
+person
 personal
 philly
 phone
@@ -1648,6 +1683,7 @@ plates
 platter
 platters
 please
+plenty
 plotheight
 plugged
 plus
@@ -1692,6 +1728,7 @@ preview
 previous
 price
 prices
+pricing
 print
 printable
 printed
@@ -1750,6 +1787,7 @@ question
 questions
 queue
 quick
+quickly
 quietly
 quote
 quoted
@@ -1808,12 +1846,14 @@ refresh
 refreshing
 refusal
 refuse
+refused
 refuses
 refusing
 regency
 regions
 registry
 regulars
+rehearsed
 rejected
 release
 released
@@ -1867,6 +1907,7 @@ results
 return
 returning
 returns
+retype
 reveal
 revenue
 review
@@ -1932,6 +1973,7 @@ say
 saying
 says
 scale
+scan
 scanned
 scanning
 schedules
@@ -1950,6 +1992,7 @@ screen
 screens
 screensaver
 screenshot
+screenshots
 script
 scripted
 search
@@ -1983,6 +2026,7 @@ separate
 separates
 separator
 sequence
+serif
 serve
 served
 server
@@ -2024,6 +2068,7 @@ shown
 shows
 showtoast
 shrimp
+shrink
 shut
 side
 sides
@@ -2062,6 +2107,7 @@ small
 smaller
 smoked
 soda
+soft
 sold
 soldout
 some
@@ -2082,9 +2128,11 @@ source
 south
 southwest
 soy
+space
 spaces
 spaghetti
 sparkling
+speaker
 speakers
 speaking
 special
@@ -2227,6 +2275,7 @@ taman
 tap
 tart
 tartar
+task
 tater
 tax
 taxablebase
@@ -2234,6 +2283,7 @@ taxed
 taxing
 tea
 teaches
+team
 technical
 tell
 tells
@@ -2255,6 +2305,7 @@ texan
 texas
 text
 than
+thank
 thanks
 that
 the
@@ -2338,6 +2389,7 @@ trapped
 travel
 tray
 trays
+treats
 tree
 tres
 triangles
@@ -2390,6 +2442,8 @@ unusable
 update
 updates
 updating
+upload
+uploads
 upside
 url
 usb
