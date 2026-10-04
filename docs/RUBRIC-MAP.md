@@ -71,8 +71,8 @@ are earned in the room rather than in the code.
 
 **Addresses all parts of the prompt, correlation explained in the instructions**
 
-- The clause by clause mapping is in the [README](../README.md), under How this
-  meets the topic, and is covered in the presentation itself.
+- The clause by clause mapping is in the [README](../README.md), under How it
+  covers the topic, and is covered in the presentation itself.
 
 **A presentable report the user can customize and analyze**
 

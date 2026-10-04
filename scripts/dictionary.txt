@@ -192,6 +192,7 @@ behind
 being
 belgian
 bell
+belong
 belongs
 below
 benedict
@@ -536,6 +537,7 @@ cranberry
 cream
 creamy
 create
+creates
 credit
 credited
 credits
@@ -678,12 +680,14 @@ documentation
 documented
 documents
 does
+doesn
 dogs
 doing
 dollar
 dollars
 dom
 domain
+don
 done
 doodle
 dot
@@ -1047,6 +1051,7 @@ hide
 hides
 hiding
 high
+highlights
 hint
 history
 hit
@@ -1159,6 +1164,7 @@ inventory
 involved
 iscorporateoffice
 isdelivery
+isn
 isodaysago
 ispickup
 isslotusable
@@ -1224,6 +1230,7 @@ latin
 latte
 layer
 layers
+layout
 lead
 leaf
 lean
@@ -1383,6 +1390,7 @@ missing
 misspelled
 misspellings
 mistyped
+mit
 mix
 mixed
 mocha
@@ -1526,7 +1534,9 @@ organized
 other
 otherwise
 ounces
+our
 ours
+ourselves
 out
 outright
 outside

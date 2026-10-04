@@ -4,7 +4,7 @@ Everything written about this project, and what each document is for.
 
 | Document                                                             | What it covers                                                                         |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [../README.md](../README.md)                                         | What the program is, how to run it three ways, and how it answers the assigned topic   |
+| [../README.md](../README.md)                                         | What the program is, how to run it, and how it answers the assigned topic              |
 | [USER-GUIDE.md](USER-GUIDE.md)                                       | Step by step for the customer side and the staff side                                  |
 | [ARCHITECTURE.md](ARCHITECTURE.md)                                   | The four layers, the rule between them, and how a click becomes a saved order          |
 | [LIBRARIES.md](LIBRARIES.md)                                         | Every library and tool used, and why the runtime list is empty                         |

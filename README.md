@@ -1,166 +1,97 @@
-# House of Pies Ordering System
+# House of Pies Ordering
 
-A digital ordering system for [House of Pies](https://houseofpies.com/), a family
-owned restaurant and bakery that has been serving Houston since 1967 and now runs six
-locations across Houston, The Woodlands, Cypress, and Katy.
+An online ordering site for [House of Pies](https://houseofpies.com/), the Houston diner and bakery that's been around since 1967. Customers can browse the whole menu, order from any of the six locations, and keep track of their orders. Staff get their own side with the order queue, stock levels, and sales reports.
 
-Built for the FBLA 2026-2027 **Introduction to Programming** event, whose topic is
-_Local Business Digital Ordering System_.
+We built it for the FBLA 2026-2027 Introduction to Programming event, where the topic was a digital ordering system for a local business.
 
-It runs in a browser with **no libraries, no build step required, and no server**.
-Everything works with no internet connection. The one thing that uses it is the
-optional AI in the Pie Assistant, which falls back to built in answers without it.
+![The home screen](docs/images/home.png)
 
----
+## Highlights
+
+- The real menu: 426 items across 34 categories, with the restaurant's own prices and descriptions
+- Runs offline from a single HTML file, with no server needed
+- A Pie Assistant you can ask questions in plain English. It uses Llama 3.3 if you add a key and answers on its own if you don't
+- Sales reports you can filter, group, compare with the previous period, and export to CSV
+- No frameworks or libraries, just HTML, CSS, and JavaScript
 
 ## Running it
 
-You need [Node.js](https://nodejs.org) 20 or newer. Nothing else, and nothing to
-install: the program has no runtime dependencies.
+You need [Node.js](https://nodejs.org) 20 or newer. There's nothing to install.
 
-### The normal way
-
-```
+```bash
 npm start
 ```
 
 Then open <http://localhost:4173>.
 
-### Offline, from a single file
+For the offline version:
 
-```
+```bash
 npm run build
 ```
 
-That writes `dist/standalone.html`. Double click it. No server and no terminal. This
-is the copy used for the presentation, because the competition provides no
-electricity.
+This creates `dist/standalone.html`, which opens with a double click. Keep the `dist` folder together, since the photos sit next to the file.
 
-Keep the `dist` folder together: the photographs sit next to the HTML file.
+The staff PIN is 1967.
 
-### Turning on AI answers
+### AI answers (optional)
 
-The Pie Assistant answers from this device by default. To have it answer with
-Llama 3.3 instead:
+The assistant works without this. To have it answer with Llama 3.3 instead:
 
-1. Make an account at openrouter.ai, add a few dollars of credit, and create a key.
-2. Open the program, press **Ask**, then **AI settings** at the bottom of the panel.
-3. Paste the key and press **Save key**.
+1. Make an account at [openrouter.ai](https://openrouter.ai), add a few dollars of credit, and create a key.
+2. In the app, press Ask, then AI settings.
+3. Paste the key and press Save key.
 
-The key is saved in that browser only and is never written into the code, since
-anything in the code ends up in the file the browser opens, where View Source shows
-it. It survives Reset all data. If the key is rejected or the connection drops,
-the assistant says so and answers from this device instead.
+The key is only saved in your browser and never goes in the code. If it's rejected or the internet drops, the assistant falls back to its built-in answers.
 
-### Checking it
+## Testing
 
-```
+```bash
 npm run check
 ```
 
-Runs the whole test suite, then four checks of its own: that the layers have not been crossed,
-that every function is documented, that nothing on screen is misspelled, and that
-every figure quoted in these documents still matches the code. Like everything else
-here, it needs nothing installed.
+This runs the tests, then a few checks we wrote ourselves: every function is documented, the logic never imports from the screens, nothing on screen is misspelled, and the numbers in our docs still match the code.
 
----
+## How it covers the topic
 
-## What it does
+| The topic asks for       | Where it is                                                                         |
+| ------------------------ | ----------------------------------------------------------------------------------- |
+| Products or services     | 355 food, drink, and bakery items, plus 71 catering items that need 48 hours notice |
+| Place and manage orders  | Track, edit item by item, cancel, reorder, print a receipt                          |
+| Calculate totals         | Money kept in whole cents, with the discount taken off before tax                   |
+| Review order information | Receipts, order history, and a spending summary                                     |
+| Unavailable items        | 11 items are sold out, and each one suggests substitutes                            |
+| Inventory limits         | Stock is checked against what's already in your cart                                |
+| Invalid entries          | Every input is checked for shape, then for whether it fits the order                |
+| Budget constraints       | A spending limit that warns you, blocks checkout, and says what to remove           |
+| Helping the business     | Pickup slots are capped so the counter doesn't back up                              |
 
-**For customers**
-
-- Browse or search **426 real menu items** across 34 categories, with the
-  restaurant's own descriptions and prices
-- Filter by section, category, or dietary need, and sort four ways
-- Pick from **six restaurants**, each with its own hours and delivery area
-- Set a **spending limit** that warns you as you approach it and blocks checkout if
-  you pass it, naming the cheapest item to remove
-- Order for pickup, delivery, or dine in, with promo codes, an optional tip, and a
-  full tax breakdown
-- Change or cancel an order until the kitchen starts cooking, then track it through
-  four stages and print an itemized receipt
-- Ask the **Pie Assistant** a question in plain English. With a key it answers with
-  Llama 3.3, told the live menu, stock, hours, and cart; without one it answers from
-  this device
-- See what you have spent over 30, 90, or 365 days and what you order most
-
-**For staff**
-
-- A live order queue with one button to move a ticket to its next stage
-- Stock levels that feed straight through to the customer side, so setting something
-  to zero marks it sold out everywhere
-- **Sales reports** over 90 days of history: filter by date, restaurant, and order
-  type, group seven ways, measure four ways, sort any column, and read every figure
-  against the same length period before it
-
----
-
-## How it answers the topic
-
-The assigned topic asks for a system that lets customers browse products or services,
-place and manage orders, calculate totals, and review order information, while
-handling unavailable items, inventory limits, invalid entries, and customer budget
-constraints.
-
-Where each part of it is answered:
-
-| The topic asks for          | Where it is                                                                                              |
-| --------------------------- | -------------------------------------------------------------------------------------------------------- |
-| Products **or services**    | 355 menu products, plus 71 catering items and custom cakes carrying the restaurant's real 48 hour notice |
-| Place and **manage** orders | Track, edit item by item, cancel, reorder, print                                                         |
-| Calculate purchase totals   | Whole cent arithmetic, discount applied before tax                                                       |
-| Review order information    | Printable receipts, plus a spending summary                                                              |
-| Unavailable items           | 11 items are genuinely sold out, and each offers substitutes                                             |
-| Inventory limits            | Stock counted against the cart, not just the shelf                                                       |
-| Invalid entries             | Every input checked for shape, then for whether it suits the order                                       |
-| Customer budget constraints | A spending limit that warns, blocks, and suggests                                                        |
-| Efficiency for the business | Collection slots capped so the counter does not back up                                                  |
-
----
-
-## How the code is organized
-
-Four layers, and one rule between them.
+## Project layout
 
 ```
 src/js/
-  data/     the menu, locations, promos, help content, generated order history
-  domain/   pure logic: money, pricing, cart, inventory, validation, reports
-  app/      routing, state, saving
+  data/     menu, locations, promos, help articles, past orders
+  domain/   the logic: pricing, cart, stock, validation, reports
+  app/      routing, saved state, the AI client
   ui/       screens and components
 ```
 
-**Nothing in `domain/` may import from `ui/` or `app/`.** That is what keeps the
-business logic callable from a test with no browser involved, and it is checked
-mechanically by `npm run check` rather than left to memory.
+The code in `domain/` never imports from `ui/` or `app/`, so all of the logic can be tested without a browser. There's more in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-Money is a whole number of cents everywhere. Applying a promo, then 8.25% tax, then a
-tip on floating point produces totals like `24.310000000000002`, which is not a number
-to put in front of a customer.
+## Docs
 
-More detail in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+- [User guide](docs/USER-GUIDE.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Testing](docs/TESTING.md)
+- [Libraries](docs/LIBRARIES.md)
+- [Credits](docs/CREDITS.md)
+- [Code style](docs/STYLE.md)
+- [Rubric map](docs/RUBRIC-MAP.md)
 
----
+## Credits
 
-## Documentation
+This is a student project and isn't affiliated with or endorsed by House of Pies. Their name, logo, photos, and menu belong to them. Prices were copied from their ordering page and may have changed since. See [docs/CREDITS.md](docs/CREDITS.md) for everything we used.
 
-Everything is in [docs/INDEX.md](docs/INDEX.md), and the guides are also readable
-inside the program under Help.
+## License
 
-- [User guide](docs/USER-GUIDE.md) for both the customer and staff sides
-- [Architecture](docs/ARCHITECTURE.md) for how the pieces fit
-- [Libraries](docs/LIBRARIES.md) for what was used, which at runtime is nothing
-- [Credits](docs/CREDITS.md) for where the menu, photographs, and name came from
-- [Testing](docs/TESTING.md) for what is covered and how to run it
-- [Style](docs/STYLE.md) for the comment and naming standard
-- [Rubric map](docs/RUBRIC-MAP.md) for where to look for each scored item
-
----
-
-## A note on the House of Pies name
-
-This is an independent student project. It is **not affiliated with, endorsed by, or
-connected to House of Pies**. Their name, logo, and photographs remain their property
-and are used here to build a realistic project about a real local business. Menu
-items and prices were taken from their public ordering page and are representative
-rather than a live price list. See [docs/CREDITS.md](docs/CREDITS.md).
+[MIT](LICENSE)
