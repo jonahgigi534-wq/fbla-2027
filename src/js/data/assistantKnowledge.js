@@ -48,7 +48,7 @@ export const INTENTS = [
       );
       const vegan = vegetarian.filter((item) => item.dietaryTags.includes('vegan'));
       return reply(
-        `${vegetarian.length} items are vegetarian and ${vegan.length} of those are vegan. Here are a few, and the Vegetarian chip on the menu shows them all.`,
+        `${vegetarian.length} vegetarian items are available right now, and ${vegan.length} of those are vegan. Here are a few, and the Vegetarian chip on the menu shows them all.`,
         {
           items: vegetarian.slice(0, MAX_LISTED),
           links: [{ label: 'Filter the menu', path: '/menu' }],

@@ -14,7 +14,7 @@ export const BASIS_POINTS_PER_WHOLE = 10000;
 /**
  * Rounds to the nearest whole cent, with exact halves going up.
  *
- * Rounds halves up, as US receipts do. Math.round would send negative halves, such as
+ * That is how US receipts round. Math.round would send negative halves, such as
  * refunds, the wrong way.
  *
  * @param {number} value A possibly fractional number of cents.
