@@ -14,7 +14,7 @@ export const PROJECT_STATS = [
   { label: 'Menu items', value: '426', note: 'across 34 categories' },
   { label: 'Restaurants', value: '6', note: 'on three different schedules' },
   { label: 'Runtime dependencies', value: 'None', note: 'no framework, no libraries' },
-  { label: 'Tests', value: '253', note: '97% of the logic they cover' },
+  { label: 'Tests', value: '275', note: '97% of the logic they cover' },
 ];
 
 /** What was borrowed, and from whom. */
