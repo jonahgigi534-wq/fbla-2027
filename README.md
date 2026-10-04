@@ -47,8 +47,9 @@ Llama 3.3 instead:
 2. Open the program, press **Ask**, then **AI settings** at the bottom of the panel.
 3. Paste the key and press **Save key**.
 
-The key is saved in that browser only and is never written into the code, which is
-public. It survives Reset demo data. If the key is rejected or the connection drops,
+The key is saved in that browser only and is never written into the code, since
+anything in the code ends up in the file the browser opens, where View Source shows
+it. It survives Reset demo data. If the key is rejected or the connection drops,
 the assistant says so and answers from this device instead.
 
 ### Checking it

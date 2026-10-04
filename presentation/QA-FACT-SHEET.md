@@ -75,8 +75,8 @@ demonstration. And if one host is slow or down, the next takes the request, and 
 model is one line in `src/js/app/aiClient.js` if it ever needs changing.
 
 **Where is the API key? Is it exposed?**
-Not in the code. The code is public and there is no server to keep a secret on, so
-anything written into it would be readable by anyone. The key is pasted into AI
+Not in the code. Everything in the code ends up in the one file the browser opens,
+where anyone can read it with View Source, and there is no server to keep a secret on. The key is pasted into AI
 settings and kept in that browser only. It is a password field, so it never shows on
 screen.
 
