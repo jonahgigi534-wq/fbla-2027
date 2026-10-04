@@ -73,7 +73,7 @@ Without a key it answers from this device, with no internet. If the AI cannot be
 reached, or the key is rejected, the built in answers take over and the reply says so.
 The line under the title always says which one is answering.
 
-The key is kept in this browser only. Reset demo data does not remove it; the Remove
+The key is kept in this browser only. Reset all data does not remove it; the Remove
 key button does.
 
 Things it handles: what is vegetarian, anything under ten dollars, what do you
@@ -86,9 +86,9 @@ than giving up. The buttons under the box are questions guaranteed to work.
 
 ## The staff area
 
-Press **Staff**. The PIN is **1967**, printed on the screen that asks for it because
-this is a demonstration and a hidden PIN would lock the audience out of half the
-program. It is not security and does not pretend to be.
+Press **Staff**. The PIN is **1967**, shown as a hint under the field that asks for it
+so nobody trying the program is locked out. It is not security and does not pretend
+to be.
 
 **Order queue.** Orders placed in this session, newest first. One button moves a
 ticket to its next stage. The ninety days of past orders are not here; they are what
@@ -105,5 +105,5 @@ ways, and measure four ways. Every column heading sorts by it.
 Above the table: four headline figures with the same figures from the period before,
 and sentences naming what actually moved. Below it: export to CSV, or print.
 
-**Reset demo data** returns everything to a fresh install and rebuilds the ninety days
+**Reset all data** returns everything to a fresh install and rebuilds the ninety days
 of history. Worth doing between demonstrations.

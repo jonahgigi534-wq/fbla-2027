@@ -15,8 +15,8 @@ any of this is up to you.
 | Catering items with a 48 hour rule | 71                                         |
 | Generated order history            | 90 days, about 2,250 orders                |
 | Tests                              | 287, 97% line coverage of the logic        |
-| Functions, all documented          | 310                                        |
-| JavaScript modules                 | 84                                         |
+| Functions, all documented          | 304                                        |
+| JavaScript modules                 | 78                                         |
 | Runtime dependencies               | none                                       |
 | Outside services                   | one, optional: Llama 3.3 via OpenRouter    |
 | Offline build                      | about 560 KB in one file                   |
@@ -41,13 +41,12 @@ for that: the whole `domain/` layer has no idea where its data comes from.
 
 **Are you storing credit card numbers?**
 No. Card details are never sent anywhere and no card number is kept. Only the last four digits
-reach the saved order, so a receipt can say which card. The payment step says so on
-screen. The Luhn checksum is run to catch a mistyped digit, which is the only useful
+reach the saved order, so a receipt can say which card. The card field says so. The Luhn checksum is run to catch a mistyped digit, which is the only useful
 check possible without a payment processor.
 
-**Why is the staff PIN printed on the screen?**
-Because this is a demonstration, and a hidden PIN would lock the audience out of half
-the program. It is not security and the screen says so. Real access control needs a
+**Why is the staff PIN shown under the field?**
+So anyone trying the program can reach the staff side without asking. It is not
+security. Real access control needs a
 server to check against, which a program with no server does not have. Putting a
 secret in a file that ships to the browser would be worse: it would look like security
 without being any.

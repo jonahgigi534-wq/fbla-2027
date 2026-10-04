@@ -67,7 +67,7 @@ Silent. No talking to judges. Practice it with a timer until it fits comfortably
    switch to airplane mode: everything still works, and the assistant answers from the
    device instead.
 3. Open `dist/standalone.html`.
-4. **Reset demo data**: Staff, PIN 1967, Reset demo data. This puts the program back
+4. **Reset all data**: Staff, PIN 1967, Reset all data. This puts the program back
    to a fresh install and rebuilds the ninety days of history, so the previous round
    leaves no trace.
 5. Navigate back to the home screen and leave it there.
@@ -82,10 +82,10 @@ Silent. No talking to judges. Practice it with a timer until it fits comfortably
 
 ## Things worth knowing while presenting
 
-**The staff PIN is 1967.** It is printed on the screen that asks for it, on purpose,
+**The staff PIN is 1967.** It is shown under the field that asks for it, on purpose,
 so a judge who wanders into the staff area is never stuck.
 
-**Reset demo data** is under Staff. Use it between rounds. It does not remove the AI
+**Reset all data** is under Staff. Use it between rounds. It does not remove the AI
 key, so there is nothing to paste in again.
 
 **If the assistant says the AI could not be reached**, keep going. It has already
@@ -113,23 +113,20 @@ answers that go beyond what was shown are worth points of their own.
 
 Nobody sees the code before the event. The rating sheet gives twenty points to the code
 itself, ten for comments, naming, and formatting and ten for modular structure, and the
-only evidence the judges get for either is what is shown in the room. Ninety seconds is
+only evidence the judges get for either is what is shown in the room. About a minute is
 enough. It goes straight after the live demonstration, as the step from what the
 program does to how it is built.
 
-1. **Help → Programming concepts**, fifteen seconds. Every concept the topic names is
-   matched to a file and a function. _"Everything the topic asks us to show is mapped
-   here. Let me open one."_
-2. **The folders**, fifteen seconds. Switch to the editor with `src/js` open one level:
+1. **The folders**, fifteen seconds. Switch to the editor with `src/js` open one level:
    `data`, `domain`, `app`, `ui`. Four folders with one job each, and the logic never
    reaches into the screens, which a script checks. This is modular structure.
-3. **`domain/pricing.js`**, thirty seconds. It is the file the Variables row points at.
+2. **`domain/pricing.js`**, thirty seconds.
    Point at the numbered steps in the comment at the top, then at `subtotal`,
    `discount`, `goods`, `tax`, and `tip` inside `calculateOrderTotals`. The comments say
    why rather than what: the discount comes off before tax, because taxing first
    overcharges the customer. Each step is its own named variable, so the arithmetic
    reads top to bottom. This is comments, naming, and formatting.
-4. **`npm run check`**, twenty seconds. It is already typed, so it takes one keypress.
+3. **`npm run check`**, twenty seconds. It is already typed, so it takes one keypress.
    Read the test count off the screen rather than quoting one from memory, then name the
    four checks: every function documented, the layers kept apart, nothing misspelled,
    and every figure in the documentation still true. If you want one moment that

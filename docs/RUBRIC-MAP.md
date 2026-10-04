@@ -7,7 +7,7 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every function has a documentation block, private helpers included. 310 of 310,
+- Every function has a documentation block, private helpers included. 304 of 304,
   checked by
   `npm run check`, not by inspection.
 - Every file opens with a block saying what it is for and who calls it.
@@ -37,8 +37,8 @@ are earned in the room rather than in the code.
 - Every list has an instructional empty state that names the situation and offers one
   button that fixes it: empty cart, no orders, no search results, an empty report
   range, a filtered stock list with nothing in it.
-- The staff PIN is printed on the screen that asks for it, so nobody exploring the
-  program hits a wall.
+- The staff PIN is shown as a hint under the field that asks for it, so nobody
+  exploring the program hits a wall.
 
 **Navigation, help menu, and an intelligent feature**
 
@@ -63,8 +63,6 @@ are earned in the room rather than in the code.
 
 - The split is the design, not a claim: `domain/validation.js` asks whether a value is
   well formed, `domain/orderRules.js` asks whether it suits this order.
-- All 16 inputs, with both checks side by side, are listed in the program under
-  **Help → Validation rules**.
 - The clearest example: a ZIP code can be five real digits and still not be one this
   restaurant delivers to. Each gets a different message.
 
@@ -72,10 +70,8 @@ are earned in the room rather than in the code.
 
 **Addresses all parts of the prompt, correlation explained in the instructions**
 
-- The full clause by clause mapping is **in the program**, under
-  **Help → How this meets the topic**, quoting each clause of the assigned topic and
-  linking to the feature that answers it.
-- Also summarized in the [README](../README.md).
+- The clause by clause mapping is in the [README](../README.md), under How this
+  meets the topic, and is covered in the presentation itself.
 
 **A presentable report the user can customize and analyze**
 

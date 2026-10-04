@@ -49,7 +49,7 @@ Llama 3.3 instead:
 
 The key is saved in that browser only and is never written into the code, since
 anything in the code ends up in the file the browser opens, where View Source shows
-it. It survives Reset demo data. If the key is rejected or the connection drops,
+it. It survives Reset all data. If the key is rejected or the connection drops,
 the assistant says so and answers from this device instead.
 
 ### Checking it
@@ -102,9 +102,7 @@ place and manage orders, calculate totals, and review order information, while
 handling unavailable items, inventory limits, invalid entries, and customer budget
 constraints.
 
-The full clause by clause mapping is **inside the program**, under
-Help → How this meets the topic, with a link from each clause to the feature that
-answers it. A short version:
+Where each part of it is answered:
 
 | The topic asks for          | Where it is                                                                                              |
 | --------------------------- | -------------------------------------------------------------------------------------------------------- |
