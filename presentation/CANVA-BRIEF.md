@@ -16,8 +16,8 @@ the question round are in [QA-FACT-SHEET.md](QA-FACT-SHEET.md).
    computer by itself, and this takes ten seconds.
 5. Paste the prompt below.
 
-No GitHub connector is needed. The repository is private, and everything is already in
-the local folder.
+No GitHub connector is needed. Everything is already in the local folder, and a teammate
+can get the same folder with `git clone`.
 
 ## The prompt to paste into Cowork
 
