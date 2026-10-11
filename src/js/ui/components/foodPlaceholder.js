@@ -8,10 +8,12 @@ import { el } from '../dom.js';
  * Glyphs keyed by a word that appears in the item name.
  *
  * Checked in order, so specific words come first: toast before bread, fries before
- * potato.
+ * potato. Steak comes before tea because "steak" has "tea" inside it, and every
+ * steak without a photo used to get a teacup.
  */
 const GLYPH_BY_KEYWORD = [
   ['coffee', '☕'],
+  ['steak', '\u{1F969}'],
   ['tea', '\u{1F375}'],
   ['pie', '\u{1F967}'],
   ['pancake', '\u{1F95E}'],
@@ -25,7 +27,6 @@ const GLYPH_BY_KEYWORD = [
   ['potato', '\u{1F954}'],
   ['bacon', '\u{1F953}'],
   ['sausage', '\u{1F32D}'],
-  ['steak', '\u{1F969}'],
   ['chicken', '\u{1F357}'],
   ['shrimp', '\u{1F364}'],
   ['fish', '\u{1F41F}'],
