@@ -22,7 +22,7 @@ trading in Houston, Texas since 1967. Everything below belongs to them.
 | Six storefront photographs                  | Their location pages       | One per restaurant on the home screen                                         |
 | Six dish photographs                        | Their home page            | The featured items                                                            |
 | Bakery, cake, and mini pie photographs      | Their bakery page          | Category images                                                               |
-| Photographs of 244 menu items               | Their online ordering menu | Each shown on its own item, from `assets/img/menu`                            |
+| 244 dish photographs                        | Their online ordering menu | Each shown on its own item, from `assets/img/menu`                            |
 | Twenty category photographs                 | Their online ordering menu | Shown for items that have no photograph of their own                          |
 | Menu item names, descriptions, and prices   | Their online ordering menu | The catalog in `src/js/data/`                                                 |
 | Addresses, phone numbers, and opening hours | Their location pages       | `src/js/data/locations.js`                                                    |
