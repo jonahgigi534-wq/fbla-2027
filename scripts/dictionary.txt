@@ -137,6 +137,7 @@ attribution
 audience
 audio
 audit
+author
 authoritative
 authors
 autocomplete
@@ -771,6 +772,7 @@ endorsed
 ends
 enforced
 enforces
+engine
 english
 enough
 enter
@@ -1289,6 +1291,7 @@ levels
 libraries
 library
 license
+licensed
 licenses
 lid
 light
@@ -1554,8 +1557,10 @@ onto
 open
 opened
 opening
+openly
 openrouter
 opens
+openverse
 operate
 operations
 opinion
@@ -1572,6 +1577,7 @@ orders
 ordertypeid
 organization
 organized
+original
 other
 otherwise
 ounces
@@ -1907,6 +1913,7 @@ required
 requires
 rescan
 reset
+resized
 rest
 restates
 restaurant
@@ -1918,6 +1925,7 @@ return
 returning
 returns
 retype
+reuse
 reveal
 revenue
 review
