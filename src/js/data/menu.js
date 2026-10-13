@@ -13,6 +13,7 @@ import { SIDE_CATEGORIES } from './menu-sides.js';
 import { CATERING_CATEGORIES } from './menu-catering.js';
 import { ALLERGEN_KEYWORDS, MEAT_KEYWORDS } from './dietaryRules.js';
 import { CATEGORY_PHOTOS } from './categoryPhotos.js';
+import { ITEMS_WITH_PHOTOS } from './itemPhotos.js';
 import { buildDietaryTags, detectAllergens, toWords } from '../domain/dietary.js';
 
 /**
@@ -34,6 +35,9 @@ const PRODUCT_TYPE = 'product';
 function resolvePhoto(rawItem, categoryId) {
   if (rawItem.imageId) {
     return { src: `assets/img/${rawItem.imageId}.webp`, isCategoryPhoto: false };
+  }
+  if (ITEMS_WITH_PHOTOS.has(rawItem.id)) {
+    return { src: `assets/img/menu/${rawItem.id}.webp`, isCategoryPhoto: false };
   }
   const categoryFile = CATEGORY_PHOTOS[categoryId];
   if (categoryFile) {
