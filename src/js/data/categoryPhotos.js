@@ -2,7 +2,8 @@
  * A representative photo for each menu category.
  *
  * An item without its own photo borrows its category's, and the item screen says so.
- * Sides and catering get a drawn tile instead.
+ * Sides and catering have no category photo, so one with no photo of its own gets a
+ * drawn tile.
  */
 export const CATEGORY_PHOTOS = {
   // Food

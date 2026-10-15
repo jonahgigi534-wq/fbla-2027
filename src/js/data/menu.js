@@ -33,12 +33,15 @@ const PRODUCT_TYPE = 'product';
  * @returns {{src: string, isCategoryPhoto: boolean}|null} The picture, or null.
  */
 function resolvePhoto(rawItem, categoryId) {
+  // The menu photos come first. Some home page photos tagged on the catalog items
+  // showed a different dish, such as a steak plate on the banana pecan pancakes.
+  if (Object.hasOwn(ITEM_PHOTOS, rawItem.id)) {
+    const photoFile = ITEM_PHOTOS[rawItem.id];
+    // null means no photo fits, and a drawn tile beats a photo of the wrong food.
+    return photoFile ? { src: `assets/img/menu/${photoFile}.webp`, isCategoryPhoto: false } : null;
+  }
   if (rawItem.imageId) {
     return { src: `assets/img/${rawItem.imageId}.webp`, isCategoryPhoto: false };
-  }
-  const photoFile = ITEM_PHOTOS[rawItem.id];
-  if (photoFile) {
-    return { src: `assets/img/menu/${photoFile}.webp`, isCategoryPhoto: false };
   }
   const categoryFile = CATEGORY_PHOTOS[categoryId];
   if (categoryFile) {
