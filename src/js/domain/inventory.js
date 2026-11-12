@@ -76,6 +76,10 @@ export function remainingFor(item, lines, stockOverrides = {}) {
 export function checkAvailability(item, requested, lines, stockOverrides = {}) {
   const remaining = remainingFor(item, lines, stockOverrides);
 
+  // The stepper never offers these, but nothing else should be able to slip one in.
+  if (!Number.isInteger(requested) || requested < 1) {
+    return { allowed: false, remaining, message: 'Choose a quantity of at least 1.' };
+  }
   if (stockFor(item, stockOverrides) === 0) {
     return { allowed: false, remaining: 0, message: `${item.name} is sold out today.` };
   }

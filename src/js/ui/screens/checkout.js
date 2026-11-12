@@ -86,6 +86,40 @@ function timingSection({ slots, location, leadTimeHours, isDelivery, picker }) {
 }
 
 /**
+ * Builds one titled card on the checkout form.
+ *
+ * @param {string} title The card heading.
+ * @param {HTMLElement[]} children The fields inside it.
+ * @returns {HTMLElement} The card.
+ */
+function formCard(title, children) {
+  return el('section', { class: 'card' }, [
+    el('div', { class: 'card__body' }, [el('h2', { text: title }), ...children]),
+  ]);
+}
+
+/**
+ * Builds the checkout form: details, address when delivering, time, and payment.
+ *
+ * @param {object} options What the form holds.
+ * @param {object} options.fields The fields from buildCheckoutFields.
+ * @param {boolean} options.isDelivery Whether this order is being delivered.
+ * @param {object} options.timing Everything timingSection needs.
+ * @returns {HTMLElement} The form.
+ */
+function checkoutForm({ fields, isDelivery, timing }) {
+  return el('form', { class: 'checkout-form stack', onSubmit: (event) => event.preventDefault() }, [
+    formCard('Your details', [fields.name.node, fields.phone.node, fields.email.node]),
+    isDelivery ? formCard('Where we are delivering', [fields.street.node, fields.zip.node]) : null,
+    timingSection(timing),
+    formCard('Payment', [
+      fields.card.node,
+      el('div', { class: 'checkout-form__pair' }, [fields.expiry.node, fields.security.node]),
+    ]),
+  ]);
+}
+
+/**
  * Renders the checkout screen.
  *
  * @param {HTMLElement} container The main element to render into.
@@ -154,36 +188,11 @@ export function renderCheckout(container) {
     ]),
 
     el('div', { class: 'checkout-layout' }, [
-      el('form', { class: 'checkout-form stack', onSubmit: (event) => event.preventDefault() }, [
-        el('section', { class: 'card' }, [
-          el('div', { class: 'card__body' }, [
-            el('h2', { text: 'Your details' }),
-            fields.name.node,
-            fields.phone.node,
-            fields.email.node,
-          ]),
-        ]),
-
-        isDelivery
-          ? el('section', { class: 'card' }, [
-              el('div', { class: 'card__body' }, [
-                el('h2', { text: 'Where we are delivering' }),
-                fields.street.node,
-                fields.zip.node,
-              ]),
-            ])
-          : null,
-
-        timingSection({ slots, location, leadTimeHours, isDelivery, picker }),
-
-        el('section', { class: 'card' }, [
-          el('div', { class: 'card__body' }, [
-            el('h2', { text: 'Payment' }),
-            fields.card.node,
-            el('div', { class: 'checkout-form__pair' }, [fields.expiry.node, fields.security.node]),
-          ]),
-        ]),
-      ]),
+      checkoutForm({
+        fields,
+        isDelivery,
+        timing: { slots, location, leadTimeHours, isDelivery, picker },
+      }),
 
       checkoutSummary({
         cart: state.cart,

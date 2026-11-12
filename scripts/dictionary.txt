@@ -33,6 +33,7 @@ accident
 account
 accurate
 across
+actions
 actually
 add
 added
@@ -91,6 +92,7 @@ anyway
 anywhere
 apart
 api
+apostrophe
 apostrophes
 app
 appear
@@ -184,6 +186,7 @@ bavarian
 bayoo
 bayou
 beans
+beats
 bebas
 because
 becomes
@@ -306,6 +309,7 @@ calculation
 call
 callable
 called
+calling
 calls
 calm
 calorie
@@ -577,6 +581,7 @@ cucumber
 cup
 cups
 curds
+curly
 current
 currently
 custard
@@ -605,6 +610,7 @@ deal
 decade
 decaf
 decide
+decided
 decides
 decimal
 decision
@@ -626,6 +632,7 @@ delicious
 delight
 delivary
 deliver
+delivering
 delivers
 delivery
 deliveryfee
@@ -715,6 +722,7 @@ don
 done
 doodle
 dot
+dots
 double
 doubling
 down
@@ -722,6 +730,9 @@ download
 downloaded
 dozen
 drag
+drawing
+drawn
+draws
 dream
 dress
 dressing
@@ -899,6 +910,7 @@ fixes
 fixing
 fixings
 flag
+flagged
 flakes
 flat
 flattened
@@ -1049,6 +1061,7 @@ handles
 handling
 hanging
 hangover
+happen
 happened
 happens
 happy
@@ -1469,6 +1482,7 @@ multiline
 multiplications
 mushroom
 mushrooms
+must
 mutation
 name
 named
@@ -1543,6 +1557,7 @@ offers
 office
 offline
 old
+older
 omelet
 omelette
 omelettes
@@ -1579,6 +1594,7 @@ organization
 organized
 original
 other
+others
 otherwise
 ounces
 our
@@ -1671,6 +1687,7 @@ pickle
 pickled
 pickles
 pickup
+picture
 pictures
 pie
 piece
@@ -1694,6 +1711,7 @@ plain
 plainly
 plan
 plant
+plate
 plates
 platter
 platters
@@ -1921,6 +1939,7 @@ restaurants
 restores
 result
 results
+retake
 return
 returning
 returns
@@ -2188,6 +2207,7 @@ started
 starter
 starting
 starts
+startup
 state
 stated
 states
@@ -2283,6 +2303,7 @@ tablet
 tabs
 taco
 tacos
+tagged
 tags
 take
 taken
@@ -2414,6 +2435,7 @@ tree
 tres
 triangles
 tried
+tries
 triple
 true
 trust
@@ -2455,6 +2477,7 @@ unlike
 unlock
 unmediated
 unreadable
+unrecognized
 unreliable
 unsweet
 until

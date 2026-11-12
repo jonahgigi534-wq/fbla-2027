@@ -113,3 +113,27 @@ test('an AI key is accepted only in the shape OpenRouter issues', () => {
   assert.equal(validateApiKey('sk-proj-0000000000000000').valid, false, 'a key from elsewhere');
   assert.equal(validateApiKey('sk-or-v1-00').valid, false, 'half a key');
 });
+
+test('a name typed with the curly apostrophe a phone inserts is accepted', () => {
+  assert.equal(validateName('Mary-Jane O’Neil').valid, true);
+});
+
+test('a phone number with the +1 country code in front is accepted', () => {
+  assert.equal(validatePhone('+1 713 555 1234').valid, true);
+  assert.equal(validatePhone('1-713-528-3816').valid, true);
+  // Taking the country code off must not let a bad area code through.
+  assert.equal(validatePhone('+1 113 555 1234').valid, false);
+});
+
+test('an email address with two dots in a row is refused', () => {
+  assert.equal(validateEmail('a@b..com').valid, false);
+  assert.equal(validateEmail('first..last@example.com').valid, false);
+  assert.equal(validateEmail('first.last@example.com').valid, true);
+});
+
+test('a card number of all zeros is refused even though it passes the checksum', () => {
+  assert.equal(passesLuhn('0000000000000000'), true);
+  const result = validateCardNumber('0000 0000 0000 0000');
+  assert.equal(result.valid, false);
+  assert.match(result.message, /not a real card number/);
+});

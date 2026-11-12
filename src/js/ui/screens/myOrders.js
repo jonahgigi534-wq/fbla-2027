@@ -92,6 +92,10 @@ export function renderMyOrders(container) {
             ? `Showing the ${orders.length} most recent of ${mine.length} orders on this device.`
             : `${mine.length} order${mine.length === 1 ? '' : 's'} on this device.`,
       }),
+      el('p', {
+        class: 'muted',
+        text: 'The older orders are sample history, so this screen has something to show before you order. Orders you place appear at the top.',
+      }),
     ]),
     el('div', { class: 'stack' }, orders.map(orderRow)),
   ]);

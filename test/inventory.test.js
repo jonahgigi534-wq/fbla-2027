@@ -136,3 +136,12 @@ test('the catalog handed to screens carries staff stock changes, and is not chan
   assert.equal(live[1], catalog[1], 'an untouched item is passed through as it is');
   assert.equal(catalog[0].stock, 40, 'the catalog itself is never edited');
 });
+
+test('a quantity of zero, below zero, or with a fraction is refused', () => {
+  for (const requested of [0, -1, 1.5, Number.NaN]) {
+    const verdict = checkAvailability(pie, requested, []);
+    assert.equal(verdict.allowed, false, `${requested} was allowed`);
+    assert.equal(verdict.message, 'Choose a quantity of at least 1.');
+  }
+  assert.equal(checkAvailability(pie, 1, []).allowed, true);
+});

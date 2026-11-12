@@ -73,6 +73,130 @@ function receiptRow(label, cents, isTotal = false) {
 }
 
 /**
+ * Builds one labeled detail on the receipt, such as the name or the card used.
+ *
+ * @param {string} label What the detail is.
+ * @param {string} value The detail itself.
+ * @returns {HTMLElement} The detail.
+ */
+function receiptDetail(label, value) {
+  return el('div', {}, [el('strong', { text: label }), el('div', { text: value })]);
+}
+
+/**
+ * Builds the restaurant's name and address at the top of the receipt.
+ *
+ * @param {object} location The restaurant the order was placed with.
+ * @returns {HTMLElement} The heading block.
+ */
+function receiptHead(location) {
+  return el('div', { class: 'receipt__head' }, [
+    el('h2', { text: 'House of Pies' }),
+    el('p', {
+      class: 'muted',
+      text: `${location.name}, ${location.street}, ${location.cityStateZip}`,
+    }),
+    el('p', { class: 'muted', text: location.phone }),
+  ]);
+}
+
+/**
+ * Builds the details under the heading: when, who, where, and how it was paid.
+ *
+ * @param {object} order The order being shown.
+ * @param {Date} placed When it was placed.
+ * @param {boolean} isPickup Whether it is being collected rather than delivered.
+ * @returns {HTMLElement} The details block.
+ */
+function receiptMeta(order, placed, isPickup) {
+  const { customer } = order;
+  return el('div', { class: 'receipt__meta' }, [
+    receiptDetail('Placed', placed.toLocaleString()),
+    receiptDetail(isPickup ? 'Collection' : 'Delivery', order.slotLabel),
+    receiptDetail('Name', customer.name),
+    // The sample history has no phone numbers, and a label over nothing looks broken.
+    customer.phone ? receiptDetail('Phone', customer.phone) : null,
+    customer.street ? receiptDetail('Address', `${customer.street}, ${customer.zip}`) : null,
+    receiptDetail('Paid with', `Card ending ${order.cardLastFour}`),
+  ]);
+}
+
+/**
+ * Builds one of the minus and plus buttons beside a receipt line.
+ *
+ * @param {object} order The order being shown.
+ * @param {object} line The line the button changes.
+ * @param {number} step 1 for one more, -1 for one fewer.
+ * @returns {HTMLElement} The button.
+ */
+function stepperButton(order, line, step) {
+  const isMore = step > 0;
+  return el(
+    'button',
+    {
+      class: 'stepper__button',
+      type: 'button',
+      'aria-label': `${isMore ? 'One more' : 'One fewer'} ${line.name}`,
+      onClick: () =>
+        showResult(changeOrderLine(order.orderNumber, line.lineId, line.quantity + step)),
+    },
+    isMore ? '+' : '−'
+  );
+}
+
+/**
+ * Builds one item line on the receipt.
+ *
+ * @param {object} order The order being shown.
+ * @param {object} line The line to show.
+ * @returns {HTMLElement} The line.
+ */
+function receiptLine(order, line) {
+  return el('div', { class: 'receipt__line' }, [
+    el('span', {}, [
+      el('span', { text: `${line.quantity} x ${line.name}` }),
+      line.note ? el('em', { class: 'receipt__note', text: ` (${line.note})` }) : null,
+    ]),
+    el('span', { class: 'receipt__line-right' }, [
+      el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
+      // Editing is offered only while the ticket is still in the queue.
+      // Once the kitchen starts, the food exists and the order is fixed.
+      canModify(order)
+        ? el(
+            'span',
+            {
+              class: 'stepper stepper--small',
+              role: 'group',
+              'aria-label': `Change quantity of ${line.name}`,
+            },
+            [stepperButton(order, line, -1), stepperButton(order, line, 1)]
+          )
+        : null,
+    ]),
+  ]);
+}
+
+/**
+ * Builds the money breakdown at the bottom of the receipt.
+ *
+ * @param {object} order The order being shown.
+ * @returns {HTMLElement} The totals block.
+ */
+function receiptTotals(order) {
+  const { totals } = order;
+  return el('div', { class: 'totals' }, [
+    receiptRow('Subtotal', totals.subtotal),
+    totals.discount > 0 ? receiptRow(`Discount (${order.promoCode})`, -totals.discount) : null,
+    totals.deliveryFee > 0 ? receiptRow('Delivery', totals.deliveryFee) : null,
+    receiptRow('Sales tax, 8.25%', totals.tax),
+    // Hidden when zero, but never dropped: a printed receipt whose lines do not
+    // add up to the total it charges is the one thing a customer will query.
+    totals.tip > 0 ? receiptRow('Tip', totals.tip) : null,
+    receiptRow('Total', totals.total, true),
+  ]);
+}
+
+/**
  * Builds the printed receipt for one order.
  *
  * @param {object} order The order being shown.
@@ -84,106 +208,14 @@ function receiptRow(label, cents, isTotal = false) {
 function receiptCard(order, location, placed, isPickup) {
   return el('section', { class: 'card receipt' }, [
     el('div', { class: 'card__body stack' }, [
-      el('div', { class: 'receipt__head' }, [
-        el('h2', { text: 'House of Pies' }),
-        el('p', {
-          class: 'muted',
-          text: `${location.name}, ${location.street}, ${location.cityStateZip}`,
-        }),
-        el('p', { class: 'muted', text: location.phone }),
-      ]),
-
-      el('div', { class: 'receipt__meta' }, [
-        el('div', {}, [
-          el('strong', { text: 'Placed' }),
-          el('div', { text: placed.toLocaleString() }),
-        ]),
-        el('div', {}, [
-          el('strong', { text: isPickup ? 'Collection' : 'Delivery' }),
-          el('div', { text: order.slotLabel }),
-        ]),
-        el('div', {}, [el('strong', { text: 'Name' }), el('div', { text: order.customer.name })]),
-        el('div', {}, [el('strong', { text: 'Phone' }), el('div', { text: order.customer.phone })]),
-        order.customer.street
-          ? el('div', {}, [
-              el('strong', { text: 'Address' }),
-              el('div', { text: `${order.customer.street}, ${order.customer.zip}` }),
-            ])
-          : null,
-        el('div', {}, [
-          el('strong', { text: 'Paid with' }),
-          el('div', { text: `Card ending ${order.cardLastFour}` }),
-        ]),
-      ]),
-
+      receiptHead(location),
+      receiptMeta(order, placed, isPickup),
       el(
         'div',
         { class: 'receipt__lines' },
-        order.lines.map((line) =>
-          el('div', { class: 'receipt__line' }, [
-            el('span', {}, [
-              el('span', { text: `${line.quantity} x ${line.name}` }),
-              line.note ? el('em', { class: 'receipt__note', text: ` (${line.note})` }) : null,
-            ]),
-            el('span', { class: 'receipt__line-right' }, [
-              el('span', { class: 'price', text: formatUSD(line.priceCents * line.quantity) }),
-              // Editing is offered only while the ticket is still in the queue.
-              // Once the kitchen starts, the food exists and the order is fixed.
-              canModify(order)
-                ? el(
-                    'span',
-                    {
-                      class: 'stepper stepper--small',
-                      role: 'group',
-                      'aria-label': `Change quantity of ${line.name}`,
-                    },
-                    [
-                      el(
-                        'button',
-                        {
-                          class: 'stepper__button',
-                          type: 'button',
-                          'aria-label': `One fewer ${line.name}`,
-                          onClick: () =>
-                            showResult(
-                              changeOrderLine(order.orderNumber, line.lineId, line.quantity - 1)
-                            ),
-                        },
-                        '−'
-                      ),
-                      el(
-                        'button',
-                        {
-                          class: 'stepper__button',
-                          type: 'button',
-                          'aria-label': `One more ${line.name}`,
-                          onClick: () =>
-                            showResult(
-                              changeOrderLine(order.orderNumber, line.lineId, line.quantity + 1)
-                            ),
-                        },
-                        '+'
-                      ),
-                    ]
-                  )
-                : null,
-            ]),
-          ])
-        )
+        order.lines.map((line) => receiptLine(order, line))
       ),
-
-      el('div', { class: 'totals' }, [
-        receiptRow('Subtotal', order.totals.subtotal),
-        order.totals.discount > 0
-          ? receiptRow(`Discount (${order.promoCode})`, -order.totals.discount)
-          : null,
-        order.totals.deliveryFee > 0 ? receiptRow('Delivery', order.totals.deliveryFee) : null,
-        receiptRow('Sales tax, 8.25%', order.totals.tax),
-        // Hidden when zero, but never dropped: a printed receipt whose lines do not
-        // add up to the total it charges is the one thing a customer will query.
-        order.totals.tip > 0 ? receiptRow('Tip', order.totals.tip) : null,
-        receiptRow('Total', order.totals.total, true),
-      ]),
+      receiptTotals(order),
     ]),
   ]);
 }

@@ -3,7 +3,7 @@
  */
 
 import { el } from '../../dom.js';
-import { GROUP_BY_OPTIONS, METRIC_OPTIONS } from '../../../domain/reports.js';
+import { GROUP_BY_OPTIONS, LINE_LEVEL_GROUPINGS, METRIC_OPTIONS } from '../../../domain/reports.js';
 import { formatMetric, labelForKey, view } from './reportView.js';
 
 /**
@@ -82,7 +82,7 @@ export function reportTable(rows, onChange, isPreviousComplete = true) {
     ])
   );
 
-  return el('div', { class: 'table-wrap' }, [
+  const table = el('div', { class: 'table-wrap' }, [
     el('table', { class: 'table' }, [
       el('caption', {
         class: 'visually-hidden',
@@ -91,5 +91,18 @@ export function reportTable(rows, onChange, isPreviousComplete = true) {
       el('thead', {}, [header]),
       el('tbody', {}, body),
     ]),
+  ]);
+
+  if (!LINE_LEVEL_GROUPINGS.includes(view.groupBy)) {
+    return table;
+  }
+  // Tax and delivery belong to a whole order, not to any one item on it, so these rows
+  // count the menu price only and add up to less than the revenue tile above.
+  return el('div', { class: 'stack' }, [
+    table,
+    el('p', {
+      class: 'field__hint',
+      text: 'By category or item, revenue is menu price times quantity, before discounts, delivery, and tax. That is why these rows add up to less than the revenue total above.',
+    }),
   ]);
 }

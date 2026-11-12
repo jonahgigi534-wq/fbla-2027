@@ -145,6 +145,10 @@ export function renderSpending(container) {
           class: 'page-head__lede',
           text: 'What you have ordered, and what you keep coming back for.',
         }),
+        el('p', {
+          class: 'muted',
+          text: 'The older orders are sample history, so this screen has something to show before you order. Orders you place are counted too.',
+        }),
       ]),
 
       el(

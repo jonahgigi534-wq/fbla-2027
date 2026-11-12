@@ -107,17 +107,3 @@ export function save(state) {
     return false;
   }
 }
-
-/**
- * Removes everything this program saved, so the next load starts fresh.
- *
- * @returns {void}
- */
-export function clear() {
-  memoryFallback = null;
-  try {
-    window.localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    isUsingMemoryFallback = true;
-  }
-}

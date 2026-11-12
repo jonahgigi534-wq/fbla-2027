@@ -21,17 +21,29 @@ import {
 const LAST_FOUR = -4;
 
 /**
- * Checks every field shape and reports whether they all passed.
+ * Checks every field shape and finds the first one that failed.
  *
  * @param {object} fields The fields from buildCheckoutFields.
- * @returns {boolean} True when every field is happy with what it holds.
+ * @returns {object|undefined} The first field with a problem, or undefined when every
+ *   field is happy with what it holds.
  */
-function everyShapeIsValid(fields) {
-  // Mapped before it is reduced rather than short circuited, so every field that is
-  // wrong shows its own message instead of only the first one.
-  return Object.values(fields)
-    .map((field) => field.check())
-    .every(Boolean);
+function firstInvalidField(fields) {
+  // Every field is checked before one is picked, rather than stopping at the first,
+  // so every field that is wrong shows its own message instead of only the first one.
+  const list = Object.values(fields);
+  const results = list.map((field) => field.check());
+  return list[results.indexOf(false)];
+}
+
+/**
+ * Puts the cursor in a field with a problem, so a keyboard or screen reader user lands
+ * on the message rather than having to hunt for it.
+ *
+ * @param {object|null|undefined} field A field from buildCheckoutFields.
+ * @returns {void}
+ */
+function focusField(field) {
+  field?.input.focus();
 }
 
 /**
@@ -107,8 +119,10 @@ export function submitCheckout(options) {
   const { fields, isDelivery, slotError } = options;
   slotError.textContent = '';
 
-  if (!everyShapeIsValid(fields)) {
+  const invalidField = firstInvalidField(fields);
+  if (invalidField) {
     showToast('Some details need fixing. The fields in red explain what.', 'error');
+    focusField(invalidField);
     return;
   }
 
@@ -116,6 +130,7 @@ export function submitCheckout(options) {
   if (!verdict.valid) {
     if (verdict.field) {
       verdict.field.showError(verdict.message);
+      focusField(verdict.field);
     }
     if (verdict.isSlot) {
       slotError.textContent = verdict.message;

@@ -6,6 +6,7 @@
  */
 
 import { formatUSD } from '../domain/money.js';
+import { DELIVERY_MINIMUM_CENTS, FREE_DELIVERY_THRESHOLD_CENTS } from '../domain/pricing.js';
 import { describeStatus } from '../domain/hours.js';
 import { DAY_NAMES, LOCATIONS } from './locations.js';
 import { PROMOS } from './promos.js';
@@ -143,7 +144,7 @@ export const INTENTS = [
     keywords: ['delivery', 'deliver', 'pickup', 'collect', 'collection', 'takeout', 'takeaway'],
     answer: ({ location }) =>
       reply(
-        `All six restaurants do pickup, delivery, and dine in. ${location.name} delivers to ${location.deliveryZips.join(', ')}. Delivery orders start at $15.00 and the fee is waived over $35.00.`,
+        `All six restaurants do pickup, delivery, and dine in. ${location.name} delivers to ${location.deliveryZips.join(', ')}. Delivery orders start at ${formatUSD(DELIVERY_MINIMUM_CENTS)} and the fee is waived from ${formatUSD(FREE_DELIVERY_THRESHOLD_CENTS)}.`,
         { links: [{ label: 'Choose how you want it', path: '/cart' }] }
       ),
   },
@@ -154,7 +155,8 @@ export const INTENTS = [
     phrases: ['my order', 'order status', 'track my', 'how long'],
     keywords: ['status', 'track', 'tracking', 'ready', 'waiting', 'progress'],
     answer: ({ orders }) => {
-      const live = orders.filter((order) => !order.isSeeded);
+      // The same orders the Orders screen lists, so the two never disagree.
+      const live = orders.filter((order) => !order.isSeeded || order.isDemoCustomer);
       if (live.length === 0) {
         return reply(
           'You have not placed an order yet in this session. Once you do, it shows up here and on the Orders screen with a live status.',

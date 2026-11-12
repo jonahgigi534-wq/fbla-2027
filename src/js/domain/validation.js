@@ -32,7 +32,8 @@ export function validateName(value) {
   if (trimmed.length < 2) {
     return fail('That name looks too short. Please enter at least two characters.');
   }
-  if (!/^[A-Za-z][A-Za-z\s'.-]*$/.test(trimmed)) {
+  // ’ is the apostrophe phones type, so O’Neil is as welcome as O'Neil.
+  if (!/^[A-Za-z][A-Za-z\s'’.-]*$/.test(trimmed)) {
     return fail('Names can use letters, spaces, apostrophes, and hyphens only.');
   }
   return OK;
@@ -41,13 +42,16 @@ export function validateName(value) {
 /**
  * Checks a US phone number.
  *
- * Formatting is stripped first, so (713) 528-3816 and 7135283816 both pass.
+ * Formatting is stripped first, so (713) 528-3816 and 7135283816 both pass, and so
+ * does +1 713 528 3816, since the 1 in front is the country code, not the area code.
  *
  * @param {string} value Raw text from the field.
  * @returns {{valid: boolean, message: string|null}} The verdict.
  */
 export function validatePhone(value) {
-  const digits = String(value).replace(/\D/g, '');
+  const allDigits = String(value).replace(/\D/g, '');
+  const digits =
+    allDigits.length === 11 && allDigits.startsWith('1') ? allDigits.slice(1) : allDigits;
   if (digits === '') {
     return fail('Please enter a phone number so we can reach you about the order.');
   }
@@ -76,6 +80,9 @@ export function validateEmail(value) {
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmed)) {
     return fail('That does not look like an email address. Check for a missing @ or dot.');
+  }
+  if (trimmed.includes('..')) {
+    return fail('That email address has two dots in a row. Check it for a typo.');
   }
   return OK;
 }
@@ -157,6 +164,10 @@ export function validateCardNumber(value) {
   }
   if (digits.length < 13 || digits.length > 19) {
     return fail('Card numbers are between 13 and 19 digits long.');
+  }
+  // All zeros passes the checksum, but no card has that number.
+  if (/^0+$/.test(digits)) {
+    return fail('That is not a real card number. Check the digits on your card.');
   }
   if (!passesLuhn(digits)) {
     return fail('That card number fails its checksum, so a digit is probably mistyped.');

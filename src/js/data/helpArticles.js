@@ -84,6 +84,13 @@ export const HELP_ARTICLES = [
     body: 'Your cart and orders are saved on this device, in your browser. No card number is kept: only the last four digits reach the saved order, so a receipt can identify which card was used. The one thing that ever leaves this device is a question to the assistant while AI answers are switched on. It goes to OpenRouter with the menu, stock, your cart, your recent order numbers, and these help guides. Your name, phone, email, address, and card are never included. Some browsers block saving on a page opened directly from a file, and a notice at the top says so if that happens.',
   },
   {
+    id: 'what-is-checked',
+    group: 'Using the site',
+    title: 'What the site checks for you',
+    keywords: ['check', 'rules', 'limit', 'stock', 'invalid', 'mistake', 'budget', 'unavailable'],
+    body: 'The cart works out the subtotal, any discount, delivery, tax, and tip as you add things, so the total is always current. You cannot add more of an item than the restaurant has left, and a sold out item offers three others instead. Each checkout field checks itself when you leave it and says what to fix. A ZIP outside the delivery area, a card that has expired, or a time the kitchen cannot make is caught before the order goes through. If you set a spending limit, checkout stops when the total goes over it and names the cheapest item to take out. After ordering, you can change or cancel until the kitchen starts.',
+  },
+  {
     id: 'staff',
     group: 'Using the site',
     title: 'The staff area',

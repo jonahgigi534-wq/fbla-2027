@@ -6,7 +6,7 @@
  * 1440 means midnight at the end of the day.
  *
  * Read by the location picker, the open-now badge on the home screen, the pickup
- * slot builder in domain/slots.js, and the delivery ZIP check in domain/validation.js.
+ * slot builder in domain/slots.js, and the delivery ZIP check in domain/orderRules.js.
  */
 
 /** Minutes in a day. A closing time equal to this means midnight. */

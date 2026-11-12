@@ -33,7 +33,8 @@ function ensureHost() {
  * Shows a message.
  *
  * @param {string} message The text to show.
- * @param {string} [tone] 'success' or 'error'. An error stays until dismissed.
+ * @param {string} [tone] 'success' or 'error'. An error stays for nine seconds
+ *   instead of under four, and either one can be closed sooner.
  * @returns {void}
  */
 export function showToast(message, tone = 'success') {

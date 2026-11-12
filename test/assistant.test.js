@@ -171,3 +171,40 @@ test('every intent can be reached by its own suggested label', () => {
     assert.equal(result.matched, true, `the chip "${intent.label}" matched nothing`);
   }
 });
+
+/**
+ * Finds one intent by id.
+ *
+ * @param {string} id The intent id.
+ * @returns {object} The intent.
+ */
+function intent(id) {
+  return INTENTS.find((candidate) => candidate.id === id);
+}
+
+test('the order question sees the same orders the Orders screen lists', () => {
+  const orders = [
+    {
+      orderNumber: 7,
+      status: 'Complete',
+      slotLabel: 'Collected',
+      isSeeded: true,
+      isDemoCustomer: true,
+    },
+  ];
+  const answer = intent('order-status').answer({ orders });
+  assert.match(answer.text, /order is number 7/);
+});
+
+test('generated history that is not this customer stays out of the order answer', () => {
+  const orders = [{ orderNumber: 3, isSeeded: true, isDemoCustomer: false }];
+  const answer = intent('order-status').answer({ orders });
+  assert.match(answer.text, /not placed an order yet/);
+});
+
+test('the delivery answer quotes the minimum and free delivery figures from pricing', () => {
+  const location = { name: 'Kirby', deliveryZips: ['77098'] };
+  const answer = intent('delivery').answer({ location });
+  assert.match(answer.text, /start at \$15\.00/);
+  assert.match(answer.text, /waived from \$35\.00/);
+});

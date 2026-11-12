@@ -11,7 +11,7 @@ import { BAKERY_CATEGORIES } from './menu-bakery.js';
 import { DRINK_CATEGORIES } from './menu-drinks.js';
 import { SIDE_CATEGORIES } from './menu-sides.js';
 import { CATERING_CATEGORIES } from './menu-catering.js';
-import { ALLERGEN_KEYWORDS, MEAT_KEYWORDS } from './dietaryRules.js';
+import { ALLERGEN_KEYWORDS, MEAT_KEYWORDS, MEAT_WORDS_WITH_MEATLESS_USES } from './dietaryRules.js';
 import { CATEGORY_PHOTOS } from './categoryPhotos.js';
 import { ITEM_PHOTOS } from './itemPhotos.js';
 import { buildDietaryTags, detectAllergens, toWords } from '../domain/dietary.js';
@@ -66,7 +66,12 @@ function finishItem(rawItem, categoryId, sectionId) {
     sectionId,
     type: rawItem.leadTimeHours > 0 ? SERVICE_TYPE : PRODUCT_TYPE,
     allergens: detectAllergens(words, ALLERGEN_KEYWORDS),
-    dietaryTags: buildDietaryTags(words, rawItem.extraTags, MEAT_KEYWORDS),
+    dietaryTags: buildDietaryTags(
+      words,
+      rawItem.extraTags,
+      MEAT_KEYWORDS,
+      MEAT_WORDS_WITH_MEATLESS_USES
+    ),
     photo: resolvePhoto(rawItem, categoryId),
   };
 }

@@ -102,7 +102,7 @@ function groupKeyFor(groupBy, order, line) {
 }
 
 /** Groupings that split an order across its lines rather than counting it whole. */
-const LINE_LEVEL_GROUPINGS = ['category', 'item'];
+export const LINE_LEVEL_GROUPINGS = ['category', 'item'];
 
 /**
  * Builds the report table.

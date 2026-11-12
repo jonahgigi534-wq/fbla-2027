@@ -137,6 +137,12 @@ export const MEAT_KEYWORDS = [
 ];
 
 /**
+ * Meat words that also name a meatless dish: cauliflower wings, hash browns. On an item
+ * tagged vegetarian by hand, these alone do not take the tag away.
+ */
+export const MEAT_WORDS_WITH_MEATLESS_USES = ['wings', 'hash'];
+
+/**
  * Every dietary tag the filter bar can show, with the label a customer reads.
  */
 export const DIETARY_TAGS = [

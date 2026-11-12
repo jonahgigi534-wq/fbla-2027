@@ -161,20 +161,22 @@ function buildOrder({ random, pool, location, placedAt, orderNumber }) {
 
   const orderTypeId = pick(random, ['pickup', 'pickup', 'pickup', 'delivery', 'dine-in']);
   const totals = calculateOrderTotals(lines, { orderTypeId });
+  const status = random() < CANCELED_SHARE ? CANCELED : 'Complete';
 
   return {
     orderNumber,
     placedAt: placedAt.toISOString(),
     locationId: location.id,
     orderTypeId,
-    status: random() < CANCELED_SHARE ? CANCELED : 'Complete',
+    status,
     lines,
     customer: { name: 'Guest', phone: '', email: '', street: null, zip: null },
     // From the order number rather than the generator, so adding it left every other
     // generated figure where it was.
     cardLastFour: String(1000 + ((orderNumber * 7919) % 9000)),
     slotKey: `${placedAt.toISOString().slice(0, 10)}:${placedAt.getHours() * 60}`,
-    slotLabel: 'Collected',
+    // A canceled order was never collected, so its receipt should not say it was.
+    slotLabel: status === CANCELED ? 'Not collected' : 'Collected',
     promoCode: null,
     totals,
     isSeeded: true,

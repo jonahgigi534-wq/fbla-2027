@@ -79,6 +79,9 @@ export function removeCartLine(lineId) {
  * @returns {{ok: boolean, message: string}} Whether the code was accepted.
  */
 export function applyPromoCode(code) {
+  if (String(code).trim() === '') {
+    return { ok: false, message: 'Enter a promo code first.' };
+  }
   const promo = findPromo(code);
   if (!promo) {
     return { ok: false, message: `${code.trim().toUpperCase()} is not a code we recognize.` };
