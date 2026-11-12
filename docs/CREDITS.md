@@ -20,7 +20,7 @@ trading in Houston, Texas since 1967. Everything below belongs to them.
 | The name "House of Pies"                    | The business               | Used nominatively, to identify the real restaurant this project is about      |
 | Logo                                        | <https://houseofpies.com>  | Shown in the page header and as the browser tab icon                          |
 | Six storefront photographs                  | Their location pages       | One per restaurant on the home screen                                         |
-| Six dish photographs                        | Their home page            | The featured items                                                            |
+| Six dish photographs                        | Their home page            | Four stand in for their category: omelettes, burgers, cream pies, and cakes   |
 | Bakery, cake, and mini pie photographs      | Their bakery page          | Category images                                                               |
 | 244 dish photographs                        | Their online ordering menu | Each shown on its own item, from `assets/img/menu`                            |
 | Twenty category photographs                 | Their online ordering menu | Shown for items that have no photograph of their own                          |

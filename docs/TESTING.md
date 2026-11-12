@@ -13,15 +13,16 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 287, all passing         |
+| Tests                            | 302, all passing         |
 | Line coverage, of what is tested | 97%                      |
-| Branch coverage, of the same     | 93%                      |
-| Functions documented             | 303 of 303               |
+| Branch coverage, of the same     | 94%                      |
+| Functions documented             | 324 of 324               |
 | Files over the 400 line ceiling  | none                     |
-| Misspelled words on screen       | none, across 16,000 plus |
+| Misspelled words on screen       | none, across 15,000 plus |
 
 **What that coverage figure covers, and what it does not.** The tests reach
-`src/js/data/`, every module in `src/js/domain/`, the router, and the AI client. Those files are what
+`src/js/data/`, every module in `src/js/domain/`, the router, the AI client, and the
+customer actions with the store under them. Those files are what
 the percentage is measured over, and they are where every decision the program makes
 gets taken. The screens in `src/js/ui/` have no automated tests. They build elements
 and hand the thinking to `domain/`, so testing them would mean standing up a whole
@@ -51,30 +52,34 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `money`      | Half up rounding, including on negatives, and parsing what a customer types                                                             |
 | `pricing`    | That discount comes off before tax, and that the delivery fee is taxed                                                                  |
 | `cart`       | That nothing is edited in place, and that identical lines merge                                                                         |
-| `inventory`  | That stock is counted against the cart, not just the shelf                                                                              |
+| `inventory`  | That stock is counted against the cart, not just the shelf, and that a quantity must be a whole number of at least one                  |
 | `budget`     | That the removal suggested is the cheapest one that closes the gap                                                                      |
 | `slots`      | The midnight roll, catering lead times, and the capacity cap                                                                            |
 | `hours`      | Three different schedules, including Katy at 3am on a Saturday                                                                          |
-| `validation` | Field shape, including the Luhn checksum                                                                                                |
+| `validation` | Field shape, including the Luhn checksum, a +1 country code, the curly apostrophe, two dots in an email, and an all zero card           |
 | `orderRules` | Delivery areas, expired cards, unusable slots, backwards date ranges                                                                    |
 | `orders`     | The window in which an order can still be changed                                                                                       |
 | `reports`    | That canceled orders never count, and that periods compare like for like                                                                |
 | `insights`   | That the generated sentences match the figures under them                                                                               |
-| `assistant`  | 38 real phrasings, 8 of them misspelled, plus nonsense                                                                                  |
+| `assistant`  | 38 real phrasings, 8 of them misspelled, plus nonsense, and that it sees the same orders as the Orders screen                           |
 | `search`     | Ranking, and that word matching does not match inside words                                                                             |
-| `dietary`    | That graham cracker is not read as ham                                                                                                  |
+| `dietary`    | That graham cracker is not read as ham, and that cauliflower wings and hash browns stay vegetarian while chicken wings do not           |
 | `csv`        | Escaping commas, quotes, and line breaks                                                                                                |
 | `carousel`   | Paging, and that the last page backfills rather than leaving a gap                                                                      |
 | `aiPrompt`   | Every item at its real price with its ingredients, sold out marked, the gluten rule, a rule for each kind of question, nothing personal |
 
-Two modules outside `domain/` are tested too. The router, because the rating sheet
-asks for no navigation errors and the router is what decides them, and the AI client,
-because its promise is that every failure turns into an answer from the device:
+Four modules outside `domain/` are tested too. The router, because the rating sheet
+asks for no navigation errors and the router is what decides them. The AI client,
+because its promise is that every failure turns into an answer from the device. The
+customer actions, for the messages a screen shows. And the generated history, so the
+sample receipts never say something that did not happen:
 
-| Module         | What its tests protect                                                                                                                                                             |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `app/router`   | Route matching, a refresh landing on the same screen, an unknown address reaching Not Found, and Back closing an open dialog without moving the screen under it                    |
-| `app/aiClient` | What is sent to OpenRouter, and that a rejected key, no credit, a busy service, no connection, a timeout, and an empty answer each come back as a reason the assistant can explain |
+| Module            | What its tests protect                                                                                                                                                             |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `app/router`      | Route matching, a refresh landing on the same screen, an unknown address reaching Not Found, and Back closing an open dialog without moving the screen under it                    |
+| `app/aiClient`    | What is sent to OpenRouter, and that a rejected key, no credit, a busy service, no connection, a timeout, and an empty answer each come back as a reason the assistant can explain |
+| `app/actions`     | That an empty promo box asks for a code rather than calling a blank unrecognized                                                                                                   |
+| `data/seedOrders` | That a canceled sample order is never labeled as collected                                                                                                                         |
 
 ## What is not tested, and why
 
@@ -86,8 +91,9 @@ The screens are instead exercised by hand against a checklist before each releas
 every route, Back, Forward, refresh, a garbage address, a full order end to end, and
 the deliberate breakages listed below.
 
-**The generated history.** `seedOrders.js` is checked by using it: the reports tests
-run against generated orders, so a change that broke the generator would fail there.
+**The generated history's figures.** Beyond the canceled label, `seedOrders.js` is
+checked by using it: the reports tests run against generated orders, so a change that
+broke the generator would fail there.
 
 ## Bugs the tests caught
 

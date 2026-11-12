@@ -23,8 +23,14 @@ changes what you can order and when you can collect it.
 Choose a quantity and add it. The stepper will not go past what the restaurant has
 left, and it says how many that is.
 
-If something is sold out it stays on the menu, greyed out, and its page offers three
+If something is sold out it stays on the menu, grayed out, and its page offers three
 alternatives from the same part of the menu at a similar price.
+
+**About the photos.** Most items show a photo of that exact dish, from the
+restaurant's own online menu or, where it had none, a free-license photo of the same
+food, credited in [CREDITS.md](CREDITS.md). A couple show their category's photo
+instead, and say so under the picture. The rest get a drawn tile, because a drawing is
+better than a photo of the wrong food.
 
 **Set a spending limit, if you want one.** In your order, enter what you want to stay
 under. The limit is measured against the full total including tax, because that is

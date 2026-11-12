@@ -30,7 +30,7 @@ For the offline version:
 npm run build
 ```
 
-This creates `dist/standalone.html`, which opens with a double click. Keep the `dist` folder together, since the photos sit next to the file.
+This creates `dist/standalone.html`, which opens with a double click. The photos are not inside that file. The build copies them to `dist/assets`, next to it, so always move or share the whole `dist` folder. Copy `standalone.html` on its own and every photo comes up blank.
 
 The staff PIN is 1967.
 

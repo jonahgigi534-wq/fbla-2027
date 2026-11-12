@@ -7,7 +7,7 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every function has a documentation block, private helpers included. 303 of 303,
+- Every function has a documentation block, private helpers included. 324 of 324,
   checked by
   `npm run check`, not by inspection.
 - Every file opens with a short block saying what it is for, and why where that
@@ -46,8 +46,9 @@ are earned in the room rather than in the code.
 - **No spelling errors:** every on-screen string is checked against a committed word
   list by `scripts/spellcheck.mjs`. That check found the interface had been written in
   British English and fixed 50 instances.
-- **Interactive help menu:** Help → Guides, searchable across titles, bodies, and
-  keywords.
+- **Interactive help menu:** Help in the header opens the Help center, searchable
+  across titles, bodies, and keywords, with buttons to ask the assistant or retake the
+  tour.
 - **No navigation errors:** hash routing, so Back and Forward work, refresh returns to
   the same screen, Back closes a dialog rather than leaving, and an unknown address
   lands on a real Not Found screen.
@@ -96,7 +97,8 @@ are earned in the room rather than in the code.
 ## Documentation, 20 points
 
 - Eight documents, indexed in [INDEX.md](INDEX.md), each with one job.
-- A readme explaining how to run the program three ways.
+- A readme explaining how to run the program two ways: from a local server, or offline
+  from `dist/standalone.html`.
 - The source, organized in four layers.
 - A list of templates and libraries: [LIBRARIES.md](LIBRARIES.md). At runtime there
   are none.

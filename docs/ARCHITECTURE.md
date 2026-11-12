@@ -94,6 +94,25 @@ and Forward move between screens rather than leaving the program, refreshing ret
 to the same screen, Back closes an open dialog instead of navigating out from behind
 it, and an address matching nothing lands on a real Not Found screen with a way home.
 
+## Item photos
+
+Each item's picture is decided once, at startup, by `resolvePhoto` in
+`src/js/data/menu.js`. It tries four things in order and stops at the first that
+answers:
+
+1. `src/js/data/itemPhotos.js`, which maps an item id to a file in `assets/img/menu/`.
+   Files under `free/` are the free-license photos credited in `CREDITS.md`. An entry
+   of `null` means no photo fits that dish and stops the search right there.
+2. The `imageId` on the catalog item, for the few photos taken from the restaurant's
+   home and bakery pages.
+3. The category photo from `src/js/data/categoryPhotos.js`, flagged so the item screen
+   can say it is a category photo.
+4. Nothing, and the screen draws a tile with a food icon picked from the item's name.
+
+The menu photos come first because some of the older home page photos had been tagged
+on the wrong items, such as a steak plate on the banana pecan pancakes. The `null`
+entries exist for the same reason: a drawn tile beats a picture of a different dish.
+
 ## The offline build
 
 `npm run build` inlines the fifty-odd modules into one file, because browsers refuse
