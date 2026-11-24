@@ -133,8 +133,27 @@ const ITEMS_BY_ID = new Map(ALL_ITEMS.map((item) => [item.id, item]));
 /** Category id to category, for the same reason. */
 const CATEGORIES_BY_ID = new Map(ALL_CATEGORIES.map((category) => [category.id, category]));
 
-/** The dishes House of Pies features on its own home page. */
-export const POPULAR_ITEMS = ALL_ITEMS.filter((item) => item.isPopular);
+/**
+ * The pies the home screen shows off, picked for how they look in their photos.
+ *
+ * The restaurant's own featured dishes (isPopular) are mostly breakfast plates, and a
+ * steak and eggs photo is not what sells a place called House of Pies. Those keep
+ * their popular mark for the assistant and search; this list is only for the home
+ * screen.
+ */
+const FEATURED_PIE_IDS = [
+  'bayou-goo-pie-slice',
+  'fresh-strawberry-pie-slice',
+  'texas-pecan-pie-slice',
+  'cherry-pie-slice',
+  'lemon-meringue-pie-slice',
+  'chocolate-cream-pie-slice',
+  'apple-pie-slice',
+  'ny-strawberry-cheesecake-slice',
+];
+
+/** The featured pies as catalog items, in the order above. */
+export const FEATURED_PIES = FEATURED_PIE_IDS.map((id) => ITEMS_BY_ID.get(id));
 
 /**
  * Finds one item by id.

@@ -6,7 +6,7 @@ import { el, render } from '../dom.js';
 import { favoriteCard } from '../components/favoriteCard.js';
 import { locationTile } from '../components/locationTile.js';
 import { testimonialsSection } from '../components/testimonials.js';
-import { POPULAR_ITEMS } from '../../data/menu.js';
+import { FEATURED_PIES } from '../../data/menu.js';
 import { DAY_NAMES, LOCATIONS } from '../../data/locations.js';
 import { describeStatus } from '../../domain/hours.js';
 import { withLiveStock } from '../../domain/inventory.js';
@@ -90,13 +90,16 @@ export function renderHome(container) {
 
     el('section', { class: 'section section--feature' }, [
       el('div', { class: 'section__head' }, [
-        el('h2', { text: 'Fan favorites loved across our menu' }),
-        el('p', { class: 'section__lede', text: 'The dishes House of Pies is known for.' }),
+        el('h2', { text: 'Pies worth the trip' }),
+        el('p', {
+          class: 'section__lede',
+          text: 'A few of the forty plus homemade pies, by the slice or whole.',
+        }),
       ]),
       el(
         'div',
         { class: 'grid' },
-        withLiveStock(POPULAR_ITEMS, state.stockOverrides).map((item) =>
+        withLiveStock(FEATURED_PIES, state.stockOverrides).map((item) =>
           favoriteCard(item, (chosen) => navigate(`/item/${chosen.id}`))
         )
       ),
