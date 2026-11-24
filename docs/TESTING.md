@@ -13,10 +13,10 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 304, all passing         |
+| Tests                            | 317, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 94%                      |
-| Functions documented             | 324 of 324               |
+| Functions documented             | 344 of 344               |
 | Files over the 400 line ceiling  | none                     |
 | Misspelled words on screen       | none, across 15,000 plus |
 
@@ -66,6 +66,7 @@ Every module in `src/js/domain/`, which is where the decisions live:
 | `dietary`    | That graham cracker is not read as ham, and that cauliflower wings and hash browns stay vegetarian while chicken wings do not           |
 | `csv`        | Escaping commas, quotes, and line breaks                                                                                                |
 | `carousel`   | Paging, and that the last page backfills rather than leaving a gap                                                                      |
+| `pieWheel`   | That the wheel stops on the slice it picked, only turns forward, never lands on the same pie twice running                                 |
 | `aiPrompt`   | Every item at its real price with its ingredients, sold out marked, the gluten rule, a rule for each kind of question, nothing personal |
 
 Four modules outside `domain/` are tested too. The router, because the rating sheet

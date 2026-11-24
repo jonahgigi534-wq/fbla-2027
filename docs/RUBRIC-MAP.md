@@ -7,7 +7,7 @@ are earned in the room rather than in the code.
 
 **Comments, naming, and formatting**
 
-- Every function has a documentation block, private helpers included. 324 of 324,
+- Every function has a documentation block, private helpers included. 344 of 344,
   checked by
   `npm run check`, not by inspection.
 - Every file opens with a short block saying what it is for, and why where that

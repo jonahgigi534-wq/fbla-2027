@@ -753,6 +753,7 @@ earned
 easily
 easy
 eat
+edge
 edit
 edited
 editing
@@ -885,6 +886,7 @@ figure
 figures
 file
 files
+fill
 filled
 filler
 fillet
@@ -1124,6 +1126,7 @@ houston
 how
 href
 html
+hub
 huevos
 huge
 hunting
@@ -1650,6 +1653,7 @@ path
 pattern
 patties
 patty
+pause
 pauses
 payment
 pdf
@@ -1715,6 +1719,7 @@ plate
 plates
 platter
 platters
+play
 please
 plenty
 plotheight
@@ -1723,6 +1728,7 @@ plus
 poached
 point
 pointed
+pointer
 points
 poise
 polite
@@ -1953,6 +1959,7 @@ rhubarb
 ribeye
 rich
 right
+rim
 rings
 risk
 river
@@ -2135,6 +2142,7 @@ sliced
 slices
 slide
 slides
+slideshow
 slightly
 slot
 slots
@@ -2183,7 +2191,9 @@ spend
 spending
 spent
 spicy
+spin
 spinach
+spinning
 split
 splitting
 sponsored
@@ -2567,6 +2577,7 @@ what
 whatever
 whats
 wheat
+wheel
 when
 whenever
 where
@@ -2614,6 +2625,7 @@ writing
 written
 wrong
 wrote
+xmidymid
 yellow
 yes
 yet
