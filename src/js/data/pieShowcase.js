@@ -32,7 +32,10 @@ export const FEATURED_PIES = itemsFor([
   'ny-strawberry-cheesecake-slice',
 ]);
 
-/** The slices of the pie wheel, clockwise from the top. */
+/**
+ * The slices of the pie wheel, clockwise from the top. Twelve makes each slice wide
+ * enough at the rim for its photo and the description to sit inside it.
+ */
 export const WHEEL_PIES = itemsFor([
   'bayou-goo-pie-slice',
   'key-lime-pie-slice',
@@ -42,4 +45,8 @@ export const WHEEL_PIES = itemsFor([
   'texas-pecan-pie-slice',
   'fresh-strawberry-pie-slice',
   'coconut-cream-pie-slice',
+  'blueberry-pie-slice',
+  'chocolate-meringue-pie-slice',
+  'pumpkin-pie-slice',
+  'strawberry-cream-cheese-pie-slice',
 ]);

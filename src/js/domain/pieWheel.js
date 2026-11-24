@@ -81,3 +81,58 @@ export function pickSlice(count, current, random) {
   const choice = Math.floor(random() * (count - 1));
   return choice >= current ? choice + 1 : choice;
 }
+
+/**
+ * The nearest rotation that leaves a slice exactly under the pointer.
+ *
+ * @param {number} rotation Any rotation in degrees.
+ * @param {number} count How many slices the wheel has.
+ * @returns {number} The rotation, snapped to the middle of a slice.
+ */
+export function snapRotation(rotation, count) {
+  const step = sliceAngle(count);
+  return Math.round(rotation / step) * step + 0;
+}
+
+/**
+ * Puts an angle on the same lap as a reference, so 10 degrees near a rotation of 725
+ * reads as 730 rather than jumping two turns back.
+ *
+ * @param {number} angle An angle in degrees, often only known up to a full turn.
+ * @param {number} reference The rotation it should land close to.
+ * @returns {number} The angle plus however many whole turns brings it nearest.
+ */
+export function unwrapNear(angle, reference) {
+  const half = FULL_TURN / 2;
+  return reference + wrap(angle - reference + half, FULL_TURN) - half;
+}
+
+/**
+ * Reads the turn out of the first two numbers of a CSS rotation matrix.
+ *
+ * @param {number} a The matrix's a value, the cosine of the angle.
+ * @param {number} b The matrix's b value, the sine of the angle.
+ * @returns {number} The angle in degrees, between -180 and 180.
+ */
+export function rotationFromMatrix(a, b) {
+  return (Math.atan2(b, a) * FULL_TURN) / (2 * Math.PI);
+}
+
+/** How long a flicked wheel keeps coasting, used to judge how far it travels. */
+const COAST_MS = 320;
+
+/** The furthest a single flick can carry the wheel, so a wild swipe stays calm. */
+const MAX_FLICK = FULL_TURN;
+
+/**
+ * Where a wheel let go of mid flick comes to rest.
+ *
+ * @param {number} rotation The rotation at the moment it was let go.
+ * @param {number} velocity How fast it was turning, in degrees per millisecond.
+ * @param {number} count How many slices the wheel has.
+ * @returns {number} The rotation it settles on, snapped to a slice.
+ */
+export function flickRotation(rotation, velocity, count) {
+  const travel = Math.max(-MAX_FLICK, Math.min(MAX_FLICK, velocity * COAST_MS));
+  return snapRotation(rotation + travel, count);
+}

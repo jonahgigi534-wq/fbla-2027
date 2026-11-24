@@ -18,6 +18,8 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
+  /* The pie wheel runs the full window width, which counts the scroll bar. */
+  overflow-x: clip;
   /* Column layout so the footer sits at the bottom on short screens such as 404. */
   display: flex;
   flex-direction: column;

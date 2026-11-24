@@ -1,10 +1,14 @@
 /*
  * The pie wheel on the home screen.
  *
- * Kept apart from screens.css, which is already near the size limit.
+ * The wheel is a disc much wider than the screen, set so only its top edge shows. The
+ * stage runs the full width of the window, and its sides and bottom fade into the page
+ * so the wheel has no hard edges.
+ *
+ * Only one thing moves: the disc's transform. The dimming of the other slices is a
+ * separate layer that never turns and only fades, so nothing inside the wheel's
+ * drawing has to be redrawn while it spins.
  */
-
-/* The pie wheel */
 
 .pie-wheel {
   display: flex;
@@ -13,97 +17,258 @@
   text-align: center;
 }
 
-/* The pill above the wheel that names the pie it landed on. */
-.pie-wheel__label {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-  min-width: min(100%, 320px);
-  min-height: 112px;
-  justify-content: center;
-  padding: var(--space-3) var(--space-6);
-  border: 2px solid var(--color-orange);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-md);
-  margin-bottom: var(--space-5);
-}
-
-.pie-wheel__label p {
-  margin: 0;
-}
-
-.pie-wheel__name {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-}
-
-.pie-wheel__detail {
-  color: var(--color-text-muted);
-  font-weight: 600;
-}
-
-/*
- * Only the top half of the wheel shows. The stage is half as tall as it is wide and
- * cuts off the rest, so the wheel's middle sits on the stage's bottom edge.
- */
 .pie-wheel__stage {
+  --wheel-size: clamp(1100px, 165vw, 2600px);
+  --wheel-top: 66px;
   position: relative;
-  width: min(100%, 640px);
-  aspect-ratio: 2 / 1;
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  height: clamp(480px, 38vw, 640px);
+  /* A finger moving sideways turns the wheel; up and down still scrolls the page. */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.pie-wheel__stage:active {
+  cursor: grabbing;
+}
+
+.pie-wheel__viewport {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
-  border-bottom: 6px solid var(--color-orange-dark);
+  -webkit-mask-image:
+    linear-gradient(to bottom, #000 60%, transparent 97%),
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to bottom, #000 60%, transparent 97%),
+    linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-composite: intersect;
+}
+
+.pie-wheel__disc,
+.pie-wheel__spotlight {
+  position: absolute;
+  top: var(--wheel-top);
+  left: 50%;
+  width: var(--wheel-size);
+  aspect-ratio: 1 / 1;
+  margin-left: calc(var(--wheel-size) / -2);
+  border-radius: 50%;
+}
+
+.pie-wheel__disc {
+  will-change: transform;
+  /* An even glow all round, so it looks the same at any angle. */
+  box-shadow: 0 0 48px rgba(46, 32, 25, 0.18);
 }
 
 .pie-wheel__drawing {
   display: block;
   width: 100%;
-  height: auto;
-}
-
-.pie-wheel__spinner {
-  transform-origin: 0 0;
-  transition: transform 3600ms cubic-bezier(0.15, 0.9, 0.25, 1);
+  height: 100%;
 }
 
 .pie-wheel__fill {
   fill: var(--color-cream-dark);
 }
 
-.pie-wheel__edge {
-  fill: none;
+.pie-wheel__divider {
   stroke: var(--color-cream);
-  stroke-width: 6;
+  stroke-width: 4;
+  vector-effect: non-scaling-stroke;
 }
 
 .pie-wheel__rim {
   fill: none;
   stroke: var(--color-orange);
-  stroke-width: 6;
+  stroke-width: 10;
+  vector-effect: non-scaling-stroke;
 }
 
-.pie-wheel__hub {
+.pie-wheel__stud {
   fill: var(--color-cream);
-  stroke: var(--color-orange);
-  stroke-width: 6;
 }
 
-/* A downward triangle at the top centre, over the slice that counts. */
-.pie-wheel__pointer {
+/* Dims every slice but the one under the pointer. */
+.pie-wheel__spotlight {
+  --slice: var(--pie-wheel-slice, 30deg);
+  pointer-events: none;
+  background: conic-gradient(
+    from calc(var(--slice) / -2),
+    transparent 0deg var(--slice),
+    rgba(21, 3, 3, 0.55) calc(var(--slice) + 0.6deg) calc(360deg - 0.6deg),
+    transparent 360deg
+  );
+  transition: opacity 450ms ease;
+}
+
+.pie-wheel--moving .pie-wheel__spotlight {
+  opacity: 0;
+  transition-duration: 200ms;
+}
+
+/* The tag above the pointer that names the pie under it. */
+.pie-wheel__flag {
   position: absolute;
   top: 0;
   left: 50%;
-  z-index: 1;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.pie-wheel__name {
+  margin: 0;
+  min-width: 240px;
+  padding: var(--space-2) var(--space-5);
+  border: 2px solid var(--color-orange);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  white-space: nowrap;
+}
+
+.pie-wheel__pointer {
   width: 0;
   height: 0;
+  margin-top: -2px;
+  border-left: 13px solid transparent;
+  border-right: 13px solid transparent;
+  border-top: 20px solid var(--color-orange);
+  transform-origin: 50% 0;
+}
+
+/* The description, inside the slice under the pointer. */
+.pie-wheel__card {
+  position: absolute;
+  bottom: var(--space-5);
+  left: 50%;
+  z-index: 2;
+  width: min(400px, calc(100% - 2 * var(--space-4)));
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
   transform: translateX(-50%);
-  border-left: 16px solid transparent;
-  border-right: 16px solid transparent;
-  border-top: 26px solid var(--color-orange-dark);
-  filter: drop-shadow(0 2px 2px rgba(46, 32, 25, 0.3));
+  transition:
+    opacity 320ms ease,
+    transform 320ms ease;
+  cursor: auto;
+}
+
+.pie-wheel--moving .pie-wheel__card {
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 12px);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease,
+    visibility 0s linear 160ms;
+}
+
+.pie-wheel__description {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.pie-wheel__buy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+}
+
+.pie-wheel__price {
+  font-weight: 700;
+  color: var(--color-orange-dark);
+}
+
+/* Round arrows at either side, drawn with two borders so they stay crisp at any size. */
+.pie-wheel__arrow {
+  position: absolute;
+  top: 38%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 2px solid var(--color-orange);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--color-orange-dark);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
+}
+
+.pie-wheel__arrow::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-top: 3px solid currentColor;
+  border-right: 3px solid currentColor;
+}
+
+.pie-wheel__arrow--previous {
+  left: max(var(--space-4), calc(50% - var(--page-max) / 2));
+}
+
+.pie-wheel__arrow--previous::before {
+  margin-left: 4px;
+  transform: rotate(-135deg);
+}
+
+.pie-wheel__arrow--next {
+  right: max(var(--space-4), calc(50% - var(--page-max) / 2));
+}
+
+.pie-wheel__arrow--next::before {
+  margin-right: 4px;
+  transform: rotate(45deg);
+}
+
+.pie-wheel__arrow:hover {
+  background: var(--color-orange-soft);
+  transform: scale(1.06);
+}
+
+.pie-wheel__arrow[aria-disabled='true'],
+.pie-wheel__controls .button[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .pie-wheel__controls {
-  margin-top: var(--space-5);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 560px) {
+  .pie-wheel__name {
+    min-width: 0;
+    font-size: var(--text-lg);
+  }
+  .pie-wheel__arrow {
+    width: 44px;
+    height: 44px;
+  }
 }

@@ -1,210 +1,190 @@
 /**
  * The pie wheel on the home screen, for anyone who cannot choose.
  *
- * A wheel cut into slices, each slice showing a different pie, with only its top half
- * above the edge. Spin turns it to a pie at random, and the label above says which one
- * landed under the pointer. The wheel itself is a drawing and hidden from screen
- * readers; the label and the button are the parts that say anything.
+ * A wheel far wider than the screen, so only the top of it shows, with one pie in
+ * each slice. The slice under the pointer is the one chosen: its name sits in the tag
+ * above the pointer and its description in a card inside the slice. Arrows turn it
+ * one slice at a time, a drag turns it by hand, and Spin picks one at random.
  *
- * The turning arithmetic is in domain/pieWheel.js.
+ * The wheel itself is a drawing and hidden from screen readers. The name, the card,
+ * and the buttons are ordinary page content, and each new pie is announced.
+ *
+ * The arithmetic is in domain/pieWheel.js, the drawing in pieWheelDrawing.js, the
+ * turning in pieWheelMotion.js, and the dragging in pieWheelDrag.js.
  */
 
 import { el } from '../dom.js';
 import { formatUSD } from '../../domain/money.js';
-import { pickSlice, rotationToShow, sliceAngle } from '../../domain/pieWheel.js';
+import { flickRotation, pickSlice, rotationToShow, sliceAngle } from '../../domain/pieWheel.js';
+import { drawWheel } from './pieWheelDrawing.js';
+import { createMotion } from './pieWheelMotion.js';
+import { attachDrag } from './pieWheelDrag.js';
 
-/** The SVG namespace, which createElement does not use. */
-const SVG_NS = 'http://www.w3.org/2000/svg';
+/** A spin: a slow start, a long glide, and a few whole turns on the way. */
+const SPIN = { ms: 4600, easing: 'cubic-bezier(0.3, 0, 0.1, 1)', turns: 3 };
 
-/** Wheel radius in drawing units. The viewBox is centred on the wheel. */
-const RADIUS = 200;
+/** One slice along, from an arrow. */
+const STEP = { ms: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' };
 
-/** Size of the photo laid into each slice, and how far out from the middle it sits. */
-const PHOTO_WIDTH = 240;
-const PHOTO_HEIGHT = 180;
-const PHOTO_DISTANCE = 118;
+/** Coming to rest after a drag: longer the further it has to go. */
+const SETTLE = { msPerDegree: 9, minMs: 380, maxMs: 1500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' };
 
-/** Radius of the cream hub in the middle. */
-const HUB_RADIUS = 30;
-
-/** How long a spin takes. The stylesheet's transition matches this. */
-const SPIN_MS = 3600;
-
-/** Whole turns added to every spin, so it looks spun rather than nudged. */
-const EXTRA_TURNS = 4;
+/** How far the pointer flicks as each slice goes past it. */
+const POINTER_TICK = [
+  { transform: 'rotate(0deg)' },
+  { transform: 'rotate(-16deg)', offset: 0.35 },
+  { transform: 'rotate(0deg)' },
+];
 
 /**
- * Builds an SVG element. The DOM helper makes HTML elements, which SVG ignores.
+ * A pie's name without the trailing "Slice", which every one of them has.
  *
- * @param {string} tag SVG tag name.
- * @param {object} attributes Attributes to set.
- * @param {Element[]} [children] Child elements.
- * @returns {SVGElement} The element.
+ * @param {object} pie A catalog item.
+ * @returns {string} The name to show.
  */
-function svg(tag, attributes, children = []) {
-  const node = document.createElementNS(SVG_NS, tag);
-  for (const [key, value] of Object.entries(attributes)) {
-    node.setAttribute(key, String(value));
-  }
-  node.append(...children);
-  return node;
+function pieName(pie) {
+  return pie.name.replace(/\s+Slice$/, '');
 }
 
 /**
- * A point on the wheel, measured clockwise from the top.
+ * Builds every part of the section that is not the drawing.
  *
- * @param {number} degrees Angle clockwise from straight up.
- * @param {number} distance How far out from the middle.
- * @returns {string} "x y", ready for a path.
+ * @param {HTMLElement} disc The turning wheel.
+ * @param {number} count How many slices the wheel has.
+ * @returns {object} The section and the parts that change.
  */
-function pointAt(degrees, distance) {
-  const radians = (degrees * Math.PI) / 180;
-  const x = distance * Math.sin(radians);
-  const y = -distance * Math.cos(radians);
-  return `${x.toFixed(2)} ${y.toFixed(2)}`;
-}
-
-/**
- * The outline of one slice: from the middle, out to the rim, round, and back.
- *
- * @param {number} index Which slice, clockwise from the top.
- * @param {number} count How many slices there are.
- * @returns {string} SVG path data.
- */
-function slicePath(index, count) {
-  const step = sliceAngle(count);
-  const start = index * step - step / 2;
-  const end = start + step;
-  return `M 0 0 L ${pointAt(start, RADIUS)} A ${RADIUS} ${RADIUS} 0 0 1 ${pointAt(end, RADIUS)} Z`;
-}
-
-/**
- * Draws one slice with its pie's photo inside it, turned to face outward.
- *
- * @param {object} pie The catalog item for this slice.
- * @param {number} index Which slice, clockwise from the top.
- * @param {number} count How many slices there are.
- * @returns {{clip: SVGElement, slice: SVGElement}} The clip outline and the slice.
- */
-function drawSlice(pie, index, count) {
-  const clipId = `pie-wheel-slice-${index}`;
-  const outline = slicePath(index, count);
-  const photo = svg('image', {
-    href: pie.photo.src,
-    x: -PHOTO_WIDTH / 2,
-    y: -PHOTO_DISTANCE - PHOTO_HEIGHT / 2,
-    width: PHOTO_WIDTH,
-    height: PHOTO_HEIGHT,
-    preserveAspectRatio: 'xMidYMid slice',
-    transform: `rotate(${index * sliceAngle(count)})`,
+function buildView(disc, count) {
+  const name = el('p', { class: 'pie-wheel__name' });
+  const pointer = el('span', { class: 'pie-wheel__pointer', 'aria-hidden': 'true' });
+  const description = el('p', { class: 'pie-wheel__description' });
+  const price = el('span', { class: 'pie-wheel__price' });
+  const orderButton = el('button', { class: 'button button--small', type: 'button' }, 'Order this pie');
+  const previous = el('button', {
+    class: 'pie-wheel__arrow pie-wheel__arrow--previous',
+    type: 'button',
+    'aria-label': 'Previous pie',
   });
-  return {
-    clip: svg('clipPath', { id: clipId }, [svg('path', { d: outline })]),
-    slice: svg('g', { 'clip-path': `url(#${clipId})` }, [
-      svg('path', { d: outline, class: 'pie-wheel__fill' }),
-      photo,
-      svg('path', { d: outline, class: 'pie-wheel__edge' }),
-    ]),
-  };
-}
-
-/**
- * Draws the whole wheel: every slice, the rim, and the hub.
- *
- * @param {object[]} pies One catalog item per slice.
- * @returns {{drawing: SVGElement, spinner: SVGElement}} The SVG, and the group that turns.
- */
-function drawWheel(pies) {
-  const parts = pies.map((pie, index) => drawSlice(pie, index, pies.length));
-  const spinner = svg('g', { class: 'pie-wheel__spinner' }, [
-    ...parts.map((part) => part.slice),
-    svg('circle', { r: RADIUS - 3, class: 'pie-wheel__rim' }),
+  const next = el('button', {
+    class: 'pie-wheel__arrow pie-wheel__arrow--next',
+    type: 'button',
+    'aria-label': 'Next pie',
+  });
+  const spinButton = el('button', { class: 'button', type: 'button' }, 'Spin the wheel');
+  const announcement = el('p', { class: 'visually-hidden', 'aria-live': 'polite' });
+  const card = el('div', { class: 'pie-wheel__card' }, [
+    description,
+    el('div', { class: 'pie-wheel__buy' }, [price, orderButton]),
   ]);
-  const drawing = svg(
-    'svg',
-    {
-      class: 'pie-wheel__drawing',
-      viewBox: `${-RADIUS} ${-RADIUS} ${RADIUS * 2} ${RADIUS * 2}`,
-      'aria-hidden': 'true',
-      focusable: 'false',
-    },
-    [
-      svg(
-        'defs',
-        {},
-        parts.map((part) => part.clip)
-      ),
-      spinner,
-      svg('circle', { r: HUB_RADIUS, class: 'pie-wheel__hub' }),
-    ]
-  );
-  return { drawing, spinner };
+  const stage = el('div', { class: 'pie-wheel__stage' }, [
+    el('div', { class: 'pie-wheel__viewport' }, [
+      disc,
+      el('div', { class: 'pie-wheel__spotlight', 'aria-hidden': 'true' }),
+    ]),
+    el('div', { class: 'pie-wheel__flag' }, [name, pointer]),
+    card,
+    previous,
+    next,
+  ]);
+  stage.style.setProperty('--pie-wheel-slice', `${sliceAngle(count)}deg`);
+  const root = el('section', { class: 'section pie-wheel', 'aria-labelledby': 'pie-wheel-title' }, [
+    el('div', { class: 'section__head' }, [
+      el('h2', { id: 'pie-wheel-title', text: 'Cannot pick a pie?' }),
+      el('p', { class: 'section__lede', text: 'Turn the wheel, or let it spin for you.' }),
+    ]),
+    stage,
+    el('div', { class: 'pie-wheel__controls' }, [spinButton]),
+    announcement,
+  ]);
+  return { root, stage, name, pointer, description, price, orderButton, previous, next, spinButton, announcement };
 }
 
 /**
  * Builds the pie wheel section.
  *
  * @param {object[]} pies One catalog item per slice, each with a photo.
- * @param {Function} onOrder Called with the pie the wheel landed on.
+ * @param {Function} onOrder Called with the pie under the pointer.
  * @returns {HTMLElement} The section.
  */
 export function pieWheel(pies, onOrder) {
-  const { drawing, spinner } = drawWheel(pies);
-  let rotation = 0;
-  let current = 0;
-  let chosen = null;
+  const count = pies.length;
+  const disc = drawWheel(pies);
+  const view = buildView(disc, count);
+  const isStill = () => window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true;
+  let chosen = 0;
+  let isSpinning = false;
 
-  const nameLine = el('p', { class: 'pie-wheel__name', text: 'Which pie today?' });
-  const detailLine = el('p', {
-    class: 'pie-wheel__detail',
-    text: 'Spin the wheel and let it pick for you.',
-  });
-  const orderButton = el(
-    'button',
-    { class: 'button button--small', type: 'button', onClick: () => onOrder(chosen) },
-    'Order this pie'
-  );
-  orderButton.hidden = true;
-  const announcement = el('p', { class: 'visually-hidden', 'aria-live': 'polite' });
-  const spinButton = el('button', { class: 'button', type: 'button' }, 'Spin the wheel');
+  const showPie = (index) => {
+    const pie = pies[index];
+    view.name.textContent = pieName(pie);
+    view.description.textContent = pie.description;
+    view.price.textContent = `${formatUSD(pie.priceCents)} a slice`;
+  };
 
-  /**
-   * Shows the pie the wheel stopped on.
-   *
-   * @returns {void}
-   */
-  function land() {
-    chosen = pies[current];
-    nameLine.textContent = chosen.name;
-    detailLine.textContent = formatUSD(chosen.priceCents);
-    orderButton.hidden = false;
-    spinButton.disabled = false;
-    announcement.textContent = `The wheel picked ${chosen.name}, ${formatUSD(chosen.priceCents)}.`;
-  }
+  const setMoving = (isMoving) => {
+    view.root.classList.toggle('pie-wheel--moving', isMoving);
+    // aria-disabled rather than disabled, so a keyboard user's focus stays on Spin.
+    for (const button of [view.previous, view.next, view.spinButton]) {
+      button.setAttribute('aria-disabled', String(isMoving && isSpinning));
+    }
+  };
 
-  spinButton.addEventListener('click', () => {
-    current = pickSlice(pies.length, current, Math.random);
-    rotation = rotationToShow(current, pies.length, rotation, EXTRA_TURNS);
-    spinner.style.transform = `rotate(${rotation}deg)`;
-    spinButton.disabled = true;
-    nameLine.textContent = 'Spinning...';
-    detailLine.textContent = '';
-    orderButton.hidden = true;
-    const isStill = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    window.setTimeout(land, isStill ? 0 : SPIN_MS);
+  const motion = createMotion(disc, count, {
+    onPass: (index) => {
+      view.name.textContent = pieName(pies[index]);
+      if (!isStill()) {
+        view.pointer.animate?.(POINTER_TICK, { duration: 220, easing: 'ease-out' });
+      }
+    },
+    onSettle: (index) => {
+      isSpinning = false;
+      chosen = index;
+      showPie(index);
+      setMoving(false);
+      const pie = pies[index];
+      view.announcement.textContent = `${pieName(pie)}, ${formatUSD(pie.priceCents)} a slice.`;
+    },
   });
 
-  return el('section', { class: 'section pie-wheel', 'aria-labelledby': 'pie-wheel-title' }, [
-    el('div', { class: 'section__head' }, [
-      el('h2', { id: 'pie-wheel-title', text: 'Cannot pick a pie?' }),
-      el('p', { class: 'section__lede', text: 'Give the wheel a spin.' }),
-    ]),
-    el('div', { class: 'pie-wheel__label' }, [nameLine, detailLine, orderButton]),
-    el('div', { class: 'pie-wheel__stage' }, [
-      el('span', { class: 'pie-wheel__pointer', 'aria-hidden': 'true' }),
-      drawing,
-    ]),
-    el('div', { class: 'pie-wheel__controls' }, [spinButton]),
-    announcement,
-  ]);
+  const turnBy = (slices) => {
+    if (isSpinning) {
+      return;
+    }
+    setMoving(true);
+    motion.turnTo(motion.rotation - slices * sliceAngle(count), STEP.ms, STEP.easing);
+  };
+
+  view.previous.addEventListener('click', () => turnBy(-1));
+  view.next.addEventListener('click', () => turnBy(1));
+  view.orderButton.addEventListener('click', () => onOrder(pies[chosen]));
+  view.spinButton.addEventListener('click', () => {
+    if (isSpinning) {
+      return;
+    }
+    isSpinning = true;
+    setMoving(true);
+    const target = pickSlice(count, chosen, Math.random);
+    motion.turnTo(rotationToShow(target, count, motion.rotation, SPIN.turns), SPIN.ms, SPIN.easing);
+  });
+
+  let dragStart = 0;
+  let degreesPerPixel = 0;
+  attachDrag(view.stage, {
+    canStart: (event) => !isSpinning && !event.target.closest('button, .pie-wheel__card'),
+    onStart: () => {
+      setMoving(true);
+      dragStart = motion.hold();
+      // A pixel of drag moves the rim a pixel, so the wheel stays under the finger.
+      degreesPerPixel = 180 / (Math.PI * (disc.offsetWidth / 2));
+    },
+    onMove: (pixels) => motion.follow(dragStart + pixels * degreesPerPixel),
+    onEnd: (pixelsPerMs) => {
+      const target = flickRotation(motion.rotation, pixelsPerMs * degreesPerPixel, count);
+      const distance = Math.abs(target - motion.rotation) * SETTLE.msPerDegree;
+      const ms = Math.min(SETTLE.maxMs, Math.max(SETTLE.minMs, distance));
+      motion.turnTo(target, ms, SETTLE.easing);
+    },
+  });
+
+  showPie(0);
+  return view.root;
 }

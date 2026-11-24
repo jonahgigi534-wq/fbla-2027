@@ -444,6 +444,7 @@ closes
 closest
 closing
 club
+coasting
 cocoa
 coconut
 code
@@ -2151,6 +2152,7 @@ slowest
 small
 smaller
 smoked
+snapping
 soda
 soft
 sold
@@ -2256,6 +2258,7 @@ stripping
 strips
 structure
 stuck
+stud
 student
 stuffed
 style
