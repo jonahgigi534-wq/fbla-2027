@@ -6,9 +6,8 @@ import { el, render } from '../dom.js';
 import { favoriteCard } from '../components/favoriteCard.js';
 import { locationTile } from '../components/locationTile.js';
 import { testimonialsSection } from '../components/testimonials.js';
-import { pieSlideshow } from '../components/pieSlideshow.js';
 import { pieWheel } from '../components/pieWheel.js';
-import { FEATURED_PIES, SLIDESHOW_PIES, WHEEL_PIES } from '../../data/pieShowcase.js';
+import { FEATURED_PIES, WHEEL_PIES } from '../../data/pieShowcase.js';
 import { DAY_NAMES, LOCATIONS } from '../../data/locations.js';
 import { describeStatus } from '../../domain/hours.js';
 import { withLiveStock } from '../../domain/inventory.js';
@@ -55,7 +54,7 @@ export function renderHome(container) {
         }),
       ]),
       el('div', { class: 'hero__media' }, [
-        pieSlideshow(SLIDESHOW_PIES, (pie) => navigate(`/item/${pie.id}`)),
+        el('img', { src: 'assets/img/bakery-case.webp', alt: 'The House of Pies bakery case' }),
       ]),
     ]),
 

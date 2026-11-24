@@ -13,10 +13,10 @@ whole quality gate runs on a machine that has never seen `npm install`.
 
 |                                  |                          |
 | -------------------------------- | ------------------------ |
-| Tests                            | 317, all passing         |
+| Tests                            | 313, all passing         |
 | Line coverage, of what is tested | 97%                      |
 | Branch coverage, of the same     | 94%                      |
-| Functions documented             | 344 of 344               |
+| Functions documented             | 337 of 337               |
 | Files over the 400 line ceiling  | none                     |
 | Misspelled words on screen       | none, across 15,000 plus |
 

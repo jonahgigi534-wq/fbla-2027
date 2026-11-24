@@ -10,7 +10,6 @@ import {
   rotationToShow,
   sliceAngle,
   sliceAtTop,
-  stepIndex,
 } from '../src/js/domain/pieWheel.js';
 
 test('eight slices are 45 degrees each', () => {
@@ -57,11 +56,4 @@ test('a random pick never lands on the slice already showing', () => {
 
 test('a wheel with one slice always picks it', () => {
   assert.equal(pickSlice(1, 0, () => 0.7), 0);
-});
-
-test('stepping wraps round at both ends', () => {
-  assert.equal(stepIndex(7, 1, 8), 0);
-  assert.equal(stepIndex(0, -1, 8), 7);
-  assert.equal(stepIndex(3, 0, 8), 3);
-  assert.equal(stepIndex(5, 1, 0), 0);
 });

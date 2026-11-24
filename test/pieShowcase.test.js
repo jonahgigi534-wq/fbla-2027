@@ -4,9 +4,9 @@
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { FEATURED_PIES, SLIDESHOW_PIES, WHEEL_PIES } from '../src/js/data/pieShowcase.js';
+import { FEATURED_PIES, WHEEL_PIES } from '../src/js/data/pieShowcase.js';
 
-const LISTS = { FEATURED_PIES, SLIDESHOW_PIES, WHEEL_PIES };
+const LISTS = { FEATURED_PIES, WHEEL_PIES };
 
 for (const [name, pies] of Object.entries(LISTS)) {
   test(`every pie in ${name} is a real bakery item with a photo of its own`, () => {
@@ -23,10 +23,3 @@ for (const [name, pies] of Object.entries(LISTS)) {
     assert.equal(new Set(ids).size, ids.length);
   });
 }
-
-test('the slideshow and the featured grid do not repeat each other', () => {
-  const featured = new Set(FEATURED_PIES.map((pie) => pie.id));
-  for (const pie of SLIDESHOW_PIES) {
-    assert.ok(!featured.has(pie.id), `${pie.id} is in both`);
-  }
-});

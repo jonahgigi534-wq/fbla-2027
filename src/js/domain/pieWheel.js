@@ -5,7 +5,7 @@
  * rotation grows. Slice i sits under the pointer when the rotation, taken round one
  * full turn, equals minus i slices.
  *
- * Used by ui/components/pieWheel.js, and stepIndex by ui/components/pieSlideshow.js.
+ * Used by ui/components/pieWheel.js.
  */
 
 /** Degrees in one full turn of the wheel. */
@@ -80,16 +80,4 @@ export function pickSlice(count, current, random) {
   }
   const choice = Math.floor(random() * (count - 1));
   return choice >= current ? choice + 1 : choice;
-}
-
-/**
- * Steps through a list and wraps round at either end.
- *
- * @param {number} index Where we are now.
- * @param {number} step How far to move, such as 1 or -1.
- * @param {number} count How many entries there are.
- * @returns {number} The new index.
- */
-export function stepIndex(index, step, count) {
-  return count < 1 ? 0 : wrap(index + step, count);
 }
