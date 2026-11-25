@@ -1,0 +1,372 @@
+/*
+ * The Pie Assistant: the round button in the bottom right corner and the chat window it
+ * opens.
+ *
+ * On a wide screen the window floats just above the button and the page behind it keeps
+ * working. On a phone it fills the screen. Either way it grows out of the button's
+ * corner and shrinks back into it, so it is clear where it came from.
+ */
+
+:root {
+  --assistant-launcher: 60px;
+  --assistant-gap: var(--space-5);
+}
+
+/* The corner button */
+.assistant-launcher {
+  position: fixed;
+  right: var(--assistant-gap);
+  bottom: var(--assistant-gap);
+  z-index: 51;
+  display: grid;
+  place-items: center;
+  width: var(--assistant-launcher);
+  height: var(--assistant-launcher);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--color-orange-dark);
+  color: var(--color-text-inverse);
+  box-shadow: 0 8px 24px rgba(46, 32, 25, 0.28);
+  cursor: pointer;
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 160ms ease,
+    box-shadow 220ms ease;
+}
+
+.assistant-launcher:hover {
+  background: var(--color-orange-darker);
+  box-shadow: 0 10px 28px rgba(46, 32, 25, 0.34);
+  transform: scale(1.06);
+}
+
+.assistant-launcher:active {
+  transform: scale(0.95);
+}
+
+/* The page's focus ring has square corners, which would show around a round button. */
+.assistant-launcher:focus-visible {
+  border-radius: 50%;
+  outline-offset: 3px;
+}
+
+/* Both icons sit in the same spot and swap with a quarter turn. */
+.assistant-launcher__icon {
+  grid-area: 1 / 1;
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition:
+    opacity 180ms ease,
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The three dots inside the bubble. */
+.assistant-launcher__icon--chat path + path {
+  stroke-width: 2.6;
+}
+
+.assistant-launcher__icon--close {
+  width: 24px;
+  height: 24px;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+
+.assistant-launcher[aria-expanded='true'] .assistant-launcher__icon--chat {
+  opacity: 0;
+  transform: rotate(90deg) scale(0.5);
+}
+
+.assistant-launcher[aria-expanded='true'] .assistant-launcher__icon--close {
+  opacity: 1;
+  transform: none;
+}
+
+/* The chat window */
+.assistant {
+  position: fixed;
+  right: var(--assistant-gap);
+  bottom: calc(var(--assistant-gap) + var(--assistant-launcher) + var(--space-3));
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  width: min(24rem, calc(100vw - 2 * var(--assistant-gap)));
+  height: min(38rem, calc(100vh - var(--assistant-launcher) - 3 * var(--assistant-gap)));
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow:
+    0 24px 64px rgba(46, 32, 25, 0.24),
+    0 2px 8px rgba(46, 32, 25, 0.08);
+  /* Grows from the button, which sits just below the window's right hand corner. */
+  transform-origin: calc(100% - var(--assistant-launcher) / 2) calc(100% + var(--space-6));
+  animation: assistant-open 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.assistant--closing {
+  pointer-events: none;
+  animation: assistant-close 160ms ease-in forwards;
+}
+
+@keyframes assistant-open {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes assistant-close {
+  to {
+    opacity: 0;
+    transform: translateY(12px) scale(0.92);
+  }
+}
+
+.assistant__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-brown);
+  color: var(--color-text-inverse);
+}
+
+.assistant__avatar {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: 2px solid var(--color-orange);
+  border-radius: 50%;
+  background: var(--color-cream);
+  object-fit: cover;
+}
+
+.assistant__heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.assistant__title {
+  color: inherit;
+  font-size: var(--text-xl);
+}
+
+.assistant__subtitle {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.35;
+  opacity: 0.75;
+}
+
+.assistant__close {
+  flex: none;
+  align-self: flex-start;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+  font-size: var(--text-2xl);
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.assistant__close:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.assistant__transcript {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--color-cream);
+}
+
+/* Messages: the assistant's on the left in white, yours on the right in orange. */
+.chat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  animation: chat-in 220ms ease-out;
+}
+
+.chat--you {
+  align-self: flex-end;
+  align-items: flex-end;
+  max-width: 85%;
+}
+
+@keyframes chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.chat__who {
+  margin: 0 var(--space-2) var(--space-1);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.chat__body {
+  max-width: 100%;
+  padding: var(--space-3);
+  border-radius: 16px 16px 16px 4px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  font-size: var(--text-sm);
+}
+
+.chat--you .chat__body {
+  padding: var(--space-2) var(--space-3);
+  border-radius: 16px 16px 4px 16px;
+  background: var(--color-orange-dark);
+  color: var(--color-text-inverse);
+}
+
+.chat__body > :first-child {
+  margin-top: 0;
+}
+
+.chat__body > :last-child {
+  margin-bottom: 0;
+}
+
+.chat__items {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.chat__items .card__media {
+  aspect-ratio: 5 / 2;
+}
+
+.chat__items .item-card__description {
+  display: none;
+}
+
+.chat__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.chat__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.chat__followup {
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.assistant__foot {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+/* The suggested questions sit in one row that scrolls sideways, so they never crowd the chat. */
+.assistant__foot .chat__chips {
+  flex-wrap: nowrap;
+  margin: 0 calc(-1 * var(--space-4)) var(--space-3);
+  padding: 0 var(--space-6) var(--space-1) var(--space-4);
+  overflow-x: auto;
+  scrollbar-width: none;
+  /* The right edge fades, which says there is more to scroll to without a scroll bar. */
+  -webkit-mask-image: linear-gradient(to right, #000 82%, transparent);
+  mask-image: linear-gradient(to right, #000 82%, transparent);
+}
+
+.assistant__foot .chat__chips::-webkit-scrollbar {
+  display: none;
+}
+
+.assistant__foot .chip {
+  flex: none;
+  white-space: nowrap;
+}
+
+.assistant__compose {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.assistant__compose .field {
+  flex: 1;
+  margin: 0;
+}
+
+.assistant__compose .field__control {
+  min-height: 44px;
+  padding-inline: var(--space-4);
+  border-radius: var(--radius-pill);
+}
+
+.assistant__compose .button {
+  min-height: 44px;
+}
+
+/* The folded control under the question box that switches AI answers on */
+.ai-settings {
+  margin-top: var(--space-2);
+  text-align: center;
+}
+
+.ai-settings__panel {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+  text-align: left;
+}
+
+/* On a phone the chat takes the whole screen and has its own close button. */
+@media (max-width: 520px) {
+  :root {
+    --assistant-launcher: 56px;
+    --assistant-gap: var(--space-4);
+  }
+  .assistant {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    transform-origin: bottom right;
+  }
+  .assistant-launcher[aria-expanded='true'] {
+    display: none;
+  }
+}

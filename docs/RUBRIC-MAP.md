@@ -47,8 +47,8 @@ are earned in the room rather than in the code.
   list by `scripts/spellcheck.mjs`. That check found the interface had been written in
   British English and fixed 50 instances.
 - **Interactive help menu:** Help in the header opens the Help center, searchable
-  across titles, bodies, and keywords, with buttons to ask the assistant or retake the
-  tour.
+  across titles, bodies, and keywords, with a button that opens the assistant. The
+  assistant itself is a chat button in the bottom right corner of every page.
 - **No navigation errors:** hash routing, so Back and Forward work, refresh returns to
   the same screen, Back closes a dialog rather than leaving, and an unknown address
   lands on a real Not Found screen.

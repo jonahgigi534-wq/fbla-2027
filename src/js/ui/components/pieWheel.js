@@ -27,7 +27,12 @@ const SPIN = { ms: 4600, easing: 'cubic-bezier(0.3, 0, 0.1, 1)', turns: 3 };
 const STEP = { ms: 650, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' };
 
 /** Coming to rest after a drag: longer the further it has to go. */
-const SETTLE = { msPerDegree: 9, minMs: 380, maxMs: 1500, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' };
+const SETTLE = {
+  msPerDegree: 9,
+  minMs: 380,
+  maxMs: 1500,
+  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+};
 
 /** How far the pointer flicks as each slice goes past it. */
 const POINTER_TICK = [
@@ -58,7 +63,11 @@ function buildView(disc, count) {
   const pointer = el('span', { class: 'pie-wheel__pointer', 'aria-hidden': 'true' });
   const description = el('p', { class: 'pie-wheel__description' });
   const price = el('span', { class: 'pie-wheel__price' });
-  const orderButton = el('button', { class: 'button button--small', type: 'button' }, 'Order this pie');
+  const orderButton = el(
+    'button',
+    { class: 'button button--small', type: 'button' },
+    'Order this pie'
+  );
   const previous = el('button', {
     class: 'pie-wheel__arrow pie-wheel__arrow--previous',
     type: 'button',
@@ -95,7 +104,19 @@ function buildView(disc, count) {
     el('div', { class: 'pie-wheel__controls' }, [spinButton]),
     announcement,
   ]);
-  return { root, stage, name, pointer, description, price, orderButton, previous, next, spinButton, announcement };
+  return {
+    root,
+    stage,
+    name,
+    pointer,
+    description,
+    price,
+    orderButton,
+    previous,
+    next,
+    spinButton,
+    announcement,
+  };
 }
 
 /**

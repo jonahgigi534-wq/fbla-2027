@@ -1,8 +1,13 @@
 /**
- * The Pie Assistant panel.
+ * The Pie Assistant: a chat window that opens from the round button in the bottom right
+ * corner of every page.
  *
  * With a key it answers through Llama 3.3; otherwise, or when that fails, the built in
  * matcher answers. The subtitle always says which.
+ *
+ * On a wide screen it floats over the corner and the page behind it keeps working, the
+ * way a shop's chat does. On a phone it fills the screen, so there it acts as a dialog:
+ * Tab stays inside it and Back closes it.
  */
 
 import { el, render } from '../dom.js';
@@ -13,9 +18,28 @@ import { navigate, registerDialog, clearDialog } from '../../app/router.js';
 import { AI_MODEL_LABEL, describeFailure, hasApiKey } from '../../app/aiClient.js';
 import { answerWithAi, forgetConversation } from '../../app/aiConversation.js';
 import { trapFocus } from '../focusTrap.js';
+import { createLauncher, showLauncherOpen } from './assistantLauncher.js';
+
+/** The chat window's id, which the corner button points at. */
+const PANEL_ID = 'assistant-panel';
+
+/** Screens this narrow get the chat full screen rather than floating. */
+const FULL_SCREEN_QUERY = '(max-width: 520px)';
+
+/** How long the window takes to shrink away, matched in components.css. */
+const CLOSE_MS = 160;
+
+/** The pie shown beside the assistant's name. */
+const AVATAR_SRC = 'assets/img/bayou-goo-pie.webp';
 
 /** The panel element, built once and reused. */
 let panel = null;
+
+/** The corner button that opens and closes it. */
+let launcher = null;
+
+/** Hides the panel once its closing animation has run. */
+let closeTimer = null;
 
 /** Where the conversation is appended. */
 let transcript = null;
@@ -150,7 +174,7 @@ function onAiChange(setting) {
 }
 
 /**
- * Closes the panel and returns focus to the button that opened it.
+ * Closes the panel. Focus goes back to the corner button if it was inside the chat.
  *
  * @returns {void}
  */
@@ -158,20 +182,28 @@ export function close() {
   if (!isOpen) {
     return;
   }
+  const hadFocus = panel.contains(document.activeElement);
   isOpen = false;
-  panel.hidden = true;
+  showLauncherOpen(launcher, false);
   releaseFocus?.();
   releaseFocus = null;
   clearDialog();
-  document.querySelector('#assistant-toggle')?.focus();
+  panel.classList.add('assistant--closing');
+  closeTimer = window.setTimeout(() => {
+    panel.hidden = true;
+    panel.classList.remove('assistant--closing');
+  }, CLOSE_MS);
+  if (hadFocus) {
+    launcher?.focus();
+  }
 }
 
 /**
  * Builds the question box and the button that sends it.
  *
- * @returns {void}
+ * @returns {HTMLElement} The row holding both.
  */
-function buildInput() {
+function buildCompose() {
   const send = () => {
     ask(inputField.value);
     inputField.value = '';
@@ -180,7 +212,7 @@ function buildInput() {
     class: 'field__control',
     id: 'assistant-input',
     type: 'text',
-    placeholder: 'Ask about the menu, hours, or your order',
+    placeholder: 'Ask about pies, hours, or your order',
     autocomplete: 'off',
     onKeyDown: (event) => {
       if (event.key === 'Enter') {
@@ -188,96 +220,144 @@ function buildInput() {
       }
     },
   });
-  askButton = el('button', { class: 'button button--block', type: 'button', onClick: send }, 'Ask');
+  askButton = el('button', { class: 'button', type: 'button', onClick: send }, 'Ask');
+  return el('div', { class: 'assistant__compose' }, [
+    el('label', { class: 'field', for: 'assistant-input' }, [
+      el('span', { class: 'visually-hidden', text: 'Ask a question' }),
+      inputField,
+    ]),
+    askButton,
+  ]);
 }
 
 /**
- * Builds the panel on first use.
+ * Builds the dark strip across the top: the pie, the name, who is answering, and close.
+ *
+ * @returns {HTMLElement} The header.
+ */
+function buildHead() {
+  subtitle = el('p', { class: 'assistant__subtitle', text: subtitleText() });
+  return el('div', { class: 'assistant__head' }, [
+    el('img', { class: 'assistant__avatar', src: AVATAR_SRC, alt: '' }),
+    el('div', { class: 'assistant__heading' }, [
+      el('h2', { class: 'assistant__title', id: 'assistant-title', text: 'Pie Assistant' }),
+      subtitle,
+    ]),
+    el(
+      'button',
+      {
+        class: 'assistant__close',
+        type: 'button',
+        'aria-label': 'Close the assistant',
+        onClick: close,
+      },
+      '×'
+    ),
+  ]);
+}
+
+/**
+ * Builds the row of suggested questions, which scrolls sideways.
+ *
+ * @returns {HTMLElement} The row.
+ */
+function buildSuggestions() {
+  const row = suggestionChips(
+    INTENTS.filter((intent) => intent.isSuggested),
+    ask
+  );
+  // A mouse wheel only scrolls up and down, so it moves the row along instead.
+  row.addEventListener(
+    'wheel',
+    (event) => {
+      if (event.deltaX === 0 && event.deltaY !== 0) {
+        row.scrollLeft += event.deltaY;
+        event.preventDefault();
+      }
+    },
+    { passive: false }
+  );
+  return row;
+}
+
+/**
+ * Builds the panel, hidden until the corner button is pressed.
  *
  * @returns {HTMLElement} The panel.
  */
 function buildPanel() {
   transcript = el('div', { class: 'assistant__transcript', role: 'log', 'aria-live': 'polite' });
-  subtitle = el('p', { class: 'assistant__subtitle', text: subtitleText() });
-  buildInput();
-
-  /*
-   * A dialog rather than a bare aside. It covers the screen, takes focus when it
-   * opens, gives it back when it closes, and shuts on Escape or Back. aria-modal is
-   * what tells a screen reader the rest of the page is out of play while it is there,
-   * and focusTrap makes that true for the keyboard as well.
-   */
   panel = el(
     'aside',
     {
       class: 'assistant',
+      id: PANEL_ID,
       hidden: true,
       role: 'dialog',
-      'aria-modal': 'true',
-      'aria-label': 'Pie Assistant',
+      'aria-labelledby': 'assistant-title',
     },
     [
-      el('div', { class: 'assistant__head' }, [
-        el('div', {}, [el('h2', { class: 'assistant__title', text: 'Pie Assistant' }), subtitle]),
-        el(
-          'button',
-          {
-            class: 'assistant__close',
-            type: 'button',
-            'aria-label': 'Close the assistant',
-            onClick: close,
-          },
-          '×'
-        ),
-      ]),
+      buildHead(),
       transcript,
       el('div', { class: 'assistant__foot' }, [
-        suggestionChips(
-          INTENTS.filter((intent) => intent.isSuggested),
-          ask
-        ),
-        el('label', { class: 'field', for: 'assistant-input' }, [
-          el('span', { class: 'visually-hidden', text: 'Ask a question' }),
-          inputField,
-        ]),
-        askButton,
+        buildSuggestions(),
+        buildCompose(),
         aiSettings({ onChange: onAiChange }),
       ]),
     ]
   );
 
-  document.body.append(panel);
-
-  // Escape closes it, which is what anyone who has met a dialog expects.
+  // Escape closes it while you are in it, and leaves it alone while you use the page.
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && isOpen) {
+    if (event.key === 'Escape' && isOpen && panel.contains(document.activeElement)) {
       close();
     }
   });
 
   addMessage('assistant', [
     el('p', {
-      text: 'Ask me about the menu, what is vegetarian, what is sold out, opening hours, or where your order has got to. Tap one below to start.',
+      text: 'Hi! Ask me about the menu, what is vegetarian, what is sold out, opening hours, or where your order has got to. Tap a question below to start.',
     }),
   ]);
-
   return panel;
 }
 
 /**
- * Opens the panel, building it the first time.
+ * Opens the panel, or puts the cursor back in it if it is already open.
  *
  * @returns {void}
  */
 export function openAssistant() {
   if (panel === null) {
-    buildPanel();
+    document.body.append(buildPanel());
   }
-  isOpen = true;
-  panel.hidden = false;
-  // Back closes the panel rather than leaving the screen behind it.
-  registerDialog(close);
-  // And Tab stays inside it, rather than walking out into the page underneath.
-  releaseFocus = trapFocus(panel);
+  if (!isOpen) {
+    window.clearTimeout(closeTimer);
+    panel.classList.remove('assistant--closing');
+    panel.hidden = false;
+    isOpen = true;
+    showLauncherOpen(launcher, true);
+    if (window.matchMedia?.(FULL_SCREEN_QUERY).matches) {
+      // Full screen, so the page behind is out of reach: hold Tab, and let Back close it.
+      panel.setAttribute('aria-modal', 'true');
+      registerDialog(close);
+      releaseFocus = trapFocus(panel);
+    } else {
+      panel.removeAttribute('aria-modal');
+    }
+  }
   inputField.focus();
+}
+
+/**
+ * Puts the corner button and the closed chat on the page. Called once at start up.
+ *
+ * @returns {void}
+ */
+export function mountAssistant() {
+  if (launcher !== null) {
+    return;
+  }
+  launcher = createLauncher(PANEL_ID, () => (isOpen ? close() : openAssistant()));
+  document.body.append(buildPanel(), launcher);
 }

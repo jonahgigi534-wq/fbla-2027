@@ -4,7 +4,6 @@
 
 import { el, emptyState, render } from '../dom.js';
 import { openAssistant } from '../components/assistant.js';
-import { startTour } from '../components/tour.js';
 import { HELP_ARTICLES } from '../../data/helpArticles.js';
 
 /** What the article search is filtered to. */
@@ -30,7 +29,7 @@ function matchingArticles(rawQuery) {
 }
 
 /**
- * Builds the search box and the buttons to ask or take the tour.
+ * Builds the search box and the button that opens the assistant.
  *
  * @param {Function} onSearch Called after the search text changes.
  * @returns {HTMLElement} The controls row.
@@ -54,16 +53,11 @@ function helpControls(onSearch) {
       searchField,
     ]),
     el('div', { class: 'help-ask' }, [
-      el('p', { class: 'field__hint', text: 'Would you rather just ask, or be shown around?' }),
+      el('p', { class: 'field__hint', text: 'Would you rather just ask?' }),
       el(
         'button',
         { class: 'button button--secondary', type: 'button', onClick: openAssistant },
         'Open the Pie Assistant'
-      ),
-      el(
-        'button',
-        { class: 'button button--secondary', type: 'button', onClick: startTour },
-        'Take the tour again'
       ),
     ]),
   ]);

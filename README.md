@@ -39,7 +39,7 @@ The staff PIN is 1967.
 The assistant works without this. To have it answer with Llama 3.3 instead:
 
 1. Make an account at [openrouter.ai](https://openrouter.ai), add a few dollars of credit, and create a key.
-2. In the app, press Ask, then AI settings.
+2. In the app, press the round chat button in the bottom right corner, then AI settings.
 3. Paste the key and press Save key.
 
 The key is only saved in your browser and never goes in the code. If it's rejected or the internet drops, the assistant falls back to its built-in answers.

@@ -29,7 +29,10 @@ function angleOnScreen(disc) {
   if (!matrix || matrix === 'none') {
     return 0;
   }
-  const [a, b] = matrix.slice(matrix.indexOf('(') + 1, -1).split(',').map(Number);
+  const [a, b] = matrix
+    .slice(matrix.indexOf('(') + 1, -1)
+    .split(',')
+    .map(Number);
   return rotationFromMatrix(a, b);
 }
 

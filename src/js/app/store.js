@@ -33,7 +33,6 @@ function createInitialState() {
     stockOverrides: {},
     budgetCapCents: null,
     promoCode: null,
-    hasSeenWelcome: false,
     isManagerUnlocked: false,
     nextOrderNumber: nextOrderNumberAfter(seeded),
   };

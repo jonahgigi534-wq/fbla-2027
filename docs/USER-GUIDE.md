@@ -70,11 +70,12 @@ the ingredients are committed whatever anyone decides. Canceling puts the stock 
 
 ## Asking the assistant
 
-Press **Ask** in the header. It reads the live menu, stock, cart, and orders, so what it
-says matches what the screens show.
+Press the round chat button in the bottom right corner of any page. The chat opens
+above it, and the page behind keeps working; on a phone it takes the whole screen. It reads
+the live menu, stock, cart, and orders, so what it says matches what the screens show.
 
 **Two ways it can answer.** With a key saved under **AI settings** at the bottom of the
-panel, questions go to Llama 3.3 through OpenRouter and the answers are written fresh.
+chat, questions go to Llama 3.3 through OpenRouter and the answers are written fresh.
 Without a key it answers from this device, with no internet. If the AI cannot be
 reached, or the key is rejected, the built in answers take over and the reply says so.
 The line under the title always says which one is answering.

@@ -67,7 +67,7 @@ export const HELP_ARTICLES = [
     group: 'Using the site',
     title: 'Asking the Pie Assistant',
     keywords: ['assistant', 'ask', 'question', 'help', 'chat', 'ai', 'llama', 'key'],
-    body: 'Press Ask in the header to open the assistant. It reads the live menu, stock, cart, and orders, so what it tells you matches what the screens show. With a key saved under AI settings it answers with Llama 3.3 through OpenRouter. Without one it answers from this device with no internet, copes with typos, and offers the nearest topics when it does not understand. If the AI cannot answer, the built in answers take over and say so. The line under the title always says which one is answering.',
+    body: 'Press the round chat button in the bottom right corner of any page to open the assistant. It reads the live menu, stock, cart, and orders, so what it tells you matches what the screens show. With a key saved under AI settings it answers with Llama 3.3 through OpenRouter. Without one it answers from this device with no internet, copes with typos, and offers the nearest topics when it does not understand. If the AI cannot answer, the built in answers take over and say so. The line under the title always says which one is answering.',
   },
   {
     id: 'allergens',
